@@ -1,3 +1,4 @@
+import "primereact/resources/themes/lara-dark-cyan/theme.css"
 import "@/app/styles/main.scss"
 
 import type { Metadata } from "next"
