@@ -2,16 +2,21 @@ import React from "react"
 import { ILayoutRootProps } from "./layout.props"
 import { Header } from "@/entities/header"
 import { Footer } from "@/entities/footer"
+import { ClientProvider, ServerProvider } from "@/app/providers"
 
-export function LayoutRoot({ children }: ILayoutRootProps) {
+export function LayoutRoot({ children, params: { locale } }: ILayoutRootProps) {
   return (
-    <html lang={"en"}>
+    <html lang={locale}>
       <body>
-        <div className={"flex flex-col min-h-screen"}>
-          <Header />
-          <main className={"flex-grow"}>{children}</main>
-          <Footer />
-        </div>
+        <ServerProvider locale={locale}>
+          <ClientProvider>
+            <div className={"flex flex-col min-h-screen"}>
+              <Header />
+              <main className={"flex-grow"}>{children}</main>
+              <Footer />
+            </div>
+          </ClientProvider>
+        </ServerProvider>
       </body>
     </html>
   )

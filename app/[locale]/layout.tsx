@@ -1,1 +1,1 @@
-export { LayoutRoot as default } from "@/widget/layout"
+export { LayoutRoot as default, generateStaticParams } from "@/widget/layout"

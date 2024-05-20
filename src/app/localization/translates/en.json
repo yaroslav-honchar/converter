@@ -1,0 +1,8 @@
+{
+  "Common": {
+    "hello-world": "Hello, World!",
+    "go-back": "Go back",
+    "yes": "Yes",
+    "no": "No"
+  }
+}
