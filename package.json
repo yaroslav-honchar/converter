@@ -6,7 +6,23 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint **/*.{ts,tsx} --fix --config .eslintrc.json",
+    "format": "prettier --log-level warn --write \"{src,app}/**/*.{tsx,ts,css,scss}\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{(t|j)s?(x),?(s)css}": [
+      "npm run format",
+      "git add ."
+    ],
+    "*.(t|j)s?(x)": [
+      "npm run lint",
+      "git add ."
+    ]
   },
   "dependencies": {
     "react": "^18",
@@ -18,9 +34,16 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^7.0.1",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.3"
+    "eslint-config-next": "14.2.3",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.1.3",
+    "husky": "^4.3.8",
+    "lint-staged": "^15.2.2",
+    "sass": "^1.71.1"
   }
 }
