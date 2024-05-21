@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3300",
     "build": "next build",
     "start": "next start",
     "lint": "eslint **/*.{ts,tsx} --fix --config .eslintrc.json",
-    "format": "prettier --log-level warn --write \"{src,app}/**/*.{tsx,ts,css,scss}\""
+    "format": "prettier --log-level warn --write \"{src,app}/**/*.{tsx,ts,css,scss}\"",
+    "stop": "npx kill-port 3300"
   },
   "husky": {
     "hooks": {
