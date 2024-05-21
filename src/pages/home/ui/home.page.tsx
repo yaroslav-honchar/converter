@@ -1,13 +1,12 @@
 import { unstable_setRequestLocale } from "next-intl/server"
 import { IHomeProps } from "@/pages/home/ui/home.props"
-import { useTranslations } from "next-intl"
+import { FormUploadFile } from "@/entities/form-file-upload"
 
 export function HomePage({ params: { locale } }: IHomeProps) {
   unstable_setRequestLocale(locale)
-  const tCommon = useTranslations("Common")
   return (
     <div>
-      <h1>{tCommon("hello-world")}</h1>
+      <FormUploadFile />
     </div>
   )
 }

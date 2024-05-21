@@ -1,16 +1,25 @@
-// Tailwind for Prime react imports
+/**
+ * This is the main stylesheet for the application.
+ * It uses the layering feature of Tailwind CSS to control the order of the generated styles.
+ * It also imports the theme for PrimeReact UI library and the root styles.
+ */
+
+// Layering the styles for Tailwind CSS and PrimeReact
 @layer tailwind-base, primereact, tailwind-utilities;
 
+// Importing the theme for PrimeReact UI library
 @import "primereact/resources/themes/lara-dark-cyan/theme.css" layer(primereact);
 
+// Base styles for Tailwind CSS
 @layer tailwind-base {
   @tailwind base;
 }
 
+// Utility styles for Tailwind CSS
 @layer tailwind-utilities {
   @tailwind components;
   @tailwind utilities;
 }
 
-// Css custom variables
+// Importing the root styles
 @import "root.scss";
