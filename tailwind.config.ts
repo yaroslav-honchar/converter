@@ -3,7 +3,12 @@ import type { Config } from "tailwindcss"
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}", "./app/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundColor: {
+        primary: "#111",
+        secondary: "#000",
+      },
+    },
   },
   plugins: [],
 }

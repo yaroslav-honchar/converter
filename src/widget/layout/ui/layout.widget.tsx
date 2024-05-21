@@ -7,12 +7,12 @@ import { ClientProvider, ServerProvider } from "@/app/providers"
 export function LayoutRoot({ children, params: { locale } }: ILayoutRootProps) {
   return (
     <html lang={locale}>
-      <body>
+      <body className={"bg-primary"}>
         <ServerProvider locale={locale}>
           <ClientProvider>
             <div className={"flex flex-col min-h-screen"}>
               <Header />
-              <main className={"flex-grow"}>{children}</main>
+              <main className={"flex-grow flex flex-col"}>{children}</main>
               <Footer />
             </div>
           </ClientProvider>

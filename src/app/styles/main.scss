@@ -22,4 +22,7 @@
 }
 
 // Importing the root styles
-@import "root.scss";
+@import "root";
+
+// Importing the components styles
+@import "components/index";

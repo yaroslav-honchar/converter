@@ -1,20 +1,12 @@
 import React from "react"
-import { MegaMenu } from "primereact/megamenu"
-import { Icon } from "@/shared/components"
+import { LinkLogo } from "@/features/link-logo"
 
 export const Header: React.FC = () => {
   return (
-    <header>
-      <MegaMenu
-        orientation="horizontal"
-        start={
-          <Icon
-            className={"w-8 h-8"}
-            name={"logo"}
-          />
-        }
-        className="p-3 rounded-none"
-      />
+    <header className={"px-1 py-4 bg-secondary"}>
+      <div className="container">
+        <LinkLogo />
+      </div>
     </header>
   )
 }

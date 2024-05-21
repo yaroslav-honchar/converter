@@ -5,7 +5,7 @@ import { FileUpload } from "primereact/fileupload"
 
 export const FormUploadFile = () => {
   return (
-    <div className={"max-w-[50rem] w-full mx-auto p-10"}>
+    <div className={"max-w-[50rem] w-full m-auto p-10"}>
       <FileUpload
         name="demo[]"
         url={"/api/upload"}

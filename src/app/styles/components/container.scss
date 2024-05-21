@@ -1,0 +1,5 @@
+@layer tailwind-utilities {
+  .container {
+    @apply w-full max-w-[120rem] mx-auto px-4;
+  }
+}

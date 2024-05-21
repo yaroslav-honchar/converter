@@ -4,9 +4,6 @@ import { FormUploadFile } from "@/entities/form-file-upload"
 
 export function HomePage({ params: { locale } }: IHomeProps) {
   unstable_setRequestLocale(locale)
-  return (
-    <div>
-      <FormUploadFile />
-    </div>
-  )
+
+  return <FormUploadFile />
 }
