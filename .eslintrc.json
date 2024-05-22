@@ -17,7 +17,7 @@
     "react/no-unescaped-entities": "off",
     "@next/next/no-img-element": "off",
     "react/display-name": "off",
-    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/no-empty-function": "off",
     "no-unused-vars": "off",
     "no-dupe-keys": "warn",
