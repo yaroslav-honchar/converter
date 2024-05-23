@@ -1,35 +1,42 @@
 "use client"
 
 import React, { ChangeEvent, useState } from "react"
-
-// const convertOptions: IConvertOption = [
-//   {
-//     label: "PNG",
-//     value: "png",
-//   },
-//   {
-//     label: "JPEG",
-//     value: "jpeg",
-//   },
-//   {
-//     label: "WEBP",
-//     value: "webp",
-//   },
-// ]
+import { DataTable } from "primereact/datatable"
+import { Column } from "primereact/column"
+import { useLocale } from "use-intl"
+import prettyBytes from "pretty-bytes"
+import { Button } from "primereact/button"
+import { TableHeader } from "../components/table-header/table-header"
+import { ConvertSelect } from "@/entities/form-file-upload/components/convert-select/convert-select"
+import { IUploadedFile } from "../types"
 
 export const FormUploadFile = () => {
+  const locale = useLocale()
   const [uploadedFiles, setUploadedFiles] = useState<IUploadedFile[]>([])
 
-  const onChangeHandle = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = []
+  const onConvertToChangeHandle = (uploadedFile: IUploadedFile) => {
+    setUploadedFiles((prevFiles) => {
+      const index = prevFiles.findIndex(
+        (f) => f.file.name === uploadedFile.file.name && f.file.size === uploadedFile.file.size,
+      )
+      prevFiles[index].convertTo = uploadedFile.convertTo
+
+      return [...prevFiles]
+    })
+  }
+
+  const onFileUploadHandle = (event: ChangeEvent<HTMLInputElement>) => {
+    const files: IUploadedFile[] = []
 
     for (let i = 0; i < event.target.files!.length; i++) {
       const file: IUploadedFile = {
         file: event.target.files![i],
-        convertTo: "-",
+        convertTo: null,
       }
 
-      const hasSameFile = uploadedFiles.some((f) => f.file.name === file.file.name)
+      const hasSameFile = uploadedFiles.some((f) => {
+        return f.file.name === file.file.name && f.file.size === file.file.size
+      })
       if (hasSameFile) {
         continue
       }
@@ -37,30 +44,60 @@ export const FormUploadFile = () => {
       files.push(file)
     }
 
-    setUploadedFiles(files)
+    setUploadedFiles((prevFiles) => [...prevFiles, ...files])
+  }
+
+  const onUploadedFileRemoveHandle = (uploadedFile: IUploadedFile) => {
+    setUploadedFiles((prevFiles) => [...prevFiles.filter((f) => f !== uploadedFile)])
   }
 
   return (
-    <div className={"max-w-[50rem] w-full m-auto p-10"}>
-      <label className={"p-button"}>
-        <span>Upload file</span>
-        <input
-          type="file"
-          className={"hidden"}
-          onChange={onChangeHandle}
-          multiple={true}
+    <div className={"lg:max-w-[80vw] w-full m-auto p-10"}>
+      <DataTable
+        value={uploadedFiles}
+        tableStyle={{ width: "100%" }}
+        stripedRows
+        header={<TableHeader onFileUpload={onFileUploadHandle} />}
+      >
+        <Column
+          field="file.name"
+          className={"max-w-[40vw]"}
+          header="File name"
+          body={({ file }) => {
+            return (
+              <p className={"w-full text-ellipsis overflow-hidden white-space-nowrap"}>
+                {file.name}
+              </p>
+            )
+          }}
         />
-      </label>
+        <Column
+          field="file.size"
+          header="File size"
+          body={({ file }) => prettyBytes(file.size, { locale })}
+        />
+        <Column
+          field="convertTo"
+          header="Convert to"
+          body={(uploadedFile) => (
+            <ConvertSelect
+              uploadedFile={uploadedFile}
+              onConvertToChange={onConvertToChangeHandle}
+            />
+          )}
+        />
+        <Column
+          header=""
+          body={(uploadedFile) => (
+            <Button
+              type="button"
+              icon="pi pi-times"
+              className="p-button-outlined p-button-rounded p-button-danger w-8 h-8 m-auto hover:bg-red-500 hover:text-white"
+              onClick={() => onUploadedFileRemoveHandle(uploadedFile)}
+            />
+          )}
+        />
+      </DataTable>
     </div>
   )
-}
-
-export interface IUploadedFile {
-  file: File
-  convertTo: string
-}
-
-export interface IConvertOption {
-  label: string
-  value: string
 }
