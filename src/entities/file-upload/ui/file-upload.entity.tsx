@@ -6,11 +6,10 @@ import { Column } from "primereact/column"
 import { useLocale } from "use-intl"
 import prettyBytes from "pretty-bytes"
 import { Button } from "primereact/button"
-import { TableHeader } from "../components/table-header/table-header"
-import { ConvertSelect } from "@/entities/form-file-upload/components/convert-select/convert-select"
+import { TableHeader, ConvertSelect } from "../components"
 import { IUploadedFile } from "../types"
 
-export const FormUploadFile = () => {
+export const FileUpload = () => {
   const locale = useLocale()
   const [uploadedFiles, setUploadedFiles] = useState<IUploadedFile[]>([])
 
