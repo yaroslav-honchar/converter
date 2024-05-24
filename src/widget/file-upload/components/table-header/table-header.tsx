@@ -2,9 +2,11 @@ import React from "react"
 import { TableHeaderProps } from "./table-header.props"
 import { Button } from "primereact/button"
 import { useTranslations } from "next-intl"
+import cn from "classnames"
 
 export const TableHeader: React.FC<TableHeaderProps> = ({
   hasFiles,
+  isSelectFilesLocked,
   onFileUpload,
   onFilesClear,
   onConvert,
@@ -24,9 +26,14 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
 
   return (
     <div className="flex justify-content-between gap-2">
-      <label className={"p-button"}>
+      <label
+        className={cn("p-button", {
+          ["p-disabled"]: isSelectFilesLocked,
+        })}
+      >
         <span>{t("FileUpload.select_files")}</span>
         <input
+          disabled={isSelectFilesLocked}
           type="file"
           className={"hidden"}
           onChange={onFileUploadHandle}

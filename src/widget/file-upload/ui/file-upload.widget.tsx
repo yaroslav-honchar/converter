@@ -11,6 +11,9 @@ import { IUploadedFile } from "../types"
 import { useTranslations } from "next-intl"
 import { useSendSelectedFiles } from "../hooks"
 import { Toast } from "primereact/toast"
+import { UploadedFile } from "../lib"
+
+const MAX_FILES_LENGTH = 5
 
 export const FileUpload = () => {
   const toast = useRef<Toast>(null)
@@ -45,14 +48,29 @@ export const FileUpload = () => {
     })
   }
 
-  const onFileUploadHandle = (event: ChangeEvent<HTMLInputElement>) => {
-    const files: IUploadedFile[] = []
+  const onFileUploadHandle = ({ target: { files } }: ChangeEvent<HTMLInputElement>) => {
+    if (!files!.length) {
+      return
+    }
+    const filesTransformed: IUploadedFile[] = []
+    let selectedFiles = Array.from(files!)
 
-    for (let i = 0; i < event.target.files!.length; i++) {
-      const file: IUploadedFile = {
-        file: event.target.files![i],
-        convertTo: null,
-      }
+    if (
+      selectedFiles.length > MAX_FILES_LENGTH ||
+      uploadedFiles.length + selectedFiles.length > MAX_FILES_LENGTH
+    ) {
+      toast.current?.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: tFileUpload("toast-max-files-warn", { quantity: MAX_FILES_LENGTH }),
+        life: 3000,
+      })
+
+      selectedFiles = selectedFiles.splice(0, MAX_FILES_LENGTH - uploadedFiles.length)
+    }
+
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const file = new UploadedFile(files![i])
 
       const hasSameFile = uploadedFiles.some((f) => {
         return f.file.name === file.file.name && f.file.size === file.file.size
@@ -61,10 +79,10 @@ export const FileUpload = () => {
         continue
       }
 
-      files.push(file)
+      filesTransformed.push(file)
     }
 
-    setUploadedFiles((prevFiles) => [...prevFiles, ...files])
+    setUploadedFiles((prevFiles) => [...prevFiles, ...filesTransformed])
   }
 
   const onUploadedFileRemoveHandle = (uploadedFile: IUploadedFile) => {
@@ -85,6 +103,7 @@ export const FileUpload = () => {
         header={
           <TableHeader
             hasFiles={uploadedFiles.length > 0}
+            isSelectFilesLocked={uploadedFiles.length >= MAX_FILES_LENGTH}
             onFileUpload={onFileUploadHandle}
             onFilesClear={onFilesClearHandle}
             onConvert={onConvertHandle}

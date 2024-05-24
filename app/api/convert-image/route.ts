@@ -7,6 +7,7 @@ import { NextRequest } from "next/server"
 // const __dirname = path.dirname(__filename)
 
 export async function POST(req: NextRequest) {
+  console.log("POST /api/convert-image")
   try {
     const data = await req.json()
     console.log(data)
