@@ -1,9 +1,7 @@
 {
   "Common": {
-    "go-back": "Go back",
-    "yes": "Yes",
-    "no": "No",
-    "convert": "Convert"
+    "convert": "Convert",
+    "remove-all": "Remove all"
   },
   "FileUpload": {
     "select_files": "Select files",

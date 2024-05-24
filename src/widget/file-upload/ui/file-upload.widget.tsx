@@ -52,13 +52,22 @@ export const FileUpload = () => {
     setUploadedFiles((prevFiles) => [...prevFiles.filter((f) => f !== uploadedFile)])
   }
 
+  const onFilesClearHandle = () => {
+    setUploadedFiles([])
+  }
+
   return (
     <div className={"lg:max-w-[80vw] w-full m-auto p-10"}>
       <DataTable
         value={uploadedFiles}
         tableStyle={{ width: "100%" }}
         stripedRows
-        header={<TableHeader onFileUpload={onFileUploadHandle} />}
+        header={
+          <TableHeader
+            onFileUpload={onFileUploadHandle}
+            onFilesClear={onFilesClearHandle}
+          />
+        }
       >
         <Column
           field="file.name"

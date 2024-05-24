@@ -1,6 +1,7 @@
 {
   "Common": {
-    "convert": "Конвертувати"
+    "convert": "Конвертувати",
+    "remove-all": "Видалити всі"
   },
   "FileUpload": {
     "select_files": "Вибрати файли",

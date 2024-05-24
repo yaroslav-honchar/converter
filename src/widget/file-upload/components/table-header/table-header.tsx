@@ -3,10 +3,14 @@ import { TableHeaderProps } from "./table-header.props"
 import { Button } from "primereact/button"
 import { useTranslations } from "next-intl"
 
-export const TableHeader: React.FC<TableHeaderProps> = ({ onFileUpload }) => {
+export const TableHeader: React.FC<TableHeaderProps> = ({ onFileUpload, onFilesClear }) => {
   const t = useTranslations()
   const onFileUploadHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
     onFileUpload(event)
+  }
+
+  const onFilesClearHandle = () => {
+    onFilesClear()
   }
 
   return (
@@ -21,6 +25,12 @@ export const TableHeader: React.FC<TableHeaderProps> = ({ onFileUpload }) => {
         />
       </label>
       <Button label={t("Common.convert")} />
+      <Button
+        className={"ml-auto"}
+        label={t("Common.remove-all")}
+        severity={"danger"}
+        onClick={onFilesClearHandle}
+      />
     </div>
   )
 }
