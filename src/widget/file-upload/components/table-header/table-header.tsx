@@ -1,5 +1,6 @@
 import React from "react"
 import { TableHeaderProps } from "./table-header.props"
+import { Button } from "primereact/button"
 
 export const TableHeader: React.FC<TableHeaderProps> = ({ onFileUpload }) => {
   const onFileUploadHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -7,7 +8,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({ onFileUpload }) => {
   }
 
   return (
-    <div className="flex justify-content-between">
+    <div className="flex justify-content-between gap-2">
       <label className={"p-button"}>
         <span>Upload files</span>
         <input
@@ -17,6 +18,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({ onFileUpload }) => {
           multiple={true}
         />
       </label>
+      <Button label={"Convert"} />
     </div>
   )
 }
