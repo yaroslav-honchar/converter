@@ -8,6 +8,7 @@
     "file_name": "Name",
     "file_size": "Size",
     "file_type": "Type",
-    "convert_to": "Convert to"
+    "convert_to": "Convert to",
+    "toast-target-warn": "Choose output format"
   }
 }

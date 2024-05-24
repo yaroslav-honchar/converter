@@ -1,6 +1,6 @@
 "use client"
 
-import React, { ChangeEvent, useState } from "react"
+import React, { ChangeEvent, useRef, useState } from "react"
 import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { useLocale } from "use-intl"
@@ -10,14 +10,27 @@ import { TableHeader, ConvertSelect } from "../components"
 import { IUploadedFile } from "../types"
 import { useTranslations } from "next-intl"
 import { useSendSelectedFiles } from "../hooks"
+import { Toast } from "primereact/toast"
 
 export const FileUpload = () => {
+  const toast = useRef<Toast>(null)
   const tFileUpload = useTranslations("FileUpload")
   const locale = useLocale()
   const [uploadedFiles, setUploadedFiles] = useState<IUploadedFile[]>([])
   const { sendFiles } = useSendSelectedFiles()
 
   const onConvertHandle = () => {
+    const isSomeFileHasNoConvertTarget = uploadedFiles.some((f) => f.convertTo === null)
+    if (isSomeFileHasNoConvertTarget) {
+      toast.current?.show({
+        severity: "warn",
+        summary: "Warning",
+        detail: tFileUpload("toast-target-warn"),
+        life: 3000,
+      })
+      return
+    }
+
     sendFiles(uploadedFiles)
   }
 
@@ -64,6 +77,7 @@ export const FileUpload = () => {
 
   return (
     <div className={"lg:max-w-[80vw] w-full m-auto p-10"}>
+      <Toast ref={toast} />
       <DataTable
         value={uploadedFiles}
         tableStyle={{ width: "100%" }}

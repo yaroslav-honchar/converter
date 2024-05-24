@@ -8,6 +8,7 @@
     "file_name": "Назва",
     "file_size": "Розмір",
     "file_type": "Тип",
-    "convert_to": "Конвертувати в"
+    "convert_to": "Конвертувати в",
+    "toast-target-warn": "Виберіть цільовий(-і) формат(-и)"
   }
 }
