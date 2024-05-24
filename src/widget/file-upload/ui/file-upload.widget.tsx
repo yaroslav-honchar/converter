@@ -64,6 +64,7 @@ export const FileUpload = () => {
         stripedRows
         header={
           <TableHeader
+            hasFiles={uploadedFiles.length > 0}
             onFileUpload={onFileUploadHandle}
             onFilesClear={onFilesClearHandle}
           />
