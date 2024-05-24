@@ -8,11 +8,12 @@ import { NextRequest } from "next/server"
 
 export async function POST(req: NextRequest) {
   try {
-    const data = await req.formData()
-    const file = data.get("file") as File
-    if (!file) {
-      return Response.json({ error: "Error handling file upload" })
-    }
+    const data = await req.json()
+    console.log(data)
+    // const file = data.get("file") as File
+    // if (!file) {
+    //   return Response.json({ error: "Error handling file upload" })
+    // }
 
     // const buffer = await file.arrayBuffer()
 

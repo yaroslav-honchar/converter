@@ -7,6 +7,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
   hasFiles,
   onFileUpload,
   onFilesClear,
+  onConvert,
 }) => {
   const t = useTranslations()
   const onFileUploadHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,6 +16,10 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
 
   const onFilesClearHandle = () => {
     onFilesClear()
+  }
+
+  const onConvertHandle = () => {
+    onConvert()
   }
 
   return (
@@ -31,6 +36,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
       <Button
         disabled={!hasFiles}
         label={t("Common.convert")}
+        onClick={onConvertHandle}
       />
       <Button
         disabled={!hasFiles}

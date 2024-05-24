@@ -9,11 +9,17 @@ import { Button } from "primereact/button"
 import { TableHeader, ConvertSelect } from "../components"
 import { IUploadedFile } from "../types"
 import { useTranslations } from "next-intl"
+import { useSendSelectedFiles } from "../hooks"
 
 export const FileUpload = () => {
   const tFileUpload = useTranslations("FileUpload")
   const locale = useLocale()
   const [uploadedFiles, setUploadedFiles] = useState<IUploadedFile[]>([])
+  const { sendFiles } = useSendSelectedFiles()
+
+  const onConvertHandle = () => {
+    sendFiles(uploadedFiles)
+  }
 
   const onConvertToChangeHandle = (uploadedFile: IUploadedFile) => {
     setUploadedFiles((prevFiles) => {
@@ -67,6 +73,7 @@ export const FileUpload = () => {
             hasFiles={uploadedFiles.length > 0}
             onFileUpload={onFileUploadHandle}
             onFilesClear={onFilesClearHandle}
+            onConvert={onConvertHandle}
           />
         }
       >
