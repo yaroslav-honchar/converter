@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server"
+import { IUploadedFile } from "@/widget/file-upload/types"
 // import { promises as fs } from "fs"
 // import path from "path"
 // import { fileURLToPath } from "url"
@@ -7,18 +8,15 @@ import { NextRequest } from "next/server"
 // const __dirname = path.dirname(__filename)
 
 export async function POST(req: NextRequest) {
-  console.log("POST /api/convert-image")
   try {
-    const data = await req.json()
+    const data: IUploadedFile[] = await req.json()
     console.log(data)
-    // const file = data.get("file") as File
-    // if (!file) {
-    //   return Response.json({ error: "Error handling file upload" })
-    // }
 
-    // const buffer = await file.arrayBuffer()
-
-    // await fs.writeFile(path.join(__dirname, "uploads", file.name), Buffer.from(buffer))
+    data.forEach((file: IUploadedFile) => {
+      const buffer = new Buffer(file.fileBase64.split(",")[1], "base64")
+      console.log(buffer)
+      // Do something with the buffer
+    })
 
     return Response.json({ message: "File uploaded successfully" })
   } catch (error) {
