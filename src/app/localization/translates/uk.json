@@ -1,8 +1,12 @@
 {
   "Common": {
-    "hello-world": "Првіт, світ!",
-    "go-back": "Go back",
-    "yes": "Yes",
-    "no": "No"
+    "convert": "Конвертувати"
+  },
+  "FileUpload": {
+    "select_files": "Вибрати файли",
+    "file_name": "Назва",
+    "file_size": "Розмір",
+    "file_type": "Тип",
+    "convert_to": "Конвертувати в"
   }
 }

@@ -1,8 +1,15 @@
 {
   "Common": {
-    "hello-world": "Hello, World!",
     "go-back": "Go back",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "convert": "Convert"
+  },
+  "FileUpload": {
+    "select_files": "Select files",
+    "file_name": "Name",
+    "file_size": "Size",
+    "file_type": "Type",
+    "convert_to": "Convert to"
   }
 }

@@ -8,8 +8,10 @@ import prettyBytes from "pretty-bytes"
 import { Button } from "primereact/button"
 import { TableHeader, ConvertSelect } from "../components"
 import { IUploadedFile } from "../types"
+import { useTranslations } from "next-intl"
 
 export const FileUpload = () => {
+  const tFileUpload = useTranslations("FileUpload")
   const locale = useLocale()
   const [uploadedFiles, setUploadedFiles] = useState<IUploadedFile[]>([])
 
@@ -61,7 +63,7 @@ export const FileUpload = () => {
         <Column
           field="file.name"
           className={"max-w-[40vw]"}
-          header="File name"
+          header={tFileUpload("file_name")}
           body={({ file }) => {
             return (
               <p className={"w-full text-ellipsis overflow-hidden white-space-nowrap"}>
@@ -72,12 +74,16 @@ export const FileUpload = () => {
         />
         <Column
           field="file.size"
-          header="File size"
+          header={tFileUpload("file_size")}
           body={({ file }) => prettyBytes(file.size, { locale })}
         />
         <Column
+          field="file.type"
+          header={tFileUpload("file_type")}
+        />
+        <Column
           field="convertTo"
-          header="Convert to"
+          header={tFileUpload("convert_to")}
           body={(uploadedFile) => (
             <ConvertSelect
               uploadedFile={uploadedFile}
@@ -86,7 +92,6 @@ export const FileUpload = () => {
           )}
         />
         <Column
-          header=""
           body={(uploadedFile) => (
             <Button
               type="button"

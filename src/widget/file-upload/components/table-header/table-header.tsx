@@ -1,8 +1,10 @@
 import React from "react"
 import { TableHeaderProps } from "./table-header.props"
 import { Button } from "primereact/button"
+import { useTranslations } from "next-intl"
 
 export const TableHeader: React.FC<TableHeaderProps> = ({ onFileUpload }) => {
+  const t = useTranslations()
   const onFileUploadHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
     onFileUpload(event)
   }
@@ -10,7 +12,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({ onFileUpload }) => {
   return (
     <div className="flex justify-content-between gap-2">
       <label className={"p-button"}>
-        <span>Upload files</span>
+        <span>{t("FileUpload.select_files")}</span>
         <input
           type="file"
           className={"hidden"}
@@ -18,7 +20,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({ onFileUpload }) => {
           multiple={true}
         />
       </label>
-      <Button label={"Convert"} />
+      <Button label={t("Common.convert")} />
     </div>
   )
 }
