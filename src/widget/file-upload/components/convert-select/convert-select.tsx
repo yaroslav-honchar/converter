@@ -2,21 +2,7 @@ import React, { useState } from "react"
 import { SelectItem } from "primereact/selectitem"
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown"
 import { IConvertSelectProps } from "./convert-select.props"
-
-const convertOptions: SelectItem[] = [
-  {
-    label: "PNG",
-    value: "png",
-  },
-  {
-    label: "JPEG",
-    value: "jpeg",
-  },
-  {
-    label: "WEBP",
-    value: "webp",
-  },
-]
+import { convertSelectOptions } from "./convert-select.options"
 
 export const ConvertSelect: React.FC<IConvertSelectProps> = ({
   uploadedFile,
@@ -36,7 +22,7 @@ export const ConvertSelect: React.FC<IConvertSelectProps> = ({
   return (
     <Dropdown
       value={convertTOValue}
-      options={convertOptions}
+      options={convertSelectOptions}
       placeholder={"..."}
       onChange={onChangeHandle}
     />
