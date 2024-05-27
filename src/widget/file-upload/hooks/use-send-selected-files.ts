@@ -1,15 +1,17 @@
 import { useState } from "react"
-import { IUploadedFile } from "../types"
 import { sendFilesToConvert } from "../api"
+import { UploadFile } from "@/shared/lib"
 
 export const useSendSelectedFiles = () => {
   const [isLoading, setIsLoading] = useState<boolean>()
   const [isError, setIsError] = useState<unknown>()
+  const [downloadUrl, setDownloadUrl] = useState<string | undefined>()
 
-  const sendFiles = async (files: IUploadedFile[]) => {
+  const sendFiles = async (files: UploadFile[]) => {
     setIsLoading(true)
     try {
-      await sendFilesToConvert(files)
+      const blob = await sendFilesToConvert(files)
+      setDownloadUrl(URL.createObjectURL(blob))
     } catch (error) {
       console.log(error)
       setIsError(error)
@@ -18,5 +20,5 @@ export const useSendSelectedFiles = () => {
     }
   }
 
-  return { isLoading, isError, sendFiles }
+  return { downloadUrl, isLoading, isError, sendFiles }
 }

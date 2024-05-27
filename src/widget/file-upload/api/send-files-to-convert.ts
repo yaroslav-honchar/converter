@@ -1,6 +1,6 @@
-import { IUploadedFile } from "@/widget/file-upload/types"
+import { UploadFile } from "@/shared/lib"
 
-export const sendFilesToConvert = async (files: IUploadedFile[]) => {
+export const sendFilesToConvert = async (files: UploadFile[]) => {
   const res = await fetch("/api/convert-image", {
     method: "POST",
     body: JSON.stringify(files),
@@ -9,5 +9,5 @@ export const sendFilesToConvert = async (files: IUploadedFile[]) => {
     },
   })
 
-  return await res.json()
+  return await res.blob()
 }

@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl"
 import cn from "classnames"
 
 export const TableHeader: React.FC<TableHeaderProps> = ({
+  downloadUrl,
   hasFiles,
   isSelectFilesLocked,
   onFileUpload,
@@ -45,6 +46,13 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
         label={t("Common.convert")}
         onClick={onConvertHandle}
       />
+      <a
+        className={"hidden"}
+        href={downloadUrl}
+      >
+        Download
+      </a>
+
       <Button
         disabled={!hasFiles}
         className={"ml-auto"}
