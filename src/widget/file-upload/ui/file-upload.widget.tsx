@@ -7,11 +7,11 @@ import { useLocale } from "use-intl"
 import prettyBytes from "pretty-bytes"
 import { Button } from "primereact/button"
 import { TableHeader, ConvertSelect } from "../components"
-import { IUploadedFile } from "../types"
 import { useTranslations } from "next-intl"
 import { useSendSelectedFiles } from "../hooks"
 import { Toast } from "primereact/toast"
-import { UploadedFile } from "../lib"
+import { UploadFile } from "@/shared/lib"
+import { FormatEnum } from "sharp"
 
 const MAX_FILES_LENGTH = 5
 
@@ -19,11 +19,12 @@ export const FileUpload = () => {
   const toast = useRef<Toast>(null)
   const tFileUpload = useTranslations("FileUpload")
   const locale = useLocale()
-  const [uploadedFiles, setUploadedFiles] = useState<IUploadedFile[]>([])
+  const [uploadedFiles, setUploadedFiles] = useState<UploadFile[]>([])
   const { sendFiles } = useSendSelectedFiles()
 
   const onConvertHandle = () => {
-    const isSomeFileHasNoConvertTarget = uploadedFiles.some((f) => f.convertTo === null)
+    const isSomeFileHasNoConvertTarget = uploadedFiles.some((f) => f.convertTarget === null)
+
     if (isSomeFileHasNoConvertTarget) {
       toast.current?.show({
         severity: "warn",
@@ -37,12 +38,17 @@ export const FileUpload = () => {
     sendFiles(uploadedFiles)
   }
 
-  const onConvertToChangeHandle = (uploadedFile: IUploadedFile) => {
+  const onConvertTargetChangeHandle = (
+    uploadedFile: UploadFile,
+    formatTarget: keyof FormatEnum,
+  ) => {
     setUploadedFiles((prevFiles) => {
       const index = prevFiles.findIndex(
-        (f) => f.file.name === uploadedFile.file.name && f.file.size === uploadedFile.file.size,
+        (f) =>
+          f.fileData.name === uploadedFile.fileData.name &&
+          f.fileData.size === uploadedFile.fileData.size,
       )
-      prevFiles[index].convertTo = uploadedFile.convertTo
+      prevFiles[index].setConvertTarget(formatTarget)
 
       return [...prevFiles]
     })
@@ -52,7 +58,7 @@ export const FileUpload = () => {
     if (!files!.length) {
       return
     }
-    const filesTransformed: IUploadedFile[] = []
+    const filesTransformed: UploadFile[] = []
     let selectedFiles = Array.from(files!)
 
     if (
@@ -70,10 +76,11 @@ export const FileUpload = () => {
     }
 
     for (let i = 0; i < selectedFiles.length; i++) {
-      const file = new UploadedFile(files![i])
+      const file = new UploadFile(files![i])
+      console.log(file)
 
       const hasSameFile = uploadedFiles.some((f) => {
-        return f.file.name === file.file.name && f.file.size === file.file.size
+        return f.fileData.name === file.fileData.name && f.fileData.size === file.fileData.size
       })
       if (hasSameFile) {
         continue
@@ -85,7 +92,7 @@ export const FileUpload = () => {
     setUploadedFiles((prevFiles) => [...prevFiles, ...filesTransformed])
   }
 
-  const onUploadedFileRemoveHandle = (uploadedFile: IUploadedFile) => {
+  const onUploadedFileRemoveHandle = (uploadedFile: UploadFile) => {
     setUploadedFiles((prevFiles) => [...prevFiles.filter((f) => f !== uploadedFile)])
   }
 
@@ -111,33 +118,33 @@ export const FileUpload = () => {
         }
       >
         <Column
-          field="file.name"
+          field="fileData.name"
           className={"max-w-[40vw]"}
           header={tFileUpload("file_name")}
-          body={({ file }) => {
+          body={({ fileData }) => {
             return (
               <p className={"w-full text-ellipsis overflow-hidden white-space-nowrap"}>
-                {file.name}
+                {fileData.name}
               </p>
             )
           }}
         />
         <Column
-          field="file.size"
+          field="fileData.size"
           header={tFileUpload("file_size")}
-          body={({ file }) => prettyBytes(file.size, { locale })}
+          body={({ fileData }) => prettyBytes(fileData.size, { locale })}
         />
         <Column
-          field="file.type"
+          field="fileData.type"
           header={tFileUpload("file_type")}
         />
         <Column
           field="convertTo"
           header={tFileUpload("convert_to")}
-          body={(uploadedFile) => (
+          body={(uploadedFile: UploadFile) => (
             <ConvertSelect
               uploadedFile={uploadedFile}
-              onConvertToChange={onConvertToChangeHandle}
+              onConvertTargetChange={onConvertTargetChangeHandle}
             />
           )}
         />

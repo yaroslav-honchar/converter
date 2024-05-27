@@ -1,17 +1,10 @@
 import { NextRequest } from "next/server"
-import { IUploadedFile } from "@/widget/file-upload/types"
-import sharp, { FormatEnum } from "sharp"
-// import { promises as fs } from "fs"
-// import path from "path"
-// import { fileURLToPath } from "url"
-
-// const __filename = fileURLToPath(import.meta.url)
-// const __dirname = path.dirname(__filename)
+import sharp from "sharp"
+import { UploadFile } from "@/shared/lib"
 
 export async function POST(req: NextRequest) {
   try {
-    const data: IUploadedFile[] = await req.json()
-    // console.log(data)
+    const data: UploadFile[] = await req.json()
     for (const file of data) {
       const buffer = Buffer.from(file.fileBase64.split(",")[1], "base64")
       console.log(buffer)
@@ -26,10 +19,3 @@ export async function POST(req: NextRequest) {
     return Response.json({ error: "Error handling file upload" })
   }
 }
-
-/*
- * Needed format data:
- * - exist file properties File
- * - base64 data
- * - format target
- * */

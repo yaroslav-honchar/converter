@@ -6,22 +6,18 @@ import { convertSelectOptions } from "./convert-select.options"
 
 export const ConvertSelect: React.FC<IConvertSelectProps> = ({
   uploadedFile,
-  onConvertToChange,
+  onConvertTargetChange,
 }) => {
-  const [convertTOValue, setConvertTOValue] = useState<SelectItem | null>(null)
+  const [convertTargetValue, setConvertTargetValue] = useState<SelectItem | null>(null)
 
-  const onChangeHandle = (e: DropdownChangeEvent) => {
-    setConvertTOValue(e.value)
-
-    onConvertToChange({
-      ...uploadedFile,
-      convertTo: e.value as string,
-    })
+  const onChangeHandle = (event: DropdownChangeEvent) => {
+    setConvertTargetValue(event.value)
+    onConvertTargetChange(uploadedFile, event.value)
   }
 
   return (
     <Dropdown
-      value={convertTOValue}
+      value={convertTargetValue}
       options={convertSelectOptions}
       placeholder={"..."}
       onChange={onChangeHandle}
