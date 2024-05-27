@@ -6,6 +6,7 @@ import path from "node:path"
 import { PassThrough } from "node:stream"
 import streamToBlob from "stream-to-blob"
 
+// TODO: Handle exceptions
 export async function POST(req: NextRequest) {
   try {
     const data: UploadFile[] = await req.json()

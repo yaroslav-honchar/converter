@@ -21,7 +21,6 @@ export const FileUpload = () => {
   const locale = useLocale()
   const [uploadedFiles, setUploadedFiles] = useState<UploadFile[]>([])
   const { downloadUrl, sendFiles } = useSendSelectedFiles()
-  console.log(downloadUrl)
 
   const onConvertHandle = () => {
     const isSomeFileHasNoConvertTarget = uploadedFiles.some((f) => f.convertTarget === null)
@@ -118,6 +117,8 @@ export const FileUpload = () => {
             onConvert={onConvertHandle}
           />
         }
+        // TODO: Add empty message
+        emptyMessage={<p>No files</p>}
       >
         <Column
           field="fileData.name"

@@ -1,6 +1,7 @@
 import { UploadFile } from "@/shared/lib"
 
 export const sendFilesToConvert = async (files: UploadFile[]) => {
+  // TODO: Style download button
   const res = await fetch("/api/convert-image", {
     method: "POST",
     body: JSON.stringify(files),
