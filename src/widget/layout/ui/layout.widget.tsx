@@ -1,8 +1,8 @@
 import React from "react"
 import { ILayoutRootProps } from "./layout.props"
-import { Header } from "../../../features/header"
-import { Footer } from "../../../features/footer"
-import { ClientProvider, ServerProvider } from "@/app/providers"
+import { Header } from "@/features/header"
+import { Footer } from "@/features/footer"
+import { ClientProvider, ServerProvider } from "@/_app/providers"
 
 export function LayoutRoot({ children, params: { locale } }: ILayoutRootProps) {
   return (

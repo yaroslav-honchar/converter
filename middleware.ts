@@ -1,5 +1,5 @@
 import createMiddleware from "next-intl/middleware"
-import { localeConfig } from "@/app/localization"
+import { localeConfig } from "@/_app/localization"
 
 const { localePrefix, locales, defaultLocale, localeDetection } = localeConfig
 

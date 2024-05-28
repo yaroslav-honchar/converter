@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import { SelectButton, SelectButtonChangeEvent } from "primereact/selectbutton"
-import { localeConfig, usePathname, useRouter } from "@/app/localization"
+import { localeConfig, usePathname, useRouter } from "@/_app/localization"
 import { useLocale } from "use-intl"
 
 const options: string[] = localeConfig.locales

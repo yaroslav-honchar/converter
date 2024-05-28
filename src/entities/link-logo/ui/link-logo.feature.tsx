@@ -1,6 +1,6 @@
 import React from "react"
 import { Icon, LinkRoot } from "@/shared/components"
-import { ClientRoutes } from "@/app/routes"
+import { ClientRoutes } from "@/_app/routes"
 
 export const LinkLogo: React.FC = () => {
   return (

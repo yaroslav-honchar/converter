@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "@/app/localization"
+import { Link } from "@/_app/localization"
 import { ILinkRootProps } from "./link-root.props"
 import cn from "classnames"
 
