@@ -61,7 +61,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
       <Button
         disabled={!hasFiles}
         className={"ml-auto"}
-        label={t("Common.remove-all")}
+        label={t("Common.remove_all")}
         severity={"danger"}
         onClick={onFilesClearHandle}
       />

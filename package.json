@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "archiver": "^7.0.1",
-    "axios": "^1.7.2",
     "classnames": "^2.5.1",
     "next": "14.2.3",
     "next-intl": "^3.14.0",
@@ -41,7 +40,6 @@
   },
   "devDependencies": {
     "@types/archiver": "^6.0.2",
-    "@types/axios": "^0.14.0",
     "@types/pretty-bytes": "^5.2.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",

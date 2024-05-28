@@ -1,7 +1,7 @@
 {
   "Common": {
     "convert": "Конвертувати",
-    "remove-all": "Видалити всі"
+    "remove_all": "Видалити всі"
   },
   "FileUpload": {
     "select_files": "Вибрати файли",
@@ -9,8 +9,9 @@
     "file_size": "Розмір",
     "file_type": "Тип",
     "convert_to": "Конвертувати в",
-    "toast-target-warn": "Виберіть цільовий(-і) формат(-и)",
-    "toast-max-files-warn": "Максимальна разова кількість файлів для конвертації - {quantity}",
+    "toast_target_warn": "Виберіть цільовий(-і) формат(-и)",
+    "toast_max_files_warn": "Максимальна разова кількість файлів для конвертації - {quantity}",
+    "toast_convert_error": "Помилка конвертації файлу(-ів)",
     "empty_list": "Список файлів порожній"
   }
 }

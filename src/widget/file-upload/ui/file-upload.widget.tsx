@@ -1,6 +1,6 @@
 "use client"
 
-import React, { ChangeEvent, useRef, useState } from "react"
+import React, { ChangeEvent, useEffect, useRef, useState } from "react"
 import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { useLocale } from "use-intl"
@@ -20,7 +20,7 @@ export const FileUpload = () => {
   const tFileUpload = useTranslations("FileUpload")
   const locale = useLocale()
   const [uploadedFiles, setUploadedFiles] = useState<UploadFile[]>([])
-  const { isLoading, downloadUrl, sendFiles, resetDownloadUrl } = useSendSelectedFiles()
+  const { isLoading, error, downloadUrl, sendFiles, resetDownloadUrl } = useSendSelectedFiles()
 
   const onConvertHandle = () => {
     const isSomeFileHasNoConvertTarget = uploadedFiles.some((f) => f.convertTarget === null)
@@ -29,7 +29,7 @@ export const FileUpload = () => {
       toast.current?.show({
         severity: "warn",
         summary: "Warning",
-        detail: tFileUpload("toast-target-warn"),
+        detail: tFileUpload("toast_target_warn"),
         life: 3000,
       })
       return
@@ -68,7 +68,7 @@ export const FileUpload = () => {
       toast.current?.show({
         severity: "warn",
         summary: "Warning",
-        detail: tFileUpload("toast-max-files-warn", { quantity: MAX_FILES_LENGTH }),
+        detail: tFileUpload("toast_max_files_warn", { quantity: MAX_FILES_LENGTH }),
         life: 3000,
       })
 
@@ -107,6 +107,17 @@ export const FileUpload = () => {
     setUploadedFiles([])
     resetDownloadUrl()
   }
+
+  useEffect(() => {
+    if (error) {
+      toast.current?.show({
+        severity: "error",
+        summary: "Error",
+        detail: tFileUpload("toast_convert_error"),
+        life: 3000,
+      })
+    }
+  }, [error, toast, tFileUpload])
 
   return (
     <div className={"lg:max-w-[80vw] w-full m-auto p-10"}>

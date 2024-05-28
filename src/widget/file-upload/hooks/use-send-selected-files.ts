@@ -4,26 +4,25 @@ import { UploadFile } from "@/shared/lib"
 
 export const useSendSelectedFiles = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isError, setIsError] = useState<unknown>(false)
+  const [error, setIsError] = useState<unknown>(false)
   const [downloadUrl, setDownloadUrl] = useState<string | undefined>()
 
-  const sendFiles = async (files: UploadFile[]) => {
+  const sendFiles = (files: UploadFile[]): void => {
     setIsLoading(true)
 
-    try {
-      const blob = await sendFilesToConvert(files)
-      setDownloadUrl(URL.createObjectURL(blob))
-    } catch (error) {
-      console.log(error)
-      setIsError(error)
-    } finally {
-      setIsLoading(false)
-    }
+    sendFilesToConvert(files)
+      .then((blob: Blob): void => {
+        setDownloadUrl(URL.createObjectURL(blob))
+      }, setIsError)
+      .catch(setIsError)
+      .finally((): void => {
+        setIsLoading(false)
+      })
   }
 
-  const resetDownloadUrl = () => {
+  const resetDownloadUrl = (): void => {
     setDownloadUrl(undefined)
   }
 
-  return { downloadUrl, isLoading, isError, sendFiles, resetDownloadUrl }
+  return { downloadUrl, isLoading, error, sendFiles, resetDownloadUrl }
 }

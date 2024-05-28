@@ -1,7 +1,7 @@
 {
   "Common": {
     "convert": "Convert",
-    "remove-all": "Remove all"
+    "remove_all": "Remove all"
   },
   "FileUpload": {
     "select_files": "Select files",
@@ -9,8 +9,9 @@
     "file_size": "Size",
     "file_type": "Type",
     "convert_to": "Convert to",
-    "toast-target-warn": "Choose output format",
-    "toast-max-files-warn": "You can only convert {quantity} files at a time",
+    "toast_target_warn": "Choose output format",
+    "toast_max_files_warn": "You can only convert {quantity} files at a time",
+    "toast_convert_error": "Error converting file(-s)",
     "empty_list": "No files selected"
   }
 }
