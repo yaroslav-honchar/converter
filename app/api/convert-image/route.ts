@@ -1,34 +1,48 @@
 import { NextRequest, NextResponse } from "next/server"
 import sharp, { FormatEnum } from "sharp"
-import { UploadFile } from "@/shared/lib"
 import archiver from "archiver"
 import path from "node:path"
 import { PassThrough } from "node:stream"
 import streamToBlob from "stream-to-blob"
+import { UploadFile } from "@/shared/lib"
 
-// TODO: Handle exceptions
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const data: UploadFile[] = await req.json()
-
     const passThrough$ = new PassThrough()
 
     const archive = archiver("zip", {
       zlib: { level: 9 },
     })
 
+    archive.on("error", (err: archiver.ArchiverError): void => {
+      throw err
+    })
+
+    passThrough$.on("error", (err: Error): void => {
+      throw err
+    })
+
     for (const file of data) {
-      const buffer = Buffer.from(file.fileBase64.split(",")[1], "base64")
-      const newFileName = file.fileData.name.replace(RegExp(path.extname(file.fileData.name)), "")
+      const {
+        fileBase64,
+        fileData: { name: fileName },
+        convertTarget,
+      } = file
+
+      const buffer = Buffer.from(fileBase64.split(",")[1], "base64")
+
+      const fileExtName = path.extname(fileName)
+      const newFileName = fileName.replace(RegExp(fileExtName), "")
 
       const convertedImageBuffer = await sharp(buffer)
-        .toFormat(file.convertTarget as keyof FormatEnum)
+        .toFormat(convertTarget as keyof FormatEnum)
         .toBuffer()
 
-      archive.append(convertedImageBuffer, { name: newFileName + `.${file.convertTarget}` })
+      archive.append(convertedImageBuffer, { name: newFileName + `.${convertTarget}` })
     }
 
-    archive.finalize()
+    await archive.finalize()
 
     archive.pipe(passThrough$)
 
@@ -40,7 +54,14 @@ export async function POST(req: NextRequest) {
         "Content-Disposition": 'attachment; filename="files.zip"',
       },
     })
-  } catch (error) {
-    return Response.json({ error: "Error handling file upload" })
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : new Error("Server error").message
+
+    return new NextResponse(JSON.stringify({ error: errorMessage }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
   }
 }

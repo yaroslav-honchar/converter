@@ -9,6 +9,7 @@ export const useSendSelectedFiles = () => {
 
   const sendFiles = async (files: UploadFile[]) => {
     setIsLoading(true)
+
     try {
       const blob = await sendFilesToConvert(files)
       setDownloadUrl(URL.createObjectURL(blob))
