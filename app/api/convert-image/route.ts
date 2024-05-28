@@ -55,7 +55,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       },
     })
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : new Error("Server error").message
+    const errorMessage = error instanceof Error ? error.message : error
 
     return new NextResponse(JSON.stringify({ error: errorMessage }), {
       status: 500,

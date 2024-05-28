@@ -7,9 +7,10 @@ export const sendFilesToConvert = async (files: UploadFile[]) => {
     headers: {
       "Content-Type": "application/json",
     },
-  }).then((response) => {
+  }).then(async (response) => {
     if (!response.ok) {
-      throw new Error("Failed request")
+      const errorMessage = await response.json()
+      throw new Error(errorMessage.error)
     }
 
     return response.blob()

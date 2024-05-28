@@ -4,7 +4,7 @@ import { UploadFile } from "@/shared/lib"
 
 export const useSendSelectedFiles = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [error, setIsError] = useState<unknown>(false)
+  const [error, setIsError] = useState<false | Error>(false)
   const [downloadUrl, setDownloadUrl] = useState<string | undefined>()
 
   const sendFiles = (files: UploadFile[]): void => {
@@ -13,7 +13,7 @@ export const useSendSelectedFiles = () => {
     sendFilesToConvert(files)
       .then((blob: Blob): void => {
         setDownloadUrl(URL.createObjectURL(blob))
-      }, setIsError)
+      })
       .catch(setIsError)
       .finally((): void => {
         setIsLoading(false)
@@ -25,7 +25,7 @@ export const useSendSelectedFiles = () => {
   }
 
   const resetError = (): void => {
-    setIsError(undefined)
+    setIsError(false)
   }
 
   return { downloadUrl, isLoading, error, sendFiles, resetDownloadUrl, resetError }

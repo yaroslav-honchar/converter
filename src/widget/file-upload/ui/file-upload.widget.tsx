@@ -9,7 +9,7 @@ import { Button } from "primereact/button"
 import { TableHeader, ConvertSelect, EmptyTemplate } from "../components"
 import { useTranslations } from "next-intl"
 import { useSendSelectedFiles } from "../hooks"
-import { Toast, ToastMessage } from "primereact/toast"
+import { Toast } from "primereact/toast"
 import { UploadFile } from "@/shared/lib"
 import { FormatEnum } from "sharp"
 
@@ -114,8 +114,8 @@ export const FileUpload = () => {
       toast.current?.show({
         severity: "error",
         summary: "Error",
-        detail: tFileUpload("toast_convert_error"),
-        life: 3000,
+        detail: error?.message ?? tFileUpload("toast_convert_error"),
+        life: 5000,
       })
     }
   }, [error, toast, tFileUpload])
