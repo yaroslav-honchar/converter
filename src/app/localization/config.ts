@@ -2,7 +2,7 @@ export const localeConfig: ILocaleConfig = {
   locales: ["en", "uk"],
   defaultLocale: "en",
   localeDetection: false,
-  localePrefix: "as-needed",
+  localePrefix: "never",
 }
 
 interface ILocaleConfig {
