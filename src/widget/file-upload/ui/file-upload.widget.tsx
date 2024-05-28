@@ -6,7 +6,7 @@ import { Column } from "primereact/column"
 import { useLocale } from "use-intl"
 import prettyBytes from "pretty-bytes"
 import { Button } from "primereact/button"
-import { TableHeader, ConvertSelect } from "../components"
+import { TableHeader, ConvertSelect, EmptyTemplate } from "../components"
 import { useTranslations } from "next-intl"
 import { useSendSelectedFiles } from "../hooks"
 import { Toast } from "primereact/toast"
@@ -76,17 +76,16 @@ export const FileUpload = () => {
     }
 
     for (let i = 0; i < selectedFiles.length; i++) {
-      const file = new UploadFile(files![i])
-      console.log(file)
+      const newFile = selectedFiles[i]
 
       const hasSameFile = uploadedFiles.some((f) => {
-        return f.fileData.name === file.fileData.name && f.fileData.size === file.fileData.size
+        return f.fileData.name === newFile.name && f.fileData.size === newFile.size
       })
       if (hasSameFile) {
         continue
       }
 
-      filesTransformed.push(file)
+      filesTransformed.push(new UploadFile(newFile))
     }
 
     setUploadedFiles((prevFiles) => [...prevFiles, ...filesTransformed])
@@ -117,8 +116,7 @@ export const FileUpload = () => {
             onConvert={onConvertHandle}
           />
         }
-        // TODO: Add empty message
-        emptyMessage={<p>No files</p>}
+        emptyMessage={<EmptyTemplate />}
       >
         <Column
           field="fileData.name"

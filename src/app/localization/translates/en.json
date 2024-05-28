@@ -10,6 +10,7 @@
     "file_type": "Type",
     "convert_to": "Convert to",
     "toast-target-warn": "Choose output format",
-    "toast-max-files-warn": "You can only convert {quantity} files at a time"
+    "toast-max-files-warn": "You can only convert {quantity} files at a time",
+    "empty_list": "No files selected"
   }
 }
