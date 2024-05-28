@@ -13,6 +13,7 @@ import { Toast } from "primereact/toast"
 import { UploadFile } from "@/shared/lib"
 import { FormatEnum } from "sharp"
 
+const MAX_FILE_SIZE = 1024 * 2200
 const MAX_FILES_LENGTH = 5
 
 export const FileUpload = () => {
@@ -83,6 +84,18 @@ export const FileUpload = () => {
         return f.fileData.name === newFile.name && f.fileData.size === newFile.size
       })
       if (hasSameFile) {
+        continue
+      }
+      console.log(newFile.size)
+      if (newFile.size > MAX_FILE_SIZE) {
+        toast.current?.show({
+          severity: "warn",
+          summary: "Warning",
+          detail: tFileUpload("toast_max_size_warn", {
+            size: prettyBytes(MAX_FILE_SIZE, { locale }),
+          }),
+          life: 3000,
+        })
         continue
       }
 
