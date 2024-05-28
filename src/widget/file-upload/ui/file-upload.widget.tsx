@@ -86,7 +86,6 @@ export const FileUpload = () => {
       if (hasSameFile) {
         continue
       }
-      console.log(newFile.size)
       if (newFile.size > MAX_FILE_SIZE) {
         toast.current?.show({
           severity: "warn",
