@@ -46,13 +46,16 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
         label={t("Common.convert")}
         onClick={onConvertHandle}
       />
-      {/*TODO: Style download button*/}
-      <a
-        className={"hidden"}
-        href={downloadUrl}
-      >
-        Download
-      </a>
+      {downloadUrl && (
+        <a
+          className={"p-button font-bold"}
+          href={downloadUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Download
+        </a>
+      )}
       <Button
         disabled={!hasFiles}
         className={"ml-auto"}
