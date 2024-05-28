@@ -7,6 +7,7 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   icons: "/icon.png",
+  title: "Convertage",
 }
 
 export default function Layout({ children }: React.PropsWithChildren) {
