@@ -1,1 +1,1 @@
-export { NotFoundPage as default, metadata } from "@/pages/not-found"
+export { NotFoundPage as default, metadata } from "@/_pages/not-found"
