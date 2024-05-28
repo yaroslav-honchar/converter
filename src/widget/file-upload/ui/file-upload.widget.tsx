@@ -9,7 +9,7 @@ import { Button } from "primereact/button"
 import { TableHeader, ConvertSelect, EmptyTemplate } from "../components"
 import { useTranslations } from "next-intl"
 import { useSendSelectedFiles } from "../hooks"
-import { Toast } from "primereact/toast"
+import { Toast, ToastMessage } from "primereact/toast"
 import { UploadFile } from "@/shared/lib"
 import { FormatEnum } from "sharp"
 
@@ -20,7 +20,8 @@ export const FileUpload = () => {
   const tFileUpload = useTranslations("FileUpload")
   const locale = useLocale()
   const [uploadedFiles, setUploadedFiles] = useState<UploadFile[]>([])
-  const { isLoading, error, downloadUrl, sendFiles, resetDownloadUrl } = useSendSelectedFiles()
+  const { isLoading, error, downloadUrl, sendFiles, resetDownloadUrl, resetError } =
+    useSendSelectedFiles()
 
   const onConvertHandle = () => {
     const isSomeFileHasNoConvertTarget = uploadedFiles.some((f) => f.convertTarget === null)
@@ -119,9 +120,23 @@ export const FileUpload = () => {
     }
   }, [error, toast, tFileUpload])
 
+  useEffect(() => {
+    if (downloadUrl) {
+      toast.current?.show({
+        severity: "success",
+        summary: "Success",
+        detail: tFileUpload("toast_convert_success"),
+        life: 3000,
+      })
+    }
+  }, [downloadUrl, toast, tFileUpload])
+
   return (
     <div className={"lg:max-w-[80vw] w-full m-auto p-10"}>
-      <Toast ref={toast} />
+      <Toast
+        ref={toast}
+        onRemove={resetError}
+      />
       <DataTable
         value={uploadedFiles}
         tableStyle={{ width: "100%" }}

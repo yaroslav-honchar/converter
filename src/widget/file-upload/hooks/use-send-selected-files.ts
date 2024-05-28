@@ -24,5 +24,9 @@ export const useSendSelectedFiles = () => {
     setDownloadUrl(undefined)
   }
 
-  return { downloadUrl, isLoading, error, sendFiles, resetDownloadUrl }
+  const resetError = (): void => {
+    setIsError(undefined)
+  }
+
+  return { downloadUrl, isLoading, error, sendFiles, resetDownloadUrl, resetError }
 }
