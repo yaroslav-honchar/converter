@@ -1,4 +1,5 @@
 export interface TableHeaderProps {
+  isLoading: boolean
   downloadUrl: string | undefined
   hasFiles: boolean
   isSelectFilesLocked: boolean

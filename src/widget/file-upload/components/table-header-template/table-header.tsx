@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl"
 import cn from "classnames"
 
 export const TableHeader: React.FC<TableHeaderProps> = ({
+  isLoading,
   downloadUrl,
   hasFiles,
   isSelectFilesLocked,
@@ -45,6 +46,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
         disabled={!hasFiles}
         label={t("Common.convert")}
         onClick={onConvertHandle}
+        loading={isLoading}
       />
       {downloadUrl && (
         <a

@@ -20,7 +20,7 @@ export const FileUpload = () => {
   const tFileUpload = useTranslations("FileUpload")
   const locale = useLocale()
   const [uploadedFiles, setUploadedFiles] = useState<UploadFile[]>([])
-  const { downloadUrl, sendFiles } = useSendSelectedFiles()
+  const { isLoading, downloadUrl, sendFiles, resetDownloadUrl } = useSendSelectedFiles()
 
   const onConvertHandle = () => {
     const isSomeFileHasNoConvertTarget = uploadedFiles.some((f) => f.convertTarget === null)
@@ -92,11 +92,20 @@ export const FileUpload = () => {
   }
 
   const onUploadedFileRemoveHandle = (uploadedFile: UploadFile) => {
-    setUploadedFiles((prevFiles) => [...prevFiles.filter((f) => f !== uploadedFile)])
+    setUploadedFiles((prevFiles) => {
+      const newState = [...prevFiles.filter((f) => f !== uploadedFile)]
+
+      if (newState.length === 0) {
+        resetDownloadUrl()
+      }
+
+      return newState
+    })
   }
 
   const onFilesClearHandle = () => {
     setUploadedFiles([])
+    resetDownloadUrl()
   }
 
   return (
@@ -108,6 +117,7 @@ export const FileUpload = () => {
         stripedRows
         header={
           <TableHeader
+            isLoading={isLoading}
             downloadUrl={downloadUrl}
             hasFiles={uploadedFiles.length > 0}
             isSelectFilesLocked={uploadedFiles.length >= MAX_FILES_LENGTH}

@@ -3,8 +3,8 @@ import { sendFilesToConvert } from "../api"
 import { UploadFile } from "@/shared/lib"
 
 export const useSendSelectedFiles = () => {
-  const [isLoading, setIsLoading] = useState<boolean>()
-  const [isError, setIsError] = useState<unknown>()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isError, setIsError] = useState<unknown>(false)
   const [downloadUrl, setDownloadUrl] = useState<string | undefined>()
 
   const sendFiles = async (files: UploadFile[]) => {
@@ -20,5 +20,9 @@ export const useSendSelectedFiles = () => {
     }
   }
 
-  return { downloadUrl, isLoading, isError, sendFiles }
+  const resetDownloadUrl = () => {
+    setDownloadUrl(undefined)
+  }
+
+  return { downloadUrl, isLoading, isError, sendFiles, resetDownloadUrl }
 }
