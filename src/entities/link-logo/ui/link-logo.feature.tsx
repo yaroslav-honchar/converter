@@ -7,7 +7,7 @@ export const LinkLogo: React.FC = () => {
     <LinkRoot href={ClientRoutes.home}>
       <Icon
         name={"logo"}
-        className={"w-8 h-8"}
+        className={"w-12 h-12"}
       />
     </LinkRoot>
   )
