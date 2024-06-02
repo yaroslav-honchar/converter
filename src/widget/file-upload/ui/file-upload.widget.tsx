@@ -10,13 +10,10 @@ import cn from "classnames"
 import { useTranslations } from "next-intl"
 import { useLocale } from "use-intl"
 import * as uuid from "uuid"
-import { MAX_FILE_SIZE, MAX_FILES_LENGTH } from "./file-upload.constants"
 import { useToastNotify } from "@/shared/hooks"
-
-export interface ISelectedFile {
-  file: File
-  convertTarget: string | null
-}
+import { MAX_FILE_SIZE, MAX_FILES_LENGTH } from "./file-upload.constants"
+import { ISelectedFile } from "../types"
+import { createSelectedFiles } from "@/widget/file-upload/helpers"
 
 export const FileUpload = () => {
   const locale = useLocale()
@@ -53,31 +50,9 @@ export const FileUpload = () => {
       newFiles = newFiles.splice(0, MAX_FILES_LENGTH - selectedFiles.length)
     }
 
-    const newSelectedFiles: ISelectedFile[] = []
-
-    for (let index = 0; index < newFiles.length; index++) {
-      const newFile = newFiles[index]
-
-      const hasSameSelectedFile = selectedFiles.some(({ file }: ISelectedFile) => {
-        const { name: selectedFileName, size: selectedFileSize } = file
-
-        return selectedFileName === newFile.name && selectedFileSize === newFile.size
-      })
-      if (hasSameSelectedFile) {
-        continue
-      }
-
-      const newSelectedFile: ISelectedFile = {
-        file: newFile,
-        convertTarget: null,
-      }
-
-      newSelectedFiles.push(newSelectedFile)
-    }
-
     setSelectedFiles((prevFiles: ISelectedFile[]): ISelectedFile[] => [
       ...prevFiles,
-      ...newSelectedFiles,
+      ...createSelectedFiles(selectedFiles, newFiles),
     ])
   }
 
@@ -180,7 +155,7 @@ export const FileUpload = () => {
 // import { useTranslations } from "next-intl"
 // import { useSendSelectedFiles } from "../hooks"
 // import { Toast } from "primereact/toast"
-// import { UploadFile } from "@/shared/lib"
+// import { UploadFile } from "@/shared/helpers"
 // import { FormatEnum } from "sharp"
 //
 // const MAX_FILE_SIZE = 1024 * 2200

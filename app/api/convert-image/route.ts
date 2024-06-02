@@ -72,7 +72,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 // import path from "node:path"
 // import { PassThrough } from "node:stream"
 // import streamToBlob from "stream-to-blob"
-// import { UploadFile } from "@/shared/lib"
+// import { UploadFile } from "@/shared/helpers"
 //
 // export async function POST(req: NextRequest): Promise<NextResponse> {
 //   try {
