@@ -35,13 +35,15 @@
     "react": "^18",
     "react-dom": "^18",
     "sharp": "^0.33.4",
-    "stream-to-blob": "^2.0.1"
+    "stream-to-blob": "^2.0.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/archiver": "^6.0.2",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/stream-to-blob": "^2.0.0",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "eslint": "^8.56.0",
     "eslint-config-next": "14.2.3",
