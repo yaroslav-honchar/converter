@@ -1,14 +1,13 @@
 "use client"
 
 import React, { ChangeEvent, FormEvent, useRef, useState } from "react"
+import prettyBytes from "pretty-bytes"
 import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
-import prettyBytes from "pretty-bytes"
 import { Button } from "primereact/button"
 import { Toast } from "primereact/toast"
 import cn from "classnames"
-import { useTranslations } from "next-intl"
-import { useLocale } from "use-intl"
+import { useTranslations, useLocale } from "next-intl"
 import * as uuid from "uuid"
 import { useToastNotify } from "@/shared/hooks"
 import { MAX_FILE_SIZE, MAX_FILES_LENGTH } from "./file-upload.constants"
@@ -58,7 +57,16 @@ export const FileUpload = () => {
 
   const onSubmitHandle = (event: FormEvent): void => {
     event.preventDefault()
-    const formData = new FormData()
+
+    const hasNoTargetSomeFile: ISelectedFile | undefined = selectedFiles.find(
+      ({ convertTarget }: ISelectedFile) => !convertTarget,
+    )
+    if (hasNoTargetSomeFile) {
+      notifyWarning(tFileUpload("toast_target_warn"))
+      return
+    }
+
+    const formData: FormData = new FormData()
 
     selectedFiles.forEach(({ file, convertTarget }: ISelectedFile): void => {
       const id = uuid.v4()
@@ -119,6 +127,7 @@ export const FileUpload = () => {
           field="fileData.type"
           header={tFileUpload("file_type")}
         />
+        {/* TODO: Show tooltip on convert target did not choice */}
         {/*<Column*/}
         {/*  field="convertTo"*/}
         {/*  header={tFileUpload("convert_to")}*/}
