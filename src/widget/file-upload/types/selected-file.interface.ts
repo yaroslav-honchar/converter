@@ -1,4 +1,6 @@
+import { FormatEnum } from "sharp"
+
 export interface ISelectedFile {
   file: File
-  convertTarget: string | null
+  convertTarget: keyof FormatEnum | null
 }

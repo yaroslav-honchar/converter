@@ -14,6 +14,7 @@ import { MAX_FILE_SIZE, MAX_FILES_LENGTH } from "./file-upload.constants"
 import { ISelectedFile } from "../types"
 import { createSelectedFiles } from "../helpers"
 import { useSendSelectedFiles } from "../api"
+import { FormatEnum } from "sharp"
 
 export const FileUpload = () => {
   const locale = useLocale()
@@ -61,14 +62,13 @@ export const FileUpload = () => {
   const onSubmitHandle = (event: FormEvent): void => {
     event.preventDefault()
 
-    //  TODO: Uncomment this block
-    // const hasNoTargetSomeFile: ISelectedFile | undefined = selectedFiles.find(
-    //   ({ convertTarget }: ISelectedFile) => !convertTarget,
-    // )
-    // if (hasNoTargetSomeFile) {
-    //   notifyWarning(["target_warn"])
-    //   return
-    // }
+    const hasNoTargetSomeFile: ISelectedFile | undefined = selectedFiles.find(
+      ({ convertTarget }: ISelectedFile) => !convertTarget,
+    )
+    if (hasNoTargetSomeFile) {
+      notifyWarning(["target_warn"])
+      return
+    }
 
     const formData: FormData = new FormData()
 
@@ -79,8 +79,8 @@ export const FileUpload = () => {
       if (index % 2 === 0) {
         return
       }
-      //  TODO: Remove ?? operator
-      formData.append(`target_${id}`, convertTarget ?? "webp")
+
+      formData.append(`target_${id}`, convertTarget as keyof FormatEnum)
     })
 
     sendFilesToConvert(formData)
