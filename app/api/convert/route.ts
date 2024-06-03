@@ -28,7 +28,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     for (const { file, target } of extractedFiles) {
       if (!target) {
         errorsForUser.push(
-          `File "${file.name}" was been skip, because has no target format selected.`,
+          `${errorsForUser.length + 1}. File "${file.name}" was been skip, because has no target format selected.`,
         )
         continue
       }
