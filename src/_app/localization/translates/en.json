@@ -9,11 +9,17 @@
     "file_size": "Size",
     "file_type": "Type",
     "convert_to": "Convert to",
-    "toast_target_warn": "Choose output format",
-    "toast_max_files_warn": "You can only convert {quantity} files at a time",
-    "toast_max_size_warn": "The maximum file size is {size}",
-    "toast_convert_error": "Error converting file(-s)",
-    "toast_convert_success": "File(-s) converted successfully",
     "empty_list": "No files selected"
+  },
+  "Notify": {
+    "error": "Error",
+    "warning": "Warning",
+    "success": "Success",
+    "info": "Info",
+    "target_warn": "Choose output format",
+    "max_files_warn": "You can only convert {quantity} files at a time",
+    "max_size_warn": "The maximum file size is {size}",
+    "convert_error": "Error converting file(-s)",
+    "convert_success": "File(-s) converted successfully"
   }
 }
