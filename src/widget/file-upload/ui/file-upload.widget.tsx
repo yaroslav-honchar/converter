@@ -12,7 +12,8 @@ import * as uuid from "uuid"
 import { useToastNotify } from "@/shared/hooks"
 import { MAX_FILE_SIZE, MAX_FILES_LENGTH } from "./file-upload.constants"
 import { ISelectedFile } from "../types"
-import { createSelectedFiles } from "@/widget/file-upload/helpers"
+import { createSelectedFiles } from "../helpers"
+import { useSendSelectedFiles } from "../api"
 
 export const FileUpload = () => {
   const locale = useLocale()
@@ -20,6 +21,7 @@ export const FileUpload = () => {
   const toastRef = useRef<Toast>(null)
   const { notifyWarning } = useToastNotify(toastRef)
   const [selectedFiles, setSelectedFiles] = useState<ISelectedFile[]>([])
+  const { sendFilesToConvert } = useSendSelectedFiles()
 
   const onFileUploadHandle = ({ target: { files } }: ChangeEvent<HTMLInputElement>): void => {
     if (!files?.length) {
@@ -59,22 +61,29 @@ export const FileUpload = () => {
   const onSubmitHandle = (event: FormEvent): void => {
     event.preventDefault()
 
-    const hasNoTargetSomeFile: ISelectedFile | undefined = selectedFiles.find(
-      ({ convertTarget }: ISelectedFile) => !convertTarget,
-    )
-    if (hasNoTargetSomeFile) {
-      notifyWarning(["target_warn"])
-      return
-    }
+    //  TODO: Uncomment this block
+    // const hasNoTargetSomeFile: ISelectedFile | undefined = selectedFiles.find(
+    //   ({ convertTarget }: ISelectedFile) => !convertTarget,
+    // )
+    // if (hasNoTargetSomeFile) {
+    //   notifyWarning(["target_warn"])
+    //   return
+    // }
 
     const formData: FormData = new FormData()
 
-    selectedFiles.forEach(({ file, convertTarget }: ISelectedFile): void => {
+    selectedFiles.forEach(({ file, convertTarget }: ISelectedFile, index: number): void => {
       const id = uuid.v4()
 
       formData.append(`file_${id}`, file)
-      formData.append(`target_${id}`, convertTarget ?? ".webp")
+      if (index % 2 === 0) {
+        return
+      }
+      //  TODO: Remove ?? operator
+      formData.append(`target_${id}`, convertTarget ?? "webp")
     })
+
+    sendFilesToConvert(formData)
   }
 
   return (

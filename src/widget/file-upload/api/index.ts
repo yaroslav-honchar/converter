@@ -1,1 +1,1 @@
-export { sendFilesToConvert } from "./send-files-to-convert"
+export { useSendSelectedFiles } from "./use-send-selected-files"
