@@ -13,7 +13,7 @@ export const useSendSelectedFiles = () => {
     ConvertService.convert(data)
       .then(async (res: AxiosResponse<Blob>): Promise<void> => {
         console.log(res)
-        const { data } = res
+        // const { data } = res
 
         setIsError(null)
         setDownloadUrls((prevUrls: string[]): string[] => {
@@ -21,7 +21,11 @@ export const useSendSelectedFiles = () => {
         })
       })
       .catch((err: AxiosError): void => {
+        console.log(err)
         setIsError(err)
+      })
+      .finally((): void => {
+        setIsLoading(false)
       })
   }
 
