@@ -5,14 +5,14 @@ import { IConvertSelectProps } from "./convert-select.props"
 import { convertSelectOptions } from "./convert-select.options"
 
 export const ConvertSelect: React.FC<IConvertSelectProps> = ({
-  uploadedFile,
+  selectedFile,
   onConvertTargetChange,
 }) => {
   const [convertTargetValue, setConvertTargetValue] = useState<SelectItem | null>(null)
 
   const onChangeHandle = (event: DropdownChangeEvent) => {
     setConvertTargetValue(event.value)
-    onConvertTargetChange(uploadedFile, event.value)
+    onConvertTargetChange(selectedFile, event.value)
   }
 
   return (

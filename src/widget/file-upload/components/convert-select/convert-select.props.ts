@@ -1,7 +1,7 @@
-import { UploadFile } from "@/shared/lib"
 import { FormatEnum } from "sharp"
+import { ISelectedFile } from "@/widget/file-upload/types"
 
 export interface IConvertSelectProps {
-  uploadedFile: UploadFile
-  onConvertTargetChange: (uploadedFile: UploadFile, formatTarget: keyof FormatEnum) => void
+  selectedFile: ISelectedFile
+  onConvertTargetChange: (selectedFile: ISelectedFile, formatTarget: keyof FormatEnum) => void
 }

@@ -15,6 +15,7 @@ import { ISelectedFile } from "../types"
 import { createSelectedFiles } from "../helpers"
 import { useSendSelectedFiles } from "../api"
 import { FormatEnum } from "sharp"
+import { ConvertSelect } from "@/widget/file-upload/components"
 
 export const FileUpload = () => {
   const locale = useLocale()
@@ -86,6 +87,26 @@ export const FileUpload = () => {
     sendFilesToConvert(formData)
   }
 
+  const onConvertTargetChangeHandle = (
+    selectedFile: ISelectedFile,
+    convertTarget: keyof FormatEnum,
+  ): void => {
+    setSelectedFiles((prevSelectedFiles: ISelectedFile[]): ISelectedFile[] => {
+      const currentSelectedFileIndex = prevSelectedFiles.findIndex(
+        (prevSelectedFile: ISelectedFile): boolean => {
+          return selectedFile === prevSelectedFile
+        },
+      )
+      if (currentSelectedFileIndex < 0) {
+        return prevSelectedFiles
+      }
+
+      prevSelectedFiles[currentSelectedFileIndex].convertTarget = convertTarget
+
+      return [...prevSelectedFiles]
+    })
+  }
+
   return (
     <form
       id={"file-upload-form"}
@@ -137,17 +158,16 @@ export const FileUpload = () => {
           field="fileData.type"
           header={tFileUpload("file_type")}
         />
-        {/* TODO: Show tooltip on convert target did not choice */}
-        {/*<Column*/}
-        {/*  field="convertTo"*/}
-        {/*  header={tFileUpload("convert_to")}*/}
-        {/*  body={(uploadedFile: UploadFile) => (*/}
-        {/*    <ConvertSelect*/}
-        {/*      uploadedFile={uploadedFile}*/}
-        {/*      onConvertTargetChange={onConvertTargetChangeHandle}*/}
-        {/*    />*/}
-        {/*  )}*/}
-        {/*/>*/}
+        <Column
+          field="convertTo"
+          header={tFileUpload("convert_to")}
+          body={(selectedFile: ISelectedFile) => (
+            <ConvertSelect
+              selectedFile={selectedFile}
+              onConvertTargetChange={onConvertTargetChangeHandle}
+            />
+          )}
+        />
         <Column
           body={() => (
             <Button
