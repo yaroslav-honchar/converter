@@ -77,10 +77,6 @@ export const FileUpload = () => {
       const id = uuid.v4()
 
       formData.append(`file_${id}`, file)
-      if (index % 2 === 0) {
-        return
-      }
-
       formData.append(`target_${id}`, convertTarget as keyof FormatEnum)
     })
 

@@ -5,15 +5,19 @@ import { AxiosError, AxiosResponse } from "axios"
 export const useSendSelectedFiles = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setIsError] = useState<null | AxiosError>(null)
-  const [downloadUrl, setDownloadUrl] = useState<string[] | undefined>()
+  const [downloadUrls, setDownloadUrls] = useState<string[]>([])
 
   const sendFilesToConvert = async (data: FormData): Promise<void> => {
     setIsLoading(true)
 
     ConvertService.convert(data)
       .then((res: AxiosResponse<Blob>): void => {
+        console.log(res.data)
+
         setIsError(null)
-        console.log(res)
+        setDownloadUrls((prevUrls: string[]): string[] => {
+          return [...prevUrls, URL.createObjectURL(res.data)]
+        })
       })
       .catch((err: AxiosError): void => {
         setIsError(err)
@@ -21,12 +25,12 @@ export const useSendSelectedFiles = () => {
   }
 
   const resetDownloadUrl = (): void => {
-    setDownloadUrl(undefined)
+    setDownloadUrls([])
   }
 
   const resetError = (): void => {
     setIsError(null)
   }
 
-  return { downloadUrl, isLoading, error, sendFilesToConvert, resetDownloadUrl, resetError }
+  return { downloadUrls, isLoading, error, sendFilesToConvert, resetDownloadUrl, resetError }
 }

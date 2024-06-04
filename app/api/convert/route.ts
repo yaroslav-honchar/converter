@@ -61,7 +61,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return new NextResponse(blob, {
       headers: {
         "Content-Type": "application/zip",
-        "Content-Disposition": `attachment; filename="${new Date().getTime()}.zip"`,
+        "Content-Disposition": 'attachment; filename="files.zip"',
       },
     })
   } catch (error: unknown) {
