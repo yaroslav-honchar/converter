@@ -11,12 +11,13 @@ export const useSendSelectedFiles = () => {
     setIsLoading(true)
 
     ConvertService.convert(data)
-      .then((res: AxiosResponse<Blob>): void => {
-        console.log(res.data)
+      .then(async (res: AxiosResponse<Blob>): Promise<void> => {
+        console.log(res)
+        const { data } = res
 
         setIsError(null)
         setDownloadUrls((prevUrls: string[]): string[] => {
-          return [...prevUrls, URL.createObjectURL(res.data)]
+          return [...prevUrls] // URL.createObjectURL(data)
         })
       })
       .catch((err: AxiosError): void => {

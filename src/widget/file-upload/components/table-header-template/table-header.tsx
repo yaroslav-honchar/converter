@@ -3,27 +3,23 @@ import { TableHeaderProps } from "./table-header.props"
 import { Button } from "primereact/button"
 import { useTranslations } from "next-intl"
 import cn from "classnames"
+import { Dropdown } from "primereact/dropdown"
 
 export const TableHeader: React.FC<TableHeaderProps> = ({
   isLoading,
-  downloadUrl,
+  downloadUrls,
   hasFiles,
   isSelectFilesLocked,
   onFileUpload,
   onFilesClear,
-  onConvert,
 }) => {
   const t = useTranslations()
-  const onFileUploadHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onFileUploadHandle = (event: React.ChangeEvent<HTMLInputElement>): void => {
     onFileUpload(event)
   }
 
-  const onFilesClearHandle = () => {
+  const onFilesClearHandle = (): void => {
     onFilesClear()
-  }
-
-  const onConvertHandle = () => {
-    onConvert()
   }
 
   return (
@@ -45,18 +41,26 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
       <Button
         disabled={!hasFiles}
         label={t("Common.convert")}
-        onClick={onConvertHandle}
+        type={"submit"}
         loading={isLoading}
       />
-      {downloadUrl && (
-        <a
-          className={"p-button font-bold"}
-          href={downloadUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Download
-        </a>
+      {downloadUrls.length > 0 && (
+        <Dropdown
+          options={downloadUrls}
+          placeholder={"history"}
+          itemTemplate={(downloadUrl: string) => {
+            return (
+              <a
+                className={"p-button font-bold"}
+                href={downloadUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {downloadUrl}
+              </a>
+            )
+          }}
+        />
       )}
       <Button
         disabled={!hasFiles}

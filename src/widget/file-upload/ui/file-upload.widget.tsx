@@ -6,16 +6,15 @@ import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { Button } from "primereact/button"
 import { Toast } from "primereact/toast"
-import cn from "classnames"
 import { useTranslations, useLocale } from "next-intl"
 import * as uuid from "uuid"
+import { FormatEnum } from "sharp"
 import { useToastNotify } from "@/shared/hooks"
 import { MAX_FILE_SIZE, MAX_FILES_LENGTH } from "./file-upload.constants"
 import { ISelectedFile } from "../types"
 import { createSelectedFiles } from "../helpers"
 import { useSendSelectedFiles } from "../api"
-import { FormatEnum } from "sharp"
-import { ConvertSelect } from "@/widget/file-upload/components"
+import { ConvertSelect, TableHeader } from "../components"
 
 export const FileUpload = () => {
   const locale = useLocale()
@@ -23,7 +22,7 @@ export const FileUpload = () => {
   const toastRef = useRef<Toast>(null)
   const { notifyWarning } = useToastNotify(toastRef)
   const [selectedFiles, setSelectedFiles] = useState<ISelectedFile[]>([])
-  const { sendFilesToConvert } = useSendSelectedFiles()
+  const { isLoading, downloadUrls, sendFilesToConvert } = useSendSelectedFiles()
 
   const onFileUploadHandle = ({ target: { files } }: ChangeEvent<HTMLInputElement>): void => {
     if (!files?.length) {
@@ -103,6 +102,10 @@ export const FileUpload = () => {
     })
   }
 
+  const onFilesClearHandle = (): void => {
+    setSelectedFiles([])
+  }
+
   return (
     <form
       id={"file-upload-form"}
@@ -114,23 +117,14 @@ export const FileUpload = () => {
         value={selectedFiles}
         tableStyle={{ width: "100%" }}
         header={
-          <>
-            <label className={cn("p-button")}>
-              <span>{tFileUpload("select_files")}</span>
-              <input
-                type="file"
-                className={"hidden"}
-                onChange={onFileUploadHandle}
-                multiple={true}
-              />
-            </label>
-            <button
-              className={"p-button ms-2"}
-              type={"submit"}
-            >
-              Submit
-            </button>
-          </>
+          <TableHeader
+            isSelectFilesLocked={selectedFiles.length >= MAX_FILES_LENGTH}
+            hasFiles={selectedFiles.length > 0}
+            isLoading={isLoading}
+            downloadUrls={downloadUrls}
+            onFileUpload={onFileUploadHandle}
+            onFilesClear={onFilesClearHandle}
+          />
         }
       >
         <Column
