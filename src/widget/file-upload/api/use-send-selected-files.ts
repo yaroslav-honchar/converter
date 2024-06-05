@@ -16,17 +16,19 @@ export const useSendSelectedFiles = () => {
       .then(async (res: AxiosResponse<Blob>): Promise<void> => {
         const { data } = res
 
-        setIsError(null)
-        setConvertHistory((prevUrls: IConvertHistoryItem[]): IConvertHistoryItem[] => {
-          const historyItem: IConvertHistoryItem = {
-            name: new Date().getTime() + ".zip",
-            url: URL.createObjectURL(data),
-            convertedTime: getTime(),
-            size: data.size,
-          }
+        const historyItem: IConvertHistoryItem = {
+          name: new Date().getTime() + ".zip",
+          url: URL.createObjectURL(data),
+          convertedTime: getTime(),
+          size: data.size,
+        }
 
-          return [historyItem, ...prevUrls]
-        })
+        setConvertHistory((prevUrls: IConvertHistoryItem[]): IConvertHistoryItem[] => [
+          historyItem,
+          ...prevUrls,
+        ])
+
+        setIsError(null)
       })
       .catch((err: AxiosError): void => {
         console.log(err)
