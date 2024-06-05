@@ -10,7 +10,8 @@
     "file_type": "Тип",
     "convert_to": "Конвертувати в",
     "empty_list": "Список файлів порожній",
-    "convert_history": "Історія конвертацій"
+    "convert_history": "Історія конвертацій",
+    "converted_time": "Час конвертації"
   },
   "Notify": {
     "error": "Помилка",

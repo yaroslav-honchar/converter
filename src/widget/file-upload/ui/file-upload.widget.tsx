@@ -1,6 +1,6 @@
 "use client"
 
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react"
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import prettyBytes from "pretty-bytes"
 import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
@@ -21,9 +21,9 @@ export const FileUpload = () => {
   const locale = useLocale()
   const tFileUpload = useTranslations("FileUpload")
   const toastRef = useRef<Toast>(null)
-  const { notifyWarning } = useToastNotify(toastRef)
+  const { isLoading, convertHistory, error, sendFilesToConvert } = useSendSelectedFiles()
+  const { notifyWarning, notifyError } = useToastNotify(toastRef)
   const [selectedFiles, setSelectedFiles] = useState<ISelectedFile[]>([])
-  const { isLoading, convertHistory, sendFilesToConvert } = useSendSelectedFiles()
 
   const onFileSelectHandle = ({ target: { files } }: ChangeEvent<HTMLInputElement>): void => {
     if (!files?.length) {
@@ -55,7 +55,7 @@ export const FileUpload = () => {
     }
 
     setSelectedFiles((prevFiles: ISelectedFile[]): ISelectedFile[] => {
-      return [...createSelectedFiles(prevFiles, newFiles), ...prevFiles]
+      return [...prevFiles, ...createSelectedFiles(prevFiles, newFiles)]
     })
   }
 
@@ -114,6 +114,12 @@ export const FileUpload = () => {
     })
   }
 
+  useEffect(() => {
+    if (error) {
+      notifyError(error.message)
+    }
+  }, [error, notifyError])
+
   return (
     <div className={"lg:max-w-[80vw] w-full m-auto p-10"}>
       <form
@@ -122,10 +128,10 @@ export const FileUpload = () => {
         onSubmit={onSubmitHandle}
       >
         <Toast ref={toastRef} />
-        <DataTable
+        <DataTable<ISelectedFile[]>
           value={selectedFiles}
           tableStyle={{ width: "100%" }}
-          emptyMessage={EmptyTemplate}
+          emptyMessage={<EmptyTemplate />}
           header={
             <TableHeader
               isSelectFilesLocked={selectedFiles.length >= MAX_FILES_LENGTH}
@@ -137,6 +143,7 @@ export const FileUpload = () => {
           }
         >
           <Column
+            field={"file.name"}
             className={"max-w-[40vw]"}
             header={tFileUpload("file_name")}
             body={({ file }: ISelectedFile) => {
@@ -148,11 +155,16 @@ export const FileUpload = () => {
             }}
           />
           <Column
+            field={"file.size"}
             header={tFileUpload("file_size")}
             body={({ file }: ISelectedFile) => prettyBytes(file.size, { locale })}
           />
-          <Column header={tFileUpload("file_type")} />
           <Column
+            field={"file.type"}
+            header={tFileUpload("file_type")}
+          />
+          <Column
+            field={"convertTarget"}
             header={tFileUpload("convert_to")}
             body={(selectedFile: ISelectedFile) => (
               <ConvertSelect
@@ -174,12 +186,13 @@ export const FileUpload = () => {
         </DataTable>
       </form>
       {convertHistory.length > 0 && (
-        <DataTable
+        <DataTable<IConvertHistoryItem[]>
           value={convertHistory}
           tableStyle={{ width: "100%" }}
           header={tFileUpload("convert_history")}
         >
           <Column
+            field={"name"}
             className={"max-w-[40vw]"}
             header={tFileUpload("file_name")}
             body={({ name }: IConvertHistoryItem) => {
@@ -189,6 +202,7 @@ export const FileUpload = () => {
             }}
           />
           <Column
+            field={"size"}
             className={"max-w-[40vw]"}
             header={tFileUpload("file_size")}
             body={({ size }: IConvertHistoryItem) => {
@@ -200,12 +214,15 @@ export const FileUpload = () => {
             }}
           />
           <Column
+            field={"convertedTime"}
+            header={tFileUpload("converted_time")}
             className={"max-w-[40vw]"}
             body={({ convertedTime }: IConvertHistoryItem) => {
               return <p>{convertedTime}</p>
             }}
           />
           <Column
+            field={"url"}
             className={"max-w-[40vw]"}
             body={({ url }: IConvertHistoryItem) => {
               return (

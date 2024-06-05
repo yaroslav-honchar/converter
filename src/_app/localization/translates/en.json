@@ -10,7 +10,8 @@
     "file_type": "Type",
     "convert_to": "Convert to",
     "empty_list": "No files selected",
-    "convert_history": "Conversion history"
+    "convert_history": "Conversion history",
+    "converted_time": "Converted at"
   },
   "Notify": {
     "error": "Error",
