@@ -54,10 +54,9 @@ export const FileUpload = () => {
       newFiles = newFiles.splice(0, MAX_FILES_LENGTH - selectedFiles.length)
     }
 
-    setSelectedFiles((prevFiles: ISelectedFile[]): ISelectedFile[] => [
-      ...prevFiles,
-      ...createSelectedFiles(selectedFiles, newFiles),
-    ])
+    setSelectedFiles((prevFiles: ISelectedFile[]): ISelectedFile[] => {
+      return [...createSelectedFiles(prevFiles, newFiles), ...prevFiles]
+    })
   }
 
   const onSubmitHandle = (event: FormEvent): void => {
@@ -73,7 +72,7 @@ export const FileUpload = () => {
 
     const formData: FormData = new FormData()
 
-    selectedFiles.forEach(({ file, convertTarget }: ISelectedFile, index: number): void => {
+    selectedFiles.forEach(({ file, convertTarget }: ISelectedFile): void => {
       const id = uuid.v4()
 
       formData.append(`file_${id}`, file)
