@@ -9,7 +9,8 @@
     "file_size": "Розмір",
     "file_type": "Тип",
     "convert_to": "Конвертувати в",
-    "empty_list": "Список файлів порожній"
+    "empty_list": "Список файлів порожній",
+    "convert_history": "Історія конвертацій"
   },
   "Notify": {
     "error": "Помилка",

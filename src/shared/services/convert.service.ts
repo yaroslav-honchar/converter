@@ -4,7 +4,9 @@ import { ServerRoutes } from "@/_app/routes"
 
 class Convert extends RootService {
   async convert(data: FormData): Promise<AxiosResponse<Blob>> {
-    return this.http.post<Blob>(ServerRoutes.converter, data)
+    return this.http.post<Blob>(ServerRoutes.converter, data, {
+      responseType: "blob",
+    })
   }
 }
 

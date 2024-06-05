@@ -10,11 +10,12 @@ import { useTranslations, useLocale } from "next-intl"
 import * as uuid from "uuid"
 import { FormatEnum } from "sharp"
 import { useToastNotify } from "@/shared/hooks"
-import { MAX_FILE_SIZE, MAX_FILES_LENGTH } from "./file-upload.constants"
-import { ISelectedFile } from "../types"
+import { IConvertHistoryItem, ISelectedFile } from "@/shared/types"
+import { LinkRoot } from "@/shared/components"
 import { createSelectedFiles } from "../helpers"
 import { useSendSelectedFiles } from "../api"
-import { ConvertSelect, TableHeader } from "../components"
+import { ConvertSelect, EmptyTemplate, TableHeader } from "../components"
+import { MAX_FILE_SIZE, MAX_FILES_LENGTH } from "../constants"
 
 export const FileUpload = () => {
   const locale = useLocale()
@@ -22,7 +23,7 @@ export const FileUpload = () => {
   const toastRef = useRef<Toast>(null)
   const { notifyWarning } = useToastNotify(toastRef)
   const [selectedFiles, setSelectedFiles] = useState<ISelectedFile[]>([])
-  const { isLoading, downloadUrls, sendFilesToConvert } = useSendSelectedFiles()
+  const { isLoading, convertHistory, sendFilesToConvert } = useSendSelectedFiles()
 
   const onFileUploadHandle = ({ target: { files } }: ChangeEvent<HTMLInputElement>): void => {
     if (!files?.length) {
@@ -106,68 +107,122 @@ export const FileUpload = () => {
     setSelectedFiles([])
   }
 
+  const onRemoveSelectedFileHandle = (selectedFile: ISelectedFile): void => {
+    setSelectedFiles((prevSelectedFiles: ISelectedFile[]): ISelectedFile[] => {
+      return prevSelectedFiles.filter((prevSelectedFile: ISelectedFile): boolean => {
+        return prevSelectedFile !== selectedFile
+      })
+    })
+  }
+
   return (
-    <form
-      id={"file-upload-form"}
-      className={"lg:max-w-[80vw] w-full m-auto p-10"}
-      onSubmit={onSubmitHandle}
-    >
-      <Toast ref={toastRef} />
-      <DataTable
-        value={selectedFiles}
-        tableStyle={{ width: "100%" }}
-        header={
-          <TableHeader
-            isSelectFilesLocked={selectedFiles.length >= MAX_FILES_LENGTH}
-            hasFiles={selectedFiles.length > 0}
-            isLoading={isLoading}
-            downloadUrls={downloadUrls}
-            onFileUpload={onFileUploadHandle}
-            onFilesClear={onFilesClearHandle}
-          />
-        }
+    <div className={"lg:max-w-[80vw] w-full m-auto p-10"}>
+      <form
+        id={"file-upload-form"}
+        className={"w-full"}
+        onSubmit={onSubmitHandle}
       >
-        <Column
-          field="fileData.name"
-          className={"max-w-[40vw]"}
-          header={tFileUpload("file_name")}
-          body={({ file }: ISelectedFile) => {
-            return (
-              <p className={"w-full text-ellipsis overflow-hidden white-space-nowrap"}>
-                {file.name}
-              </p>
-            )
-          }}
-        />
-        <Column
-          field="fileData.size"
-          header={tFileUpload("file_size")}
-          body={({ file }: ISelectedFile) => prettyBytes(file.size, { locale })}
-        />
-        <Column
-          field="fileData.type"
-          header={tFileUpload("file_type")}
-        />
-        <Column
-          field="convertTo"
-          header={tFileUpload("convert_to")}
-          body={(selectedFile: ISelectedFile) => (
-            <ConvertSelect
-              selectedFile={selectedFile}
-              onConvertTargetChange={onConvertTargetChangeHandle}
+        <Toast ref={toastRef} />
+        <DataTable
+          value={selectedFiles}
+          tableStyle={{ width: "100%" }}
+          emptyMessage={EmptyTemplate}
+          header={
+            <TableHeader
+              isSelectFilesLocked={selectedFiles.length >= MAX_FILES_LENGTH}
+              hasFiles={selectedFiles.length > 0}
+              isLoading={isLoading}
+              onFileUpload={onFileUploadHandle}
+              onFilesClear={onFilesClearHandle}
             />
-          )}
-        />
-        <Column
-          body={() => (
-            <Button
-              type="button"
-              icon="pi pi-times"
-              className="p-button-outlined p-button-rounded p-button-danger w-8 h-8 m-auto hover:bg-red-500 hover:text-white"
-            />
-          )}
-        />
-      </DataTable>
-    </form>
+          }
+        >
+          <Column
+            className={"max-w-[40vw]"}
+            header={tFileUpload("file_name")}
+            body={({ file }: ISelectedFile) => {
+              return (
+                <p className={"w-full text-ellipsis overflow-hidden white-space-nowrap"}>
+                  {file.name}
+                </p>
+              )
+            }}
+          />
+          <Column
+            header={tFileUpload("file_size")}
+            body={({ file }: ISelectedFile) => prettyBytes(file.size, { locale })}
+          />
+          <Column header={tFileUpload("file_type")} />
+          <Column
+            header={tFileUpload("convert_to")}
+            body={(selectedFile: ISelectedFile) => (
+              <ConvertSelect
+                selectedFile={selectedFile}
+                onConvertTargetChange={onConvertTargetChangeHandle}
+              />
+            )}
+          />
+          <Column
+            body={(selectedFile: ISelectedFile) => (
+              <Button
+                type="button"
+                icon="pi pi-times"
+                className="p-button-outlined p-button-rounded p-button-danger flex w-8 h-8 m-auto hover:bg-red-500 hover:text-white"
+                onClick={() => onRemoveSelectedFileHandle(selectedFile)}
+              />
+            )}
+          />
+        </DataTable>
+      </form>
+      {convertHistory.length > 0 && (
+        <DataTable
+          value={convertHistory}
+          tableStyle={{ width: "100%" }}
+          header={tFileUpload("convert_history")}
+        >
+          <Column
+            className={"max-w-[40vw]"}
+            header={tFileUpload("file_name")}
+            body={({ name }: IConvertHistoryItem) => {
+              return (
+                <p className={"w-full text-ellipsis overflow-hidden white-space-nowrap"}>{name}</p>
+              )
+            }}
+          />
+          <Column
+            className={"max-w-[40vw]"}
+            header={tFileUpload("file_size")}
+            body={({ size }: IConvertHistoryItem) => {
+              return (
+                <p className={"w-full text-ellipsis overflow-hidden white-space-nowrap"}>
+                  {prettyBytes(size, { locale })}
+                </p>
+              )
+            }}
+          />
+          <Column
+            className={"max-w-[40vw]"}
+            body={({ convertedTime }: IConvertHistoryItem) => {
+              return <p>{convertedTime}</p>
+            }}
+          />
+          <Column
+            className={"max-w-[40vw]"}
+            body={({ url }: IConvertHistoryItem) => {
+              return (
+                <LinkRoot
+                  href={url}
+                  target={"_blank"}
+                  rel={"noreferrer nofollow"}
+                  className={"w-fit h-fit m-auto block"}
+                >
+                  <i className="pi pi-arrow-circle-down text-3xl" />
+                </LinkRoot>
+              )
+            }}
+          />
+        </DataTable>
+      )}
+    </div>
   )
 }

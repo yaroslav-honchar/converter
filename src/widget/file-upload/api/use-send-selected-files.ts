@@ -1,23 +1,31 @@
 import { useState } from "react"
 import { ConvertService } from "@/shared/services"
 import { AxiosError, AxiosResponse } from "axios"
+import { getTime } from "@/shared/lib"
+import { IConvertHistoryItem } from "@/shared/types"
 
 export const useSendSelectedFiles = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setIsError] = useState<null | AxiosError>(null)
-  const [downloadUrls, setDownloadUrls] = useState<string[]>([])
+  const [convertHistory, setConvertHistory] = useState<IConvertHistoryItem[]>([])
 
   const sendFilesToConvert = async (data: FormData): Promise<void> => {
     setIsLoading(true)
 
     ConvertService.convert(data)
       .then(async (res: AxiosResponse<Blob>): Promise<void> => {
-        console.log(res)
-        // const { data } = res
+        const { data } = res
 
         setIsError(null)
-        setDownloadUrls((prevUrls: string[]): string[] => {
-          return [...prevUrls] // URL.createObjectURL(data)
+        setConvertHistory((prevUrls: IConvertHistoryItem[]): IConvertHistoryItem[] => {
+          const historyItem: IConvertHistoryItem = {
+            name: new Date().getTime() + ".zip",
+            url: URL.createObjectURL(data),
+            convertedTime: getTime(),
+            size: data.size,
+          }
+
+          return [historyItem, ...prevUrls]
         })
       })
       .catch((err: AxiosError): void => {
@@ -29,13 +37,13 @@ export const useSendSelectedFiles = () => {
       })
   }
 
-  const resetDownloadUrl = (): void => {
-    setDownloadUrls([])
+  const resetConvertHistory = (): void => {
+    setConvertHistory([])
   }
 
   const resetError = (): void => {
     setIsError(null)
   }
 
-  return { downloadUrls, isLoading, error, sendFilesToConvert, resetDownloadUrl, resetError }
+  return { convertHistory, isLoading, error, sendFilesToConvert, resetConvertHistory, resetError }
 }

@@ -3,11 +3,9 @@ import { TableHeaderProps } from "./table-header.props"
 import { Button } from "primereact/button"
 import { useTranslations } from "next-intl"
 import cn from "classnames"
-import { Dropdown } from "primereact/dropdown"
 
 export const TableHeader: React.FC<TableHeaderProps> = ({
   isLoading,
-  downloadUrls,
   hasFiles,
   isSelectFilesLocked,
   onFileUpload,
@@ -44,24 +42,6 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
         type={"submit"}
         loading={isLoading}
       />
-      {downloadUrls.length > 0 && (
-        <Dropdown
-          options={downloadUrls}
-          placeholder={"history"}
-          itemTemplate={(downloadUrl: string) => {
-            return (
-              <a
-                className={"p-button font-bold"}
-                href={downloadUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {downloadUrl}
-              </a>
-            )
-          }}
-        />
-      )}
       <Button
         disabled={!hasFiles}
         className={"ml-auto"}

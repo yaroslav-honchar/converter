@@ -9,7 +9,8 @@
     "file_size": "Size",
     "file_type": "Type",
     "convert_to": "Convert to",
-    "empty_list": "No files selected"
+    "empty_list": "No files selected",
+    "convert_history": "Conversion history"
   },
   "Notify": {
     "error": "Error",

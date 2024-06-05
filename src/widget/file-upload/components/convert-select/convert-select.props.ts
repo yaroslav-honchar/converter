@@ -1,5 +1,5 @@
 import { FormatEnum } from "sharp"
-import { ISelectedFile } from "@/widget/file-upload/types"
+import { ISelectedFile } from "@/shared/types"
 
 export interface IConvertSelectProps {
   selectedFile: ISelectedFile
