@@ -8,12 +8,12 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
   isLoading,
   hasFiles,
   isSelectFilesLocked,
-  onFileUpload,
+  onFileSelect,
   onFilesClear,
 }) => {
   const t = useTranslations()
-  const onFileUploadHandle = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    onFileUpload(event)
+  const onFileSelectHandle = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    onFileSelect(event)
   }
 
   const onFilesClearHandle = (): void => {
@@ -32,7 +32,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
           disabled={isSelectFilesLocked}
           type="file"
           className={"hidden"}
-          onChange={onFileUploadHandle}
+          onChange={onFileSelectHandle}
           multiple={true}
         />
       </label>

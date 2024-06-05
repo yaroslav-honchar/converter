@@ -25,7 +25,7 @@ export const FileUpload = () => {
   const [selectedFiles, setSelectedFiles] = useState<ISelectedFile[]>([])
   const { isLoading, convertHistory, sendFilesToConvert } = useSendSelectedFiles()
 
-  const onFileUploadHandle = ({ target: { files } }: ChangeEvent<HTMLInputElement>): void => {
+  const onFileSelectHandle = ({ target: { files } }: ChangeEvent<HTMLInputElement>): void => {
     if (!files?.length) {
       return
     }
@@ -131,7 +131,7 @@ export const FileUpload = () => {
               isSelectFilesLocked={selectedFiles.length >= MAX_FILES_LENGTH}
               hasFiles={selectedFiles.length > 0}
               isLoading={isLoading}
-              onFileUpload={onFileUploadHandle}
+              onFileSelect={onFileSelectHandle}
               onFilesClear={onFilesClearHandle}
             />
           }
