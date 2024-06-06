@@ -1,9 +1,3 @@
-/**
- * This is the main stylesheet for the application.
- * It uses the layering feature of Tailwind CSS to control the order of the generated styles.
- * It also imports the theme for PrimeReact UI library and the root styles.
- */
-
 // Layering the styles for Tailwind CSS and PrimeReact
 @layer tailwind-base, primereact, tailwind-utilities;
 
@@ -21,8 +15,15 @@
   @tailwind utilities;
 }
 
-// Importing the root styles
+@layer primereact {
+  @import "primereact/index";
+}
+
+// Importing the custom root variables
 @import "root";
+
+// Importing the root DOM elements styles
+@import "settings";
 
 // Importing the components styles
 @import "components/index";

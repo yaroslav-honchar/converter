@@ -1,4 +1,15 @@
 :root {
+  // *** Custom variables ***
+  --ff-primary: var(--ff-inter);
+  --ff-secondary: var(--ff-urbanist);
+
+  // Colors
+  --c-white: #ffffff;
+
+  // *** Rewrite the Prime variables ***
+  --font-family: var(--ff-primary);
+
+  // *** JS Configured variables ***
   --header-height: 0px;
   --scrollbar-width: 0px;
 }

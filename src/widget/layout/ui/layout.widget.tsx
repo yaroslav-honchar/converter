@@ -3,14 +3,20 @@ import { ILayoutRootProps } from "./layout.props"
 import { Header } from "@/features/header"
 import { Footer } from "@/features/footer"
 import { ClientProvider, ServerProvider } from "@/_app/providers"
+import { BackgroundVideo } from "@/entities/background-video"
+import cn from "classnames"
+import { interFont, urbanistFont } from "@/_app/fonts"
 
 export function LayoutRoot({ children, params: { locale } }: ILayoutRootProps) {
   return (
     <html lang={locale}>
-      <body className={"bg-primary"}>
+      <body
+        className={cn(urbanistFont.variable, interFont.variable, interFont.className, "bg-primary")}
+      >
         <ServerProvider locale={locale}>
           <ClientProvider>
-            <div className={"flex flex-col min-h-screen"}>
+            <div className={"flex flex-col min-h-screen relative"}>
+              <BackgroundVideo />
               <Header />
               <main className={"flex-grow flex flex-col"}>{children}</main>
               <Footer />

@@ -8,9 +8,8 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundColor: {
-        primary: "#111",
-        secondary: "#000",
+      textColor: {
+        white: "#ffffff",
       },
     },
   },
