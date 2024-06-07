@@ -191,6 +191,7 @@ export const FileUpload = () => {
         <DataTable<IConvertHistoryItem[]>
           value={convertHistory}
           tableStyle={{ width: "100%" }}
+          className={"w-full max-w-[61.25rem] mx-auto"}
           header={tFileUpload("convert_history")}
         >
           <Column
