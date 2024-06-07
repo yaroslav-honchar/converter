@@ -14,7 +14,7 @@ export const LinkRoot: React.FC<ILinkRootProps> = ({
     <Link
       href={href}
       locale={locale}
-      className={cn("p-button p-component p-button-link p-0 hover:text-blue-400", className)}
+      className={cn("p-button p-button-link p-0 hover:text-blue-500", className)}
       {...props}
     >
       {children}
