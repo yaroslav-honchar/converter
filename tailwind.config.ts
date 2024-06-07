@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      backdropBlur: {
+        primary: "100px",
+      },
       borderWidth: {
         1: "1px",
       },

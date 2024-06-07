@@ -6,7 +6,7 @@
 
 .p-dropdown-panel {
   @apply border-1 border-light rounded-4xl;
-  @apply bg-light-gradient backdrop-blur-2xl;
+  @apply bg-light-gradient backdrop-blur-primary;
   @apply p-4;
 
   .p-dropdown-items-wrapper {
