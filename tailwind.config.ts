@@ -22,6 +22,8 @@ const config: Config = {
           "linear-gradient(278.73deg, rgba(10, 129, 218, 0.2) 6.65%, rgba(10, 129, 218, 0.2) 63.3%)",
         "red-gradient":
           "linear-gradient(93.72deg, rgba(183, 45, 95, 0.8) 1.66%, rgba(154, 81, 107, 0.8) 96.57%)",
+        "light-gradient":
+          "linear-gradient(100.35deg, rgba(255, 255, 255, 0.08) 10.99%, rgba(42, 42, 42, 0.056) 90.86%)",
       },
       colors: {
         blue: {

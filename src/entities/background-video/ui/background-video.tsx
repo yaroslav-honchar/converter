@@ -10,6 +10,7 @@ export const BackgroundVideo: React.FC = () => {
       playsInline
       src={"/videos/main-bg.mp4"}
       poster={"/img/video-placeholder.jpg"}
+      loop={true}
     />
   )
 }
