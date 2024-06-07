@@ -17,6 +17,7 @@ export const ConvertSelect: React.FC<IConvertSelectProps> = ({
 
   return (
     <Dropdown
+      className={"min-w-[7.5rem]"}
       value={convertTargetValue}
       options={convertSelectOptions}
       placeholder={"..."}

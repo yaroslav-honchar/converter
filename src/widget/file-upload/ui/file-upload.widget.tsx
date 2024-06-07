@@ -11,7 +11,7 @@ import * as uuid from "uuid"
 import { FormatEnum } from "sharp"
 import { useToastNotify } from "@/shared/hooks"
 import { IConvertHistoryItem, ISelectedFile } from "@/shared/types"
-import { LinkRoot } from "@/shared/components"
+import { Icon } from "@/shared/components"
 import { createSelectedFiles } from "../helpers"
 import { useSendSelectedFiles } from "../api"
 import { ConvertSelect, EmptyTemplate, TableHeader } from "../components"
@@ -121,7 +121,7 @@ export const FileUpload = () => {
   }, [error, notifyError])
 
   return (
-    <div className={"lg:max-w-[80vw] w-full m-auto p-10"}>
+    <div className={"flex flex-col gap-8 lg:max-w-[80vw] w-full m-auto p-10"}>
       <form
         id={"file-upload-form"}
         className={"w-full"}
@@ -157,7 +157,9 @@ export const FileUpload = () => {
           <Column
             field={"file.size"}
             header={tFileUpload("file_size")}
-            body={({ file }: ISelectedFile) => prettyBytes(file.size, { locale })}
+            body={({ file }: ISelectedFile) => (
+              <p className={"white-space-nowrap"}>{prettyBytes(file.size, { locale })}</p>
+            )}
           />
           <Column
             field={"file.type"}
@@ -177,8 +179,8 @@ export const FileUpload = () => {
             body={(selectedFile: ISelectedFile) => (
               <Button
                 type="button"
-                icon="pi pi-times"
-                className="p-button-outlined p-button-rounded p-button-danger flex w-8 h-8 m-auto hover:bg-red-500 hover:text-white"
+                icon={<Icon name={"trash"} />}
+                severity={"danger"}
                 onClick={() => onRemoveSelectedFileHandle(selectedFile)}
               />
             )}
@@ -197,7 +199,7 @@ export const FileUpload = () => {
             header={tFileUpload("file_name")}
             body={({ name }: IConvertHistoryItem) => {
               return (
-                <p className={"w-full text-ellipsis overflow-hidden white-space-nowrap"}>{name}</p>
+                <p className={"w-full text-ellipsis overflow-hidden whitespace-nowrap"}>{name}</p>
               )
             }}
           />
@@ -206,11 +208,7 @@ export const FileUpload = () => {
             className={"max-w-[40vw]"}
             header={tFileUpload("file_size")}
             body={({ size }: IConvertHistoryItem) => {
-              return (
-                <p className={"w-full text-ellipsis overflow-hidden white-space-nowrap"}>
-                  {prettyBytes(size, { locale })}
-                </p>
-              )
+              return <p className={"w-full whitespace-nowrap"}>{prettyBytes(size, { locale })}</p>
             }}
           />
           <Column
@@ -226,14 +224,20 @@ export const FileUpload = () => {
             className={"max-w-[40vw]"}
             body={({ url }: IConvertHistoryItem) => {
               return (
-                <LinkRoot
-                  href={url}
-                  target={"_blank"}
+                <Button
                   rel={"noreferrer nofollow"}
-                  className={"w-fit h-fit m-auto block"}
-                >
-                  <i className="pi pi-arrow-circle-down text-3xl" />
-                </LinkRoot>
+                  icon={"pi pi-download"}
+                  className={"m-auto"}
+                  onClick={() => window.open(url, "_blank")}
+                />
+                // <LinkRoot
+                //   href={url}
+                //   target={"_blank"}
+                //   rel={"noreferrer nofollow"}
+                //   className={"w-fit h-fit m-auto block"}
+                // >
+                //   <i className="pi pi-arrow-circle-down text-3xl" />
+                // </LinkRoot>
               )
             }}
           />

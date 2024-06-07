@@ -26,6 +26,7 @@
     }
   }
 
-  .p-datatable-emptymessage {
+  .p-datatable-emptymessage td {
+    @apply py-8 px-4;
   }
 }

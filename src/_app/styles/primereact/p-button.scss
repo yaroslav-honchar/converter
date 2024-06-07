@@ -5,7 +5,7 @@
   @apply relative;
 
   &:not(.p-button-link) {
-    @apply inline-flex items-center justify-center;
+    @apply inline-flex items-center justify-center gap-2;
     @apply px-6 py-3;
     @apply leading-none;
     @apply border-1 border-light rounded-4xl;
@@ -31,9 +31,21 @@
     @apply after:bg-blue-gradient;
   }
 
+  &.p-button-icon-only {
+    @apply flex w-12 min-w-12 h-12 min-h-12 rounded-full p-0 gap-0;
+
+    &.p-button-label {
+      @apply hidden;
+    }
+  }
+
   &:disabled {
     @apply cursor-not-allowed;
     @apply opacity-50;
+  }
+
+  &:focus-visible {
+    @apply outline-none ring-2 ring-blue-300;
   }
 }
 
