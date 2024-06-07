@@ -121,7 +121,7 @@ export const FileUpload = () => {
   }, [error, notifyError])
 
   return (
-    <div className={"flex flex-col gap-8 lg:max-w-[80vw] w-full m-auto p-10"}>
+    <div className={"container flex flex-col gap-8 m-auto"}>
       <form
         id={"file-upload-form"}
         className={"w-full max-w-[61.25rem] mx-auto"}

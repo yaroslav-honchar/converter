@@ -21,9 +21,9 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
   }
 
   return (
-    <div className="flex justify-content-between gap-2">
+    <div className="flex flex-col sm:flex-row justify-content-between gap-2">
       <label
-        className={cn("p-button", {
+        className={cn("p-button w-full sm:w-fit", {
           ["p-disabled"]: isSelectFilesLocked,
         })}
       >
@@ -37,6 +37,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
         />
       </label>
       <Button
+        className={"w-full sm:w-fit"}
         disabled={!hasFiles}
         label={t("Common.convert")}
         type={"submit"}
@@ -44,7 +45,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
       />
       <Button
         disabled={!hasFiles}
-        className={"ml-auto"}
+        className={"ml-auto w-full sm:w-fit"}
         label={t("Common.remove_all")}
         severity={"danger"}
         onClick={onFilesClearHandle}

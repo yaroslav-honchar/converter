@@ -6,7 +6,7 @@ import cn from "classnames"
 export const LinkLogo: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <LinkRoot
-      className={cn(" gap-3 font-urbanist text-3xl", className)}
+      className={cn("gap-1 sm:gap-3 font-urbanist text-2xl sm:text-3xl", className)}
       href={ClientRoutes.home}
     >
       <Img
@@ -16,7 +16,7 @@ export const LinkLogo: React.FC<{ className?: string }> = ({ className }) => {
         width={64}
         height={64}
       />
-      <span>Convertage</span>
+      <span className={"hidden sm:inline-block"}>Convertage</span>
     </LinkRoot>
   )
 }

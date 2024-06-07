@@ -13,7 +13,7 @@ const authors: AuthorType[] = [
     icon: "behance",
     textHolder: "Designer by",
     name: "Vladyslav Surma",
-    link: "",
+    link: "https://www.behance.net/-fyuse",
   },
   {
     icon: "github",
@@ -27,11 +27,13 @@ export const Footer: React.FC = () => {
   return (
     <footer className={"pt-9 pb-6 bg-secondary relative z-10"}>
       <div className="container">
-        <div className="flex gap-4 items-center justify-between">
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
           {authors.map(({ link, name, icon, textHolder }: AuthorType) => (
             <p
               key={name}
-              className={"flex items-center flex-wrap gap-1 text-light text-xl font-light"}
+              className={
+                "flex items-center flex-wrap gap-1 text-light text-md sm:text-xl font-light"
+              }
             >
               <Icon
                 name={icon}

@@ -18,6 +18,10 @@
 
   .p-datatable-thead {
     @apply border-t-1 border-b-1 border-light;
+
+    th {
+      @apply whitespace-nowrap;
+    }
   }
 
   .p-datatable-tbody {

@@ -3,7 +3,7 @@
     @apply flex gap-3 py-2 px-3 border-1 border-light rounded-4xl;
 
     .p-button {
-      @apply py-1 px-5 rounded-[1.25rem] border-none uppercase text-xl leading-6;
+      @apply py-1 px-5 rounded-[1.25rem] border-none uppercase text-sm md:text-xl leading-6;
 
       &,
       &:first-of-type,
