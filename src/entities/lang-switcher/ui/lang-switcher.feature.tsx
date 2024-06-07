@@ -20,6 +20,7 @@ export const LangSwitcher: React.FC = () => {
 
   return (
     <SelectButton
+      className={"_lang-switcher"}
       value={value}
       onChange={onChangeHandle}
       options={options}
