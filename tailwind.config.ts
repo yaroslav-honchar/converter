@@ -8,6 +8,21 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      borderWidth: {
+        1: "1px",
+      },
+      borderColor: {
+        light: "rgba(255, 255, 255, 0.16)",
+      },
+      borderRadius: {
+        "4xl": "2rem",
+      },
+      backgroundImage: {
+        "blue-gradient":
+          "linear-gradient(278.73deg, rgba(10, 129, 218, 0.2) 6.65%, rgba(10, 129, 218, 0.2) 63.3%)",
+        "red-gradient":
+          "linear-gradient(93.72deg, rgba(183, 45, 95, 0.8) 1.66%, rgba(154, 81, 107, 0.8) 96.57%)",
+      },
       colors: {
         blue: {
           100: "#CCE6F9",
@@ -19,6 +34,17 @@ const config: Config = {
           700: "#065083",
           800: "#043857",
           900: "#021F2C",
+        },
+        red: {
+          100: "#F7CCD7",
+          200: "#EF99AF",
+          300: "#E66687",
+          400: "#DE3360",
+          500: "#B72D5F",
+          600: "#921C4B",
+          700: "#6E1436",
+          800: "#4A0D23",
+          900: "#260611",
         },
       },
       textColor: {
