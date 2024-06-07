@@ -124,13 +124,13 @@ export const FileUpload = () => {
     <div className={"flex flex-col gap-8 lg:max-w-[80vw] w-full m-auto p-10"}>
       <form
         id={"file-upload-form"}
-        className={"w-full"}
+        className={"w-full max-w-[61.25rem] mx-auto"}
         onSubmit={onSubmitHandle}
       >
         <Toast ref={toastRef} />
         <DataTable<ISelectedFile[]>
           value={selectedFiles}
-          tableStyle={{ width: "100%" }}
+          className={"w-full"}
           emptyMessage={<EmptyTemplate />}
           header={
             <TableHeader
@@ -148,7 +148,7 @@ export const FileUpload = () => {
             header={tFileUpload("file_name")}
             body={({ file }: ISelectedFile) => {
               return (
-                <p className={"w-full text-ellipsis overflow-hidden white-space-nowrap"}>
+                <p className={"w-full text-ellipsis overflow-hidden whitespace-nowrap"}>
                   {file.name}
                 </p>
               )
@@ -158,7 +158,7 @@ export const FileUpload = () => {
             field={"file.size"}
             header={tFileUpload("file_size")}
             body={({ file }: ISelectedFile) => (
-              <p className={"white-space-nowrap"}>{prettyBytes(file.size, { locale })}</p>
+              <p className={"whitespace-nowrap"}>{prettyBytes(file.size, { locale })}</p>
             )}
           />
           <Column
@@ -228,16 +228,8 @@ export const FileUpload = () => {
                   rel={"noreferrer nofollow"}
                   icon={"pi pi-download"}
                   className={"m-auto"}
-                  onClick={() => window.open(url, "_blank")}
+                  onClick={() => window.open(url, "_blank", "nofollow noreferrer")}
                 />
-                // <LinkRoot
-                //   href={url}
-                //   target={"_blank"}
-                //   rel={"noreferrer nofollow"}
-                //   className={"w-fit h-fit m-auto block"}
-                // >
-                //   <i className="pi pi-arrow-circle-down text-3xl" />
-                // </LinkRoot>
               )
             }}
           />
