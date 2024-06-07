@@ -19,6 +19,8 @@ const config: Config = {
       },
       borderRadius: {
         "4xl": "2rem",
+        "6xl": "3rem",
+        "8xl": "4rem",
       },
       backgroundImage: {
         "blue-gradient":
@@ -27,6 +29,14 @@ const config: Config = {
           "linear-gradient(93.72deg, rgba(183, 45, 95, 0.8) 1.66%, rgba(154, 81, 107, 0.8) 96.57%)",
         "light-gradient":
           "linear-gradient(100.35deg, rgba(255, 255, 255, 0.08) 10.99%, rgba(42, 42, 42, 0.056) 90.86%)",
+        "toast-success":
+          "linear-gradient(98.53deg, rgba(42, 171, 109, 0.2) 50%, rgba(255, 255, 255, 0.21) 159.84%)",
+        "toast-warn":
+          "linear-gradient(98.53deg, rgba(168, 171, 42, 0.2) 50%, rgba(255, 255, 255, 0.21) 159.84%)",
+        "toast-error":
+          "linear-gradient(98.53deg, rgba(171, 42, 42, 0.2) 50%, rgba(255, 255, 255, 0.21) 159.84%)",
+        "toast-info":
+          "linear-gradient(98.53deg, rgba(42, 70, 171, 0.2) 50%, rgba(255, 255, 255, 0.21) 159.84%)",
       },
       colors: {
         light: "rgba(255, 255, 255, 0.16)",

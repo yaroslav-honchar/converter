@@ -1,0 +1,51 @@
+.p-toast {
+  > div {
+    @apply flex flex-col gap-3;
+  }
+}
+
+.p-toast-message {
+  @apply border-1 border-light rounded-8xl;
+  @apply py-5 px-6;
+  @apply backdrop-blur-primary;
+
+  .p-toast-message-content {
+    @apply flex items-center gap-3;
+  }
+
+  .p-icon.p-toast-message-icon {
+    @apply w-6 h-6;
+  }
+
+  &.p-toast-message-success {
+    @apply bg-toast-success;
+
+    .p-icon.p-toast-message-icon {
+      @apply text-green-300;
+    }
+  }
+
+  &.p-toast-message-warn {
+    @apply bg-toast-warn;
+
+    .p-icon.p-toast-message-icon {
+      @apply text-yellow-300;
+    }
+  }
+
+  &.p-toast-message-error {
+    @apply bg-toast-error;
+
+    .p-icon.p-toast-message-icon {
+      @apply text-red-200;
+    }
+  }
+
+  &.p-toast-message-info {
+    @apply bg-toast-info;
+
+    .p-icon.p-toast-message-icon {
+      @apply text-blue-200;
+    }
+  }
+}

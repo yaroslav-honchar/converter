@@ -1,1 +1,1 @@
-export const NOTIFY_LIFE = 5000
+export const NOTIFY_LIFE = 5000000
