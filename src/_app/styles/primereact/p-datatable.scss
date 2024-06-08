@@ -42,4 +42,8 @@
   .p-datatable-emptymessage td {
     @apply py-8 px-4;
   }
+
+  .p-datatable-footer {
+    @apply p-5;
+  }
 }

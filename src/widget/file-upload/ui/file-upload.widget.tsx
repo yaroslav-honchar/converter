@@ -6,6 +6,8 @@ import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { Button } from "primereact/button"
 import { Toast } from "primereact/toast"
+import { InputText } from "primereact/inputtext"
+import { Checkbox } from "primereact/checkbox"
 import { useTranslations, useLocale } from "next-intl"
 import * as uuid from "uuid"
 import { FormatEnum } from "sharp"
@@ -24,6 +26,7 @@ export const FileUpload = () => {
   const { isLoading, convertHistory, sendFilesToConvert } = useSendSelectedFiles()
   const { notifyWarning, notifyError, notifySuccess } = useToastNotify(toastRef)
   const [selectedFiles, setSelectedFiles] = useState<ISelectedFile[]>([])
+  const [isTelegramConfirmed, setIsTelegramConfirmed] = useState<boolean>(false)
 
   const onFileSelectHandle = ({ target: { files } }: ChangeEvent<HTMLInputElement>): void => {
     if (!files?.length) {
@@ -152,6 +155,26 @@ export const FileUpload = () => {
               onFilesClear={onFilesClearHandle}
             />
           }
+          footer={() => {
+            return (
+              <div className={"flex flex-col gap-2"}>
+                <div className={"flex items-center gap-2"}>
+                  <Checkbox
+                    id={"telegram_confirm"}
+                    name={"telegram_confirm"}
+                    checked={isTelegramConfirmed}
+                    onChange={() => setIsTelegramConfirmed((prevState: boolean) => !prevState)}
+                  />
+                  <label htmlFor="telegram_confirm">Send converted archives to Telegram</label>
+                </div>
+                <InputText
+                  className={"w-60"}
+                  placeholder={"Telegram @username"}
+                  disabled={!isTelegramConfirmed}
+                />
+              </div>
+            )
+          }}
         >
           <Column
             field={"file.name"}
