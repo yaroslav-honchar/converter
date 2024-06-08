@@ -44,6 +44,7 @@
   }
 
   .p-datatable-footer {
+    @apply border-t-1 border-light;
     @apply p-5;
   }
 }

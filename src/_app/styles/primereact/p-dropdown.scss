@@ -2,6 +2,11 @@
   @apply flex gap-2;
   @apply py-3 px-5;
   @apply border-1 border-light rounded-4xl;
+
+  .p-inputtext {
+    all: unset;
+    @apply w-full;
+  }
 }
 
 .p-dropdown-panel {
