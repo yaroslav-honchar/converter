@@ -155,6 +155,7 @@ export const FileUpload = () => {
     const tgUsr = Cookies.get("tg_usr")
     if (tgUsr) {
       setTelegramUsername(tgUsr)
+      setIsTelegramConfirmed(true)
     }
   }, [])
 
@@ -182,7 +183,7 @@ export const FileUpload = () => {
           footer={() => {
             return (
               <div className={"flex flex-col gap-2"}>
-                <div className={"flex items-center gap-2"}>
+                <div className={"flex items-center gap-3"}>
                   <Checkbox
                     id={"telegram_confirm"}
                     name={"telegram_confirm"}
