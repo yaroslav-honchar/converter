@@ -1,6 +1,6 @@
 "use client"
 
-import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
+import React, { ChangeEvent, FormEvent, useRef, useState } from "react"
 import prettyBytes from "pretty-bytes"
 import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
@@ -21,8 +21,8 @@ export const FileUpload = () => {
   const locale = useLocale()
   const tFileUpload = useTranslations("FileUpload")
   const toastRef = useRef<Toast>(null)
-  const { isLoading, convertHistory, error, sendFilesToConvert } = useSendSelectedFiles()
-  const { notifyWarning, notifyError } = useToastNotify(toastRef)
+  const { isLoading, convertHistory, sendFilesToConvert } = useSendSelectedFiles()
+  const { notifyWarning, notifyError, notifySuccess } = useToastNotify(toastRef)
   const [selectedFiles, setSelectedFiles] = useState<ISelectedFile[]>([])
 
   const onFileSelectHandle = ({ target: { files } }: ChangeEvent<HTMLInputElement>): void => {
@@ -89,7 +89,14 @@ export const FileUpload = () => {
       formData.append(`target_${id}`, convertTarget as keyof FormatEnum)
     })
 
-    sendFilesToConvert(formData)
+    sendFilesToConvert(formData, {
+      onSuccess: (): void => {
+        notifySuccess(["convert_success"])
+      },
+      onError: (error: Error): void => {
+        notifyError(error.message)
+      },
+    })
   }
 
   const onConvertTargetChangeHandle = (
@@ -123,12 +130,6 @@ export const FileUpload = () => {
       })
     })
   }
-
-  useEffect(() => {
-    if (error) {
-      notifyError(error.message)
-    }
-  }, [error, notifyError])
 
   return (
     <div className={"container flex flex-col gap-8 m-auto"}>
@@ -171,7 +172,6 @@ export const FileUpload = () => {
             body={({ file }: ISelectedFile) => (
               <p className={"whitespace-nowrap"}>{prettyBytes(file.size, { locale })}</p>
             )}
-            rowSpan={2}
             footer={prettyBytes(
               selectedFiles.reduce((acc, item) => acc + item.file.size, 0),
               { locale },
@@ -208,7 +208,7 @@ export const FileUpload = () => {
           value={convertHistory}
           tableStyle={{ width: "100%" }}
           className={"w-full max-w-[61.25rem] mx-auto"}
-          header={tFileUpload("convert_history")}
+          header={<h2 className={"text-xl font-bold"}>{tFileUpload("convert_history")}</h2>}
         >
           <Column
             field={"name"}

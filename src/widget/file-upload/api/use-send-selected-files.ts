@@ -4,12 +4,20 @@ import { AxiosError, AxiosResponse } from "axios"
 import { getFilenameFromHeaders, getTime } from "@/shared/lib"
 import { IConvertHistoryItem } from "@/shared/types"
 
+type SendFilesToConvertOptionsType = {
+  onSuccess?: () => void
+  onError?: (err: AxiosError) => void
+}
+
 export const useSendSelectedFiles = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setIsError] = useState<null | AxiosError>(null)
   const [convertHistory, setConvertHistory] = useState<IConvertHistoryItem[]>([])
 
-  const sendFilesToConvert = async (data: FormData): Promise<void> => {
+  const sendFilesToConvert = async (
+    data: FormData,
+    options: SendFilesToConvertOptionsType = {},
+  ): Promise<void> => {
     setIsLoading(true)
 
     ConvertService.convert(data)
@@ -31,10 +39,12 @@ export const useSendSelectedFiles = () => {
         ])
 
         setIsError(null)
+        options.onSuccess && options.onSuccess()
       })
       .catch((err: AxiosError): void => {
         console.log(err)
         setIsError(err)
+        options.onError && options.onError(err)
       })
       .finally((): void => {
         setIsLoading(false)
