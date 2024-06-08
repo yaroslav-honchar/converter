@@ -77,12 +77,22 @@ export const FileUpload = () => {
 
   const onSubmitHandle = (event: FormEvent): void => {
     event.preventDefault()
+    let readyToSend = true
 
     const hasNoTargetSomeFile: ISelectedFile | undefined = selectedFiles.find(
       ({ convertTarget }: ISelectedFile) => !convertTarget,
     )
     if (hasNoTargetSomeFile) {
       notifyWarning(["target_warn"])
+      readyToSend = false
+    }
+
+    if (isTelegramConfirmed && telegramUsername === "") {
+      notifyWarning(["username_warn"])
+      readyToSend = false
+    }
+
+    if (!readyToSend) {
       return
     }
 
@@ -154,11 +164,11 @@ export const FileUpload = () => {
 
     debounce((): void => {
       if (value !== "") {
-        Cookies.set("tg_username", value)
+        Cookies.set("tg_username", value.replace(/@/g, ""))
       } else {
         Cookies.remove("tg_username")
       }
-    }, 500)()
+    }, 150)()
   }
 
   useEffect(() => {

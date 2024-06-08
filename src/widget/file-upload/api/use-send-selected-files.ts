@@ -24,7 +24,6 @@ export const useSendSelectedFiles = () => {
       .then(async (res: AxiosResponse<Blob>): Promise<void> => {
         const { data, headers } = res
         const archiveName = getFilenameFromHeaders(headers)
-        console.log(archiveName)
 
         const historyItem: IConvertHistoryItem = {
           name: archiveName || `${new Date().getDate()}.zip`,

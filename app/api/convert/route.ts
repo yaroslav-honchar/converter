@@ -9,7 +9,11 @@ import { TelegramAccountService } from "@/shared/services"
 import { createResponseHeaders } from "./helpers/create-response-headers"
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  const { cookies } = req
+
   try {
+    const isSendToTelegramConfirmed = cookies.get("tg_confirmed")?.value === "true"
+    const telegramUserNameCookie = cookies.get("tg_username")
     const errorsForUser: string[] = []
     const extractedFiles = await extractFilesData(req)
 
@@ -61,14 +65,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const blob = await streamToBlob(passThrough$)
     const archiveName = new Date().getTime() + ".zip"
 
-    const dataForTelegram = new FormData()
-    const fileData = new Blob([await blob.arrayBuffer()], { type: "application/zip" })
-    dataForTelegram.append("archive", fileData, "archive.zip")
-    dataForTelegram.append("username", "yrslv_h")
+    if (isSendToTelegramConfirmed && telegramUserNameCookie?.value) {
+      const dataForTelegram = new FormData()
+      const fileData = new Blob([await blob.arrayBuffer()], { type: "application/zip" })
+      dataForTelegram.append("archive", fileData, "archive.zip")
+      dataForTelegram.append("username", telegramUserNameCookie.value)
 
-    await TelegramAccountService.sendArchive(dataForTelegram, {
-      headers: createResponseHeaders(archiveName),
-    })
+      await TelegramAccountService.sendArchive(dataForTelegram, {
+        headers: createResponseHeaders(archiveName),
+      })
+    }
 
     return new NextResponse(blob, {
       headers: createResponseHeaders(archiveName),

@@ -19,11 +19,12 @@
     "warning": "Warning",
     "success": "Success",
     "info": "Info",
-    "target_warn": "Choose output format",
-    "max_files_warn": "You can only convert {quantity} files at a time",
-    "max_size_warn": "The maximum file size is {size}. File {name} is too large",
-    "file_type_warn": "File {name} has an unsupported format",
-    "convert_error": "Error converting file(-s)",
-    "convert_success": "File(-s) converted successfully"
+    "target_warn": "🎯 Please select a target format, or we'll confuse the server 😊",
+    "max_files_warn": "📂 Oops! You can convert only {quantity} files at a time!",
+    "max_size_warn": "📏 Maximum file size is {size}. The file {name} is too heavy! 🐘",
+    "file_type_warn": "📄 The file format {name} is not supported 😢 We're still learning that 😇",
+    "username_warn": "👤 Username cannot be empty. Please enter it!",
+    "convert_error": "😕 Something went wrong with the file conversion. Please try again 😇",
+    "convert_success": "🎉 Hooray! Files successfully converted 😻"
   }
 }
