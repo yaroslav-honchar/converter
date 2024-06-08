@@ -1,13 +1,8 @@
 export const getEnvConfig = (): EnvConfigReturnType => {
-  const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN
   const telegramApiID = Number(process.env.TELEGRAM_API_ID)
   const telegramApiHash = process.env.TELEGRAM_API_HASH
   const telegramPhone = process.env.TELEGRAM_PHONE
   const telegramSession = process.env.TELEGRAM_SESSION
-
-  if (!telegramBotToken) {
-    throw new Error("[telegramBotToken] did not found in environment configuration")
-  }
 
   if (!telegramApiID || Number.isNaN(telegramApiID)) {
     throw new Error(
@@ -30,7 +25,6 @@ export const getEnvConfig = (): EnvConfigReturnType => {
   }
 
   return {
-    telegramBotToken,
     telegramApiID,
     telegramApiHash,
     telegramPhone,
@@ -39,7 +33,6 @@ export const getEnvConfig = (): EnvConfigReturnType => {
 }
 
 type EnvConfigReturnType = {
-  telegramBotToken: string
   telegramApiID: number
   telegramApiHash: string
   telegramPhone: string
