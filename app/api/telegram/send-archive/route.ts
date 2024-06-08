@@ -6,15 +6,11 @@ import { getFilenameFromHeaders } from "@/shared/lib"
 export async function POST(req: NextRequest): Promise<Response> {
   const client = await authenticate()
   const archiveName = getFilenameFromHeaders(req.headers)
-  console.log("work 0")
 
   try {
     const data = await req.formData()
     const username = data.get("username") as string
-    console.log("username", username)
     const archiveBlob = data.get("archive") as Blob
-    console.log("archiveBlob", archiveBlob)
-    console.log("work 1")
 
     const file = new CustomFile(
       archiveName || `${new Date().getDate()}.zip`,
@@ -22,7 +18,6 @@ export async function POST(req: NextRequest): Promise<Response> {
       "",
       new Buffer(await archiveBlob.arrayBuffer()),
     )
-    console.log("work 2")
 
     await client.connect()
     await client.sendMessage(username, {
@@ -30,7 +25,6 @@ export async function POST(req: NextRequest): Promise<Response> {
       file,
     })
   } catch (error: unknown) {
-    console.log(error)
     await client.disconnect()
     const errorMessage = error instanceof Error ? error.message : error
 
