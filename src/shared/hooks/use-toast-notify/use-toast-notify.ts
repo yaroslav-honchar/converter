@@ -17,7 +17,7 @@ export const useToastNotify = (toastRef: RefObject<Toast>): IUseToastNotifyRetur
   ): void => {
     toastRef.current?.show({
       severity: "warn",
-      summary: tNotify("warning"),
+      // summary: tNotify("warning"),
       detail: typeof message === "string" ? message : tNotify(...message),
       life: NOTIFY_LIFE,
       ...options,
@@ -30,7 +30,7 @@ export const useToastNotify = (toastRef: RefObject<Toast>): IUseToastNotifyRetur
   ): void => {
     toastRef.current?.show({
       severity: "error",
-      summary: tNotify("error"),
+      // summary: tNotify("error"),
       detail: typeof message === "string" ? message : tNotify(...message),
       life: NOTIFY_LIFE,
       ...options,
@@ -43,7 +43,7 @@ export const useToastNotify = (toastRef: RefObject<Toast>): IUseToastNotifyRetur
   ): void => {
     toastRef.current?.show({
       severity: "success",
-      summary: tNotify("success"),
+      // summary: tNotify("success"),
       detail: typeof message === "string" ? message : tNotify(...message),
       life: NOTIFY_LIFE,
       ...options,
@@ -56,7 +56,7 @@ export const useToastNotify = (toastRef: RefObject<Toast>): IUseToastNotifyRetur
   ): void => {
     toastRef.current?.show({
       severity: "info",
-      summary: tNotify("info"),
+      // summary: tNotify("info"),
       detail: typeof message === "string" ? message : tNotify(...message),
       life: NOTIFY_LIFE,
       ...options,

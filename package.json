@@ -45,6 +45,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.13",
     "@types/archiver": "^6.0.2",
     "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.17.5",

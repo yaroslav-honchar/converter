@@ -6,6 +6,7 @@ import { ClientProvider, ServerProvider } from "@/_app/providers"
 import { BackgroundVideo } from "@/entities/background-video"
 import cn from "classnames"
 import { interFont, urbanistFont } from "@/_app/fonts"
+import { DialogCookie } from "@/features/dialog-cookie"
 
 export function LayoutRoot({ children, params: { locale } }: ILayoutRootProps) {
   return (
@@ -18,8 +19,9 @@ export function LayoutRoot({ children, params: { locale } }: ILayoutRootProps) {
             <div className={"flex flex-col min-h-screen relative"}>
               <BackgroundVideo />
               <Header />
-              <main className={"flex-grow flex flex-col"}>{children}</main>
+              <main className={"flex-grow flex flex-col relative z-10"}>{children}</main>
               <Footer />
+              <DialogCookie />
             </div>
           </ClientProvider>
         </ServerProvider>

@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss"
+import type Prose from "@tailwindcss/typography"
 
 const config: Config = {
   content: [
@@ -8,6 +9,19 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            "*": {
+              color: "#ffffff",
+              width: "100%",
+            },
+            a: {
+              textDecoration: "underline",
+            },
+          },
+        },
+      },
       backdropBlur: {
         primary: "100px",
       },
@@ -71,6 +85,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 }
 export default config

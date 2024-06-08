@@ -1,0 +1,25 @@
+.p-dialog-mask {
+  @apply py-8 px-4;
+
+  &.p-component-overlay {
+    @apply backdrop-blur-sm bg-white bg-opacity-15;
+  }
+
+  .p-dialog {
+    @apply bg-light-gradient;
+    @apply backdrop-blur-primary;
+    @apply border-1 border-light rounded-3xl;
+
+    .p-dialog-header {
+      @apply p-5;
+    }
+
+    .p-dialog-content {
+      @apply px-5 py-3;
+    }
+
+    .p-dialog-footer {
+      @apply p-5;
+    }
+  }
+}

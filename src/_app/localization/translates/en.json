@@ -26,5 +26,12 @@
     "username_warn": "👤 Username cannot be empty. Please enter it!",
     "convert_error": "😕 Something went wrong with the file conversion. Please try again 😇",
     "convert_success": "🎉 Hooray! Files successfully converted 😻"
+  },
+  "DialogCookie": {
+    "title": "\uD83C\uDF6A Cookie Agreement",
+    "content": "This site uses cookies to ensure that you get the best possible user experience. By continuing to use this site, you agree to our cookie policy.",
+    "agree": "Got it!",
+    "disagree": "No, thanks",
+    "learn_more": "Learn more"
   }
 }
