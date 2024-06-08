@@ -219,6 +219,7 @@ export const FileUpload = () => {
                 <p className={"w-full text-ellipsis overflow-hidden whitespace-nowrap"}>{name}</p>
               )
             }}
+            footer={<p className={"whitespace-nowrap"}>{tFileUpload("total_size")}</p>}
           />
           <Column
             field={"size"}
@@ -227,6 +228,10 @@ export const FileUpload = () => {
             body={({ size }: IConvertHistoryItem) => {
               return <p className={"w-full whitespace-nowrap"}>{prettyBytes(size, { locale })}</p>
             }}
+            footer={prettyBytes(
+              convertHistory.reduce((acc, item) => acc + item.size, 0),
+              { locale },
+            )}
           />
           <Column
             field={"convertedTime"}
