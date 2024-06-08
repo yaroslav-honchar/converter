@@ -21,12 +21,21 @@
 
     th {
       @apply whitespace-nowrap;
+      @apply font-bold;
     }
   }
 
   .p-datatable-tbody {
     tr:not(:last-of-type) td {
       @apply border-b-1 border-light;
+    }
+  }
+
+  .p-datatable-tfoot {
+    @apply border-t-1 border-light;
+
+    td {
+      @apply font-bold;
     }
   }
 

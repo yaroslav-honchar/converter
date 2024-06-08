@@ -34,6 +34,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
           className={"hidden"}
           onChange={onFileSelectHandle}
           multiple={true}
+          accept={"image/*"}
         />
       </label>
       <Button

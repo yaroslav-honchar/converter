@@ -32,17 +32,27 @@ export const FileUpload = () => {
 
     let newFiles: File[] = Array.from(files!).filter((file: File) => {
       const isToLarge = file.size > MAX_FILE_SIZE
+      const isImage = file.type.startsWith("image/")
+
+      if (!isImage) {
+        notifyWarning(["file_type_warn", { name: file.name }])
+
+        return false
+      }
 
       if (isToLarge) {
         notifyWarning([
           "max_size_warn",
           {
             size: prettyBytes(MAX_FILE_SIZE, { locale }),
+            name: file.name,
           },
         ])
+
+        return false
       }
 
-      return !isToLarge
+      return !isToLarge && isImage
     })
 
     if (
@@ -153,12 +163,18 @@ export const FileUpload = () => {
                 </p>
               )
             }}
+            footer={<p className={"whitespace-nowrap"}>{tFileUpload("total_size")}</p>}
           />
           <Column
             field={"file.size"}
             header={tFileUpload("file_size")}
             body={({ file }: ISelectedFile) => (
               <p className={"whitespace-nowrap"}>{prettyBytes(file.size, { locale })}</p>
+            )}
+            rowSpan={2}
+            footer={prettyBytes(
+              selectedFiles.reduce((acc, item) => acc + item.file.size, 0),
+              { locale },
             )}
           />
           <Column

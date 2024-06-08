@@ -11,7 +11,8 @@
     "convert_to": "Convert to",
     "empty_list": "No files selected",
     "convert_history": "Conversion history",
-    "converted_time": "Converted at"
+    "converted_time": "Converted at",
+    "total_size": "Total size"
   },
   "Notify": {
     "error": "Error",
@@ -20,7 +21,8 @@
     "info": "Info",
     "target_warn": "Choose output format",
     "max_files_warn": "You can only convert {quantity} files at a time",
-    "max_size_warn": "The maximum file size is {size}",
+    "max_size_warn": "The maximum file size is {size}. File {name} is too large",
+    "file_type_warn": "File {name} has an unsupported format",
     "convert_error": "Error converting file(-s)",
     "convert_success": "File(-s) converted successfully"
   }
