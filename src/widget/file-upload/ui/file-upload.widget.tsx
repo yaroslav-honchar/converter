@@ -1,6 +1,6 @@
 "use client"
 
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react"
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import prettyBytes from "pretty-bytes"
 import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
@@ -11,6 +11,8 @@ import { Checkbox } from "primereact/checkbox"
 import { useTranslations, useLocale } from "next-intl"
 import * as uuid from "uuid"
 import { FormatEnum } from "sharp"
+import debounce from "lodash.debounce"
+import Cookies from "js-cookie"
 import { useToastNotify } from "@/shared/hooks"
 import { IConvertHistoryItem, ISelectedFile } from "@/shared/types"
 import { Icon } from "@/shared/components"
@@ -27,6 +29,7 @@ export const FileUpload = () => {
   const { notifyWarning, notifyError, notifySuccess } = useToastNotify(toastRef)
   const [selectedFiles, setSelectedFiles] = useState<ISelectedFile[]>([])
   const [isTelegramConfirmed, setIsTelegramConfirmed] = useState<boolean>(false)
+  const [telegramUsername, setTelegramUsername] = useState<string>("")
 
   const onFileSelectHandle = ({ target: { files } }: ChangeEvent<HTMLInputElement>): void => {
     if (!files?.length) {
@@ -134,6 +137,27 @@ export const FileUpload = () => {
     })
   }
 
+  const onChangeTelegramUsernameHandle = ({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>): void => {
+    setTelegramUsername(value)
+
+    debounce((): void => {
+      if (value !== "") {
+        Cookies.set("tg_usr", value)
+      } else {
+        Cookies.remove("tg_usr")
+      }
+    }, 500)()
+  }
+
+  useEffect(() => {
+    const tgUsr = Cookies.get("tg_usr")
+    if (tgUsr) {
+      setTelegramUsername(tgUsr)
+    }
+  }, [])
+
   return (
     <div className={"container flex flex-col gap-8 m-auto"}>
       <form
@@ -171,6 +195,8 @@ export const FileUpload = () => {
                   className={"w-60"}
                   placeholder={"Telegram @username"}
                   disabled={!isTelegramConfirmed}
+                  value={telegramUsername}
+                  onChange={onChangeTelegramUsernameHandle}
                 />
               </div>
             )

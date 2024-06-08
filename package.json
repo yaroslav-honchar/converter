@@ -29,6 +29,8 @@
     "axios": "^1.7.2",
     "classnames": "^2.5.1",
     "input": "^1.0.1",
+    "js-cookie": "^3.0.5",
+    "lodash.debounce": "^4.0.8",
     "next": "14.2.3",
     "next-intl": "^3.14.0",
     "pretty-bytes": "^6.1.1",
@@ -44,6 +46,9 @@
   },
   "devDependencies": {
     "@types/archiver": "^6.0.2",
+    "@types/js-cookie": "^3.0.6",
+    "@types/lodash": "^4.17.5",
+    "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^20.14.2",
     "@types/react": "^18",
     "@types/react-dom": "^18",

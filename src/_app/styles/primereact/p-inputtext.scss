@@ -1,0 +1,27 @@
+.p-inputtext {
+  @apply px-6 py-3;
+  @apply leading-none;
+  @apply border-1 border-light rounded-4xl;
+  @apply transition duration-200 ease-in-out;
+  @apply bg-light backdrop-blur-primary;
+
+  &,
+  &::placeholder {
+    @apply text-white;
+  }
+
+  &.p-disabled,
+  &:disabled {
+    @apply cursor-not-allowed;
+    @apply opacity-50;
+  }
+
+  &:focus {
+    @apply bg-white;
+    @apply text-gray-700;
+  }
+
+  &:focus-visible {
+    @apply outline-none ring-2 ring-blue-300;
+  }
+}
