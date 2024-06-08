@@ -7,7 +7,7 @@ import { Column } from "primereact/column"
 import { Button } from "primereact/button"
 import { Toast } from "primereact/toast"
 import { InputText } from "primereact/inputtext"
-import { Checkbox } from "primereact/checkbox"
+import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox"
 import { useTranslations, useLocale } from "next-intl"
 import * as uuid from "uuid"
 import { FormatEnum } from "sharp"
@@ -137,6 +137,16 @@ export const FileUpload = () => {
     })
   }
 
+  const onChangeTelegramConfirmHandle = ({ checked }: CheckboxChangeEvent): void => {
+    setIsTelegramConfirmed((prevState: boolean): boolean => {
+      const newValue = checked ? checked : !prevState
+
+      Cookies.set("tg_confirmed", newValue.toString())
+
+      return newValue
+    })
+  }
+
   const onChangeTelegramUsernameHandle = ({
     target: { value },
   }: ChangeEvent<HTMLInputElement>): void => {
@@ -144,19 +154,19 @@ export const FileUpload = () => {
 
     debounce((): void => {
       if (value !== "") {
-        Cookies.set("tg_usr", value)
+        Cookies.set("tg_username", value)
       } else {
-        Cookies.remove("tg_usr")
+        Cookies.remove("tg_username")
       }
     }, 500)()
   }
 
   useEffect(() => {
-    const tgUsr = Cookies.get("tg_usr")
-    if (tgUsr) {
-      setTelegramUsername(tgUsr)
-      setIsTelegramConfirmed(true)
-    }
+    const tgConfirmed = Cookies.get("tg_confirmed")
+    tgConfirmed && setIsTelegramConfirmed(tgConfirmed === "true")
+
+    const tgUsername = Cookies.get("tg_username")
+    tgUsername && setTelegramUsername(tgUsername)
   }, [])
 
   return (
@@ -188,7 +198,7 @@ export const FileUpload = () => {
                     id={"telegram_confirm"}
                     name={"telegram_confirm"}
                     checked={isTelegramConfirmed}
-                    onChange={() => setIsTelegramConfirmed((prevState: boolean) => !prevState)}
+                    onChange={onChangeTelegramConfirmHandle}
                   />
                   <label htmlFor="telegram_confirm">Send converted archives to Telegram</label>
                 </div>
