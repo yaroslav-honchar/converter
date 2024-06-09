@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl"
 import { LinkRoot } from "@/shared/components"
 import { ClientRoutes } from "@/_app/routes"
 import { usePathname } from "@/_app/localization"
+import { COOKIE_NAMES } from "@/shared/constants"
 
 export const DialogCookie = () => {
   const pathname = usePathname()
@@ -15,18 +16,19 @@ export const DialogCookie = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
   const onDeclineHandle = (): void => {
-    Cookies.set("cookies_accepted", "false", { expires: 365 })
+    Cookies.set(COOKIE_NAMES.cookiesAccepted, "false", { expires: 365 })
+    Cookies.remove(COOKIE_NAMES.tgUsername)
+    Cookies.remove(COOKIE_NAMES.tgConfirmed)
     setIsVisible(false)
   }
 
   const onAcceptHandle = (): void => {
-    Cookies.set("cookies_accepted", "true", { expires: 365 })
+    Cookies.set(COOKIE_NAMES.cookiesAccepted, "true", { expires: 365 })
     setIsVisible(false)
   }
 
   useEffect(() => {
-    console.log("work")
-    const hasCookie = Cookies.get("cookies_accepted")
+    const hasCookie = Cookies.get(COOKIE_NAMES.cookiesAccepted)
     if (!hasCookie && !pathname.match(ClientRoutes.cookiePolicy)) {
       setIsVisible(true)
     } else {

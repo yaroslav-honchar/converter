@@ -20,6 +20,7 @@ import { createSelectedFiles } from "../helpers"
 import { useSendSelectedFiles } from "../api"
 import { ConvertSelect, EmptyTemplate, TableHeader } from "../components"
 import { MAX_FILE_SIZE, MAX_FILES_LENGTH } from "../constants"
+import { COOKIE_NAMES } from "@/shared/constants"
 
 export const FileUpload = () => {
   const locale = useLocale()
@@ -151,7 +152,7 @@ export const FileUpload = () => {
     setIsTelegramConfirmed((prevState: boolean): boolean => {
       const newValue = checked ? checked : !prevState
 
-      Cookies.set("tg_confirmed", newValue.toString())
+      Cookies.set(COOKIE_NAMES.tgConfirmed, newValue.toString())
 
       return newValue
     })
@@ -164,18 +165,18 @@ export const FileUpload = () => {
 
     debounce((): void => {
       if (value !== "") {
-        Cookies.set("tg_username", value.replace(/@/g, ""))
+        Cookies.set(COOKIE_NAMES.tgUsername, value.replace(/@/g, ""))
       } else {
-        Cookies.remove("tg_username")
+        Cookies.remove(COOKIE_NAMES.tgUsername)
       }
     }, 150)()
   }
 
   useEffect(() => {
-    const tgConfirmed = Cookies.get("tg_confirmed")
+    const tgConfirmed = Cookies.get(COOKIE_NAMES.tgConfirmed)
     tgConfirmed && setIsTelegramConfirmed(tgConfirmed === "true")
 
-    const tgUsername = Cookies.get("tg_username")
+    const tgUsername = Cookies.get(COOKIE_NAMES.tgUsername)
     tgUsername && setTelegramUsername(tgUsername)
   }, [])
 

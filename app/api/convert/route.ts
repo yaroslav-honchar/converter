@@ -7,13 +7,16 @@ import streamToBlob from "stream-to-blob"
 import { createTextStream, extractFilesData } from "./helpers"
 import { TelegramAccountService } from "@/shared/services"
 import { createResponseHeaders } from "./helpers/create-response-headers"
+import { COOKIE_NAMES } from "@/shared/constants"
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const { cookies } = req
 
   try {
-    const isSendToTelegramConfirmed = cookies.get("tg_confirmed")?.value === "true"
-    const telegramUserNameCookie = cookies.get("tg_username")
+    const isCookiesAccepted = cookies.get(COOKIE_NAMES.cookiesAccepted)?.value === "true"
+    const isSendToTelegramConfirmed = cookies.get(COOKIE_NAMES.tgConfirmed)?.value === "true"
+    const telegramUserNameValue = cookies.get(COOKIE_NAMES.tgConfirmed)?.value
+
     const errorsForUser: string[] = []
     const extractedFiles = await extractFilesData(req)
 
@@ -65,11 +68,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const blob = await streamToBlob(passThrough$)
     const archiveName = new Date().getTime() + ".zip"
 
-    if (isSendToTelegramConfirmed && telegramUserNameCookie?.value) {
+    if (isCookiesAccepted && isSendToTelegramConfirmed && telegramUserNameValue) {
       const dataForTelegram = new FormData()
       const fileData = new Blob([await blob.arrayBuffer()], { type: "application/zip" })
       dataForTelegram.append("archive", fileData, "archive.zip")
-      dataForTelegram.append("username", telegramUserNameCookie.value)
+      dataForTelegram.append("username", telegramUserNameValue)
 
       await TelegramAccountService.sendArchive(dataForTelegram, {
         headers: createResponseHeaders(archiveName),
