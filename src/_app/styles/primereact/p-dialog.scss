@@ -2,14 +2,13 @@
   @apply py-8 px-4;
 
   &.p-component-overlay {
-    @apply backdrop-blur-md bg-black bg-opacity-25;
+    @apply bg-black bg-opacity-50;
   }
 
   .p-dialog {
     @apply max-h-full;
     @apply px-5;
-    @apply bg-light-gradient;
-    @apply backdrop-blur-primary;
+    @apply bg-black bg-opacity-70;
     @apply border-1 border-light rounded-3xl;
 
     .p-dialog-header {

@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss"
-import type Prose from "@tailwindcss/typography"
 
 const config: Config = {
   content: [

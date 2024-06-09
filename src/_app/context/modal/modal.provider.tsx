@@ -3,6 +3,7 @@
 import React, { PropsWithChildren, useState } from "react"
 import { ModalNamesType } from "./modal-names.type"
 import { ModalContext } from "./modal.context"
+import { Scrollbar } from "@/shared/utils"
 
 type ModalProviderState = Record<ModalNamesType, boolean>
 
@@ -19,6 +20,7 @@ export const ModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setModalState(
       (prevState: ModalProviderState): ModalProviderState => ({ ...prevState, [modalName]: true }),
     )
+    Scrollbar.lock()
   }
 
   const closeModal = (modalName: ModalNamesType): void => {
@@ -29,6 +31,7 @@ export const ModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setModalState(
       (prevState: ModalProviderState): ModalProviderState => ({ ...prevState, [modalName]: false }),
     )
+    Scrollbar.unlock()
   }
 
   return (

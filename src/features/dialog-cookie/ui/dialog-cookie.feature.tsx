@@ -37,19 +37,19 @@ export const DialogCookie = () => {
     const isCookiePage = pathname.match(ClientRoutes.cookiePolicy)
     if (!hasCookie && !isCookiePage) {
       openModal("cookie")
-    } else if (hasCookie && isCookiePage && isVisible) {
+    } else if (isCookiePage && isVisible) {
       closeModal("cookie")
     }
   }, [pathname, openModal, closeModal])
 
   return (
     <Dialog
-      className={"max-w-lg"}
+      className={"max-w-lg drop-filter"}
       position={"bottom-right"}
       appendTo={typeof document !== "undefined" ? document.body : "self"}
       visible={isVisible}
       draggable={false}
-      modal={true}
+      modal={false}
       resizable={false}
       header={<h2 className={"text-2xl lg:text-3xl font-bold"}>{tDialogCookie("title")}</h2>}
       footer={
