@@ -32,7 +32,7 @@ export const Footer: React.FC = () => {
             <p
               key={name}
               className={
-                "flex items-center flex-wrap gap-1 text-light text-md sm:text-xl font-light"
+                "flex items-center flex-wrap gap-1 text-[#B3ADDA] text-md sm:text-xl font-light"
               }
             >
               <Icon

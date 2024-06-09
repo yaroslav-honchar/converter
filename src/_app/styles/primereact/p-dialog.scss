@@ -2,24 +2,37 @@
   @apply py-8 px-4;
 
   &.p-component-overlay {
-    @apply backdrop-blur-sm bg-white bg-opacity-15;
+    @apply backdrop-blur-md bg-black bg-opacity-25;
   }
 
   .p-dialog {
+    @apply max-h-full;
+    @apply px-5;
     @apply bg-light-gradient;
     @apply backdrop-blur-primary;
     @apply border-1 border-light rounded-3xl;
 
     .p-dialog-header {
-      @apply p-5;
+      @apply py-5;
     }
 
     .p-dialog-content {
-      @apply px-5 py-3;
+      @apply py-3 pe-1;
     }
 
     .p-dialog-footer {
-      @apply p-5;
+      @apply py-5;
     }
   }
+}
+
+.p-dialog-mask.p-dialog-top .p-dialog,
+.p-dialog-mask.p-dialog-bottom .p-dialog,
+.p-dialog-mask.p-dialog-left .p-dialog,
+.p-dialog-mask.p-dialog-right .p-dialog,
+.p-dialog-mask.p-dialog-top-left .p-dialog,
+.p-dialog-mask.p-dialog-top-right .p-dialog,
+.p-dialog-mask.p-dialog-bottom-left .p-dialog,
+.p-dialog-mask.p-dialog-bottom-right .p-dialog {
+  @apply m-0;
 }
