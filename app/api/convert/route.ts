@@ -71,7 +71,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     if (isCookiesAccepted && isSendToTelegramConfirmed && telegramUserNameValue) {
       const dataForTelegram = new FormData()
       const fileData = new Blob([await blob.arrayBuffer()], { type: "application/zip" })
-      dataForTelegram.append("archive", fileData, "archive.zip")
+      dataForTelegram.append("archive", fileData, archiveName)
       dataForTelegram.append("username", telegramUserNameValue)
 
       await TelegramAccountService.sendArchive(dataForTelegram, {
