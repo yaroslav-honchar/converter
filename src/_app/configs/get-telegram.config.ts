@@ -1,4 +1,4 @@
-export const getEnvConfig = (): EnvConfigReturnType => {
+export const getTelegramConfig = () => {
   const telegramApiID = Number(process.env.TELEGRAM_API_ID)
   const telegramApiHash = process.env.TELEGRAM_API_HASH
   const telegramPhone = process.env.TELEGRAM_PHONE
@@ -30,11 +30,4 @@ export const getEnvConfig = (): EnvConfigReturnType => {
     telegramPhone,
     telegramSession,
   }
-}
-
-type EnvConfigReturnType = {
-  telegramApiID: number
-  telegramApiHash: string
-  telegramPhone: string
-  telegramSession: string
 }

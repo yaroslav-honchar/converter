@@ -1,4 +1,4 @@
-import { getEnvConfig } from "@/_app/configs"
+import { getTelegramConfig } from "@/_app/configs"
 import * as fs from "node:fs"
 import { TelegramClient } from "telegram"
 import { StringSession } from "telegram/sessions"
@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const sessionPath = path.join(__dirname, "session.txt")
 
 export const authenticate = async () => {
-  const { telegramApiID, telegramApiHash, telegramPhone, telegramSession } = getEnvConfig()
+  const { telegramApiID, telegramApiHash, telegramPhone, telegramSession } = getTelegramConfig()
   let stringSession = telegramSession
 
   try {
