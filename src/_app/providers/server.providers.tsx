@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from "react"
 import { unstable_setRequestLocale } from "next-intl/server"
 import { NextIntlClientProvider, useMessages } from "next-intl"
 
-export const ServerProvider: React.FC<PropsWithChildren & { locale: string }> = ({
+export const ServerProviders: React.FC<PropsWithChildren & { locale: string }> = ({
   children,
   locale,
 }) => {

@@ -8,19 +8,20 @@ import { Button } from "primereact/button"
 import { Toast } from "primereact/toast"
 import { InputText } from "primereact/inputtext"
 import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox"
+import { useDebounce } from "primereact/hooks"
 import { useTranslations, useLocale } from "next-intl"
 import * as uuid from "uuid"
 import { FormatEnum } from "sharp"
-import debounce from "lodash.debounce"
 import Cookies from "js-cookie"
-import { useToastNotify } from "@/shared/hooks"
+import { useModal, useToastNotify } from "@/shared/hooks"
 import { IConvertHistoryItem, ISelectedFile } from "@/shared/types"
-import { Icon } from "@/shared/components"
+import { Icon, LinkRoot } from "@/shared/components"
 import { createSelectedFiles } from "../helpers"
 import { useSendSelectedFiles } from "../api"
 import { ConvertSelect, EmptyTemplate, TableHeader } from "../components"
 import { MAX_FILE_SIZE, MAX_FILES_LENGTH } from "../constants"
 import { COOKIE_NAMES } from "@/shared/constants"
+import { ClientRoutes } from "@/_app/routes"
 
 export const FileUpload = () => {
   const locale = useLocale()
@@ -30,7 +31,11 @@ export const FileUpload = () => {
   const { notifyWarning, notifyError, notifySuccess } = useToastNotify(toastRef)
   const [selectedFiles, setSelectedFiles] = useState<ISelectedFile[]>([])
   const [isTelegramConfirmed, setIsTelegramConfirmed] = useState<boolean>(false)
-  const [telegramUsername, setTelegramUsername] = useState<string>("")
+  const [telegramUsername, debouncedTelegramUsername, setTelegramUsername] = useDebounce<string>(
+    "",
+    500,
+  )
+  const { openModal } = useModal()
 
   const onFileSelectHandle = ({ target: { files } }: ChangeEvent<HTMLInputElement>): void => {
     if (!files?.length) {
@@ -149,6 +154,12 @@ export const FileUpload = () => {
   }
 
   const onChangeTelegramConfirmHandle = ({ checked }: CheckboxChangeEvent): void => {
+    const isCookiesAccepted = Cookies.get(COOKIE_NAMES.cookiesAccepted) === "true"
+    if (!isCookiesAccepted) {
+      openModal("cookie")
+      return
+    }
+
     setIsTelegramConfirmed((prevState: boolean): boolean => {
       const newValue = checked ? checked : !prevState
 
@@ -161,173 +172,191 @@ export const FileUpload = () => {
   const onChangeTelegramUsernameHandle = ({
     target: { value },
   }: ChangeEvent<HTMLInputElement>): void => {
-    setTelegramUsername(value)
-
-    debounce((): void => {
-      if (value !== "") {
-        Cookies.set(COOKIE_NAMES.tgUsername, value.replace(/@/g, ""))
-      } else {
-        Cookies.remove(COOKIE_NAMES.tgUsername)
-      }
-    }, 150)()
+    const newValue = value.replace(/@/g, "")
+    setTelegramUsername(newValue)
   }
 
-  useEffect(() => {
+  useEffect((): void => {
+    const isCookieAccepted = Cookies.get(COOKIE_NAMES.cookiesAccepted) === "true"
+
     const tgConfirmed = Cookies.get(COOKIE_NAMES.tgConfirmed)
-    tgConfirmed && setIsTelegramConfirmed(tgConfirmed === "true")
+    tgConfirmed && setIsTelegramConfirmed(isCookieAccepted && tgConfirmed === "true")
 
     const tgUsername = Cookies.get(COOKIE_NAMES.tgUsername)
     tgUsername && setTelegramUsername(tgUsername)
-  }, [])
+  }, [setTelegramUsername, setIsTelegramConfirmed])
+
+  useEffect((): void => {
+    Cookies.set(COOKIE_NAMES.tgUsername, debouncedTelegramUsername.replace(/@/g, ""))
+  }, [debouncedTelegramUsername])
 
   return (
-    <div className={"container flex flex-col gap-8 m-auto"}>
-      <form
-        id={"file-upload-form"}
-        className={"w-full max-w-[61.25rem] mx-auto"}
-        onSubmit={onSubmitHandle}
-      >
-        <Toast ref={toastRef} />
-        <DataTable<ISelectedFile[]>
-          value={selectedFiles}
-          className={"w-full"}
-          emptyMessage={<EmptyTemplate />}
-          header={
-            <TableHeader
-              isSelectFilesLocked={selectedFiles.length >= MAX_FILES_LENGTH}
-              hasFiles={selectedFiles.length > 0}
-              isLoading={isLoading}
-              onFileSelect={onFileSelectHandle}
-              onFilesClear={onFilesClearHandle}
-            />
-          }
-          footer={() => {
-            return (
-              <div className={"flex flex-col gap-2"}>
-                <div className={"flex items-center gap-3"}>
-                  <Checkbox
-                    id={"telegram_confirm"}
-                    name={"telegram_confirm"}
-                    checked={isTelegramConfirmed}
-                    onChange={onChangeTelegramConfirmHandle}
-                  />
-                  <label htmlFor="telegram_confirm">Send converted archives to Telegram</label>
-                </div>
-                <InputText
-                  className={"w-60"}
-                  placeholder={"Telegram @username"}
-                  disabled={!isTelegramConfirmed}
-                  value={telegramUsername}
-                  onChange={onChangeTelegramUsernameHandle}
-                />
-              </div>
-            )
-          }}
-        >
-          <Column
-            field={"file.name"}
-            className={"max-w-[40vw]"}
-            header={tFileUpload("file_name")}
-            body={({ file }: ISelectedFile) => {
-              return (
-                <p className={"w-full text-ellipsis overflow-hidden whitespace-nowrap"}>
-                  {file.name}
-                </p>
-              )
-            }}
-            footer={<p className={"whitespace-nowrap"}>{tFileUpload("total_size")}</p>}
-          />
-          <Column
-            field={"file.size"}
-            header={tFileUpload("file_size")}
-            body={({ file }: ISelectedFile) => (
-              <p className={"whitespace-nowrap"}>{prettyBytes(file.size, { locale })}</p>
-            )}
-            footer={prettyBytes(
-              selectedFiles.reduce((acc, item) => acc + item.file.size, 0),
-              { locale },
-            )}
-          />
-          <Column
-            field={"file.type"}
-            header={tFileUpload("file_type")}
-          />
-          <Column
-            field={"convertTarget"}
-            header={tFileUpload("convert_to")}
-            body={(selectedFile: ISelectedFile) => (
-              <ConvertSelect
-                selectedFile={selectedFile}
-                onConvertTargetChange={onConvertTargetChangeHandle}
-              />
-            )}
-          />
-          <Column
-            body={(selectedFile: ISelectedFile) => (
-              <Button
-                type="button"
-                icon={<Icon name={"trash"} />}
-                severity={"danger"}
-                onClick={() => onRemoveSelectedFileHandle(selectedFile)}
-              />
-            )}
-          />
-        </DataTable>
-      </form>
-      {convertHistory.length > 0 && (
-        <DataTable<IConvertHistoryItem[]>
-          value={convertHistory}
-          tableStyle={{ width: "100%" }}
+    <section className="py-16">
+      <div className={"container flex flex-col gap-8 m-auto"}>
+        <form
+          id={"file-upload-form"}
           className={"w-full max-w-[61.25rem] mx-auto"}
-          header={<h2 className={"text-xl font-bold"}>{tFileUpload("convert_history")}</h2>}
+          onSubmit={onSubmitHandle}
         >
-          <Column
-            field={"name"}
-            className={"max-w-[40vw]"}
-            header={tFileUpload("file_name")}
-            body={({ name }: IConvertHistoryItem) => {
+          <Toast ref={toastRef} />
+          <DataTable<ISelectedFile[]>
+            value={selectedFiles}
+            className={"w-full"}
+            emptyMessage={<EmptyTemplate />}
+            header={
+              <TableHeader
+                isSelectFilesLocked={selectedFiles.length >= MAX_FILES_LENGTH}
+                hasFiles={selectedFiles.length > 0}
+                isLoading={isLoading}
+                onFileSelect={onFileSelectHandle}
+                onFilesClear={onFilesClearHandle}
+              />
+            }
+            footer={() => {
               return (
-                <p className={"w-full text-ellipsis overflow-hidden whitespace-nowrap"}>{name}</p>
+                <div className={"flex flex-col gap-2"}>
+                  <div>
+                    <div className={"flex items-center gap-3"}>
+                      <Checkbox
+                        id={"telegram_confirm"}
+                        name={"telegram_confirm"}
+                        checked={isTelegramConfirmed}
+                        onChange={onChangeTelegramConfirmHandle}
+                      />
+                      <label htmlFor="telegram_confirm">{tFileUpload("send_to_telegram")}</label>
+                    </div>
+                    <p className={"ps-8 text-xs"}>
+                      * {tFileUpload("cookies_warn_description")}{" "}
+                      <LinkRoot
+                        className={"text-xs underline"}
+                        href={ClientRoutes.cookiePolicy}
+                        target={"_blank"}
+                        rel={"noreferrer nofollow"}
+                      >
+                        {tFileUpload("cookies_warn_cookie")}
+                      </LinkRoot>
+                      . <br />* {tFileUpload("cookies_warn_dialog")}.
+                    </p>
+                  </div>
+                  <InputText
+                    className={"w-60"}
+                    placeholder={"Telegram @username"}
+                    disabled={!isTelegramConfirmed}
+                    value={telegramUsername}
+                    onChange={onChangeTelegramUsernameHandle}
+                  />
+                </div>
               )
             }}
-            footer={<p className={"whitespace-nowrap"}>{tFileUpload("total_size")}</p>}
-          />
-          <Column
-            field={"size"}
-            className={"max-w-[40vw]"}
-            header={tFileUpload("file_size")}
-            body={({ size }: IConvertHistoryItem) => {
-              return <p className={"w-full whitespace-nowrap"}>{prettyBytes(size, { locale })}</p>
-            }}
-            footer={prettyBytes(
-              convertHistory.reduce((acc, item) => acc + item.size, 0),
-              { locale },
-            )}
-          />
-          <Column
-            field={"convertedTime"}
-            header={tFileUpload("converted_time")}
-            className={"max-w-[40vw]"}
-            body={({ convertedTime }: IConvertHistoryItem) => {
-              return <p>{convertedTime}</p>
-            }}
-          />
-          <Column
-            field={"url"}
-            className={"max-w-[40vw]"}
-            body={({ url }: IConvertHistoryItem) => {
-              return (
-                <Button
-                  rel={"noreferrer nofollow"}
-                  icon={"pi pi-download"}
-                  className={"m-auto"}
-                  onClick={() => window.open(url, "_blank", "nofollow noreferrer")}
+          >
+            <Column
+              field={"file.name"}
+              className={"max-w-[40vw]"}
+              header={tFileUpload("file_name")}
+              body={({ file }: ISelectedFile) => {
+                return (
+                  <p className={"w-full text-ellipsis overflow-hidden whitespace-nowrap"}>
+                    {file.name}
+                  </p>
+                )
+              }}
+              footer={<p className={"whitespace-nowrap"}>{tFileUpload("total_size")}</p>}
+            />
+            <Column
+              field={"file.size"}
+              header={tFileUpload("file_size")}
+              body={({ file }: ISelectedFile) => (
+                <p className={"whitespace-nowrap"}>{prettyBytes(file.size, { locale })}</p>
+              )}
+              footer={prettyBytes(
+                selectedFiles.reduce((acc: number, item: ISelectedFile) => acc + item.file.size, 0),
+                { locale },
+              )}
+            />
+            <Column
+              field={"file.type"}
+              header={tFileUpload("file_type")}
+            />
+            <Column
+              field={"convertTarget"}
+              header={tFileUpload("convert_to")}
+              body={(selectedFile: ISelectedFile) => (
+                <ConvertSelect
+                  selectedFile={selectedFile}
+                  onConvertTargetChange={onConvertTargetChangeHandle}
                 />
-              )
-            }}
-          />
-        </DataTable>
-      )}
-    </div>
+              )}
+            />
+            <Column
+              body={(selectedFile: ISelectedFile) => (
+                <Button
+                  type="button"
+                  icon={<Icon name={"trash"} />}
+                  severity={"danger"}
+                  onClick={() => onRemoveSelectedFileHandle(selectedFile)}
+                />
+              )}
+            />
+          </DataTable>
+        </form>
+        {convertHistory.length > 0 && (
+          <DataTable<IConvertHistoryItem[]>
+            value={convertHistory}
+            tableStyle={{ width: "100%" }}
+            className={"w-full max-w-[61.25rem] mx-auto"}
+            header={<h2 className={"text-xl font-bold"}>{tFileUpload("convert_history")}</h2>}
+          >
+            <Column
+              field={"name"}
+              className={"max-w-[40vw]"}
+              header={tFileUpload("file_name")}
+              body={({ name }: IConvertHistoryItem) => {
+                return (
+                  <p className={"w-full text-ellipsis overflow-hidden whitespace-nowrap"}>{name}</p>
+                )
+              }}
+              footer={<p className={"whitespace-nowrap"}>{tFileUpload("total_size")}</p>}
+            />
+            <Column
+              field={"size"}
+              className={"max-w-[40vw]"}
+              header={tFileUpload("file_size")}
+              body={({ size }: IConvertHistoryItem) => {
+                return <p className={"w-full whitespace-nowrap"}>{prettyBytes(size, { locale })}</p>
+              }}
+              footer={prettyBytes(
+                convertHistory.reduce(
+                  (acc: number, item: IConvertHistoryItem) => acc + item.size,
+                  0,
+                ),
+                { locale },
+              )}
+            />
+            <Column
+              field={"convertedTime"}
+              header={tFileUpload("converted_time")}
+              className={"max-w-[40vw]"}
+              body={({ convertedTime }: IConvertHistoryItem) => {
+                return <p>{convertedTime}</p>
+              }}
+            />
+            <Column
+              field={"url"}
+              className={"max-w-[40vw]"}
+              body={({ url }: IConvertHistoryItem) => {
+                return (
+                  <Button
+                    rel={"noreferrer nofollow"}
+                    icon={"pi pi-download"}
+                    className={"m-auto"}
+                    onClick={() => window.open(url, "_blank", "nofollow noreferrer")}
+                  />
+                )
+              }}
+            />
+          </DataTable>
+        )}
+      </div>
+    </section>
   )
 }

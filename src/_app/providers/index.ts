@@ -1,2 +1,2 @@
-export { ClientProvider } from "./client.provider"
-export { ServerProvider } from "./server.provider"
+export { ClientProviders } from "./client.providers"
+export { ServerProviders } from "./server.providers"

@@ -1,7 +1,7 @@
 "use client"
 
 import { Dialog } from "primereact/dialog"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import Cookies from "js-cookie"
 import { Button } from "primereact/button"
 import { useTranslations } from "next-intl"
@@ -9,37 +9,44 @@ import { LinkRoot } from "@/shared/components"
 import { ClientRoutes } from "@/_app/routes"
 import { usePathname } from "@/_app/localization"
 import { COOKIE_NAMES } from "@/shared/constants"
+import { useModal } from "@/shared/hooks"
 
 export const DialogCookie = () => {
   const pathname = usePathname()
   const tDialogCookie = useTranslations("DialogCookie")
-  const [isVisible, setIsVisible] = useState<boolean>(false)
+  const {
+    modalState: { cookie: isVisible },
+    openModal,
+    closeModal,
+  } = useModal()
 
   const onDeclineHandle = (): void => {
     Cookies.set(COOKIE_NAMES.cookiesAccepted, "false", { expires: 365 })
     Cookies.remove(COOKIE_NAMES.tgUsername)
     Cookies.remove(COOKIE_NAMES.tgConfirmed)
-    setIsVisible(false)
+    closeModal("cookie")
   }
 
   const onAcceptHandle = (): void => {
     Cookies.set(COOKIE_NAMES.cookiesAccepted, "true", { expires: 365 })
-    setIsVisible(false)
+    closeModal("cookie")
   }
 
-  useEffect(() => {
+  useEffect((): void => {
     const hasCookie = Cookies.get(COOKIE_NAMES.cookiesAccepted)
-    if (!hasCookie && !pathname.match(ClientRoutes.cookiePolicy)) {
-      setIsVisible(true)
-    } else {
-      setIsVisible(false)
+    const isCookiePage = pathname.match(ClientRoutes.cookiePolicy)
+    if (!hasCookie && !isCookiePage) {
+      openModal("cookie")
+    } else if (hasCookie && isCookiePage && isVisible) {
+      closeModal("cookie")
     }
-  }, [pathname])
+  }, [pathname, openModal, closeModal])
 
   return (
     <Dialog
       className={"max-w-lg"}
       position={"bottom-right"}
+      appendTo={typeof document !== "undefined" ? document.body : "self"}
       visible={isVisible}
       draggable={false}
       modal={true}
@@ -63,9 +70,7 @@ export const DialogCookie = () => {
           />
         </div>
       }
-      onHide={(): void => {
-        setIsVisible(false)
-      }}
+      onHide={() => closeModal("cookie")}
       closeOnEscape={false}
       closable={false}
     >

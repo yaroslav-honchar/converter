@@ -2,7 +2,7 @@ import React from "react"
 import { ILayoutRootProps } from "./layout.props"
 import { Header } from "@/features/header"
 import { Footer } from "@/features/footer"
-import { ClientProvider, ServerProvider } from "@/_app/providers"
+import { ClientProviders, ServerProviders } from "@/_app/providers"
 import { BackgroundVideo } from "@/entities/background-video"
 import cn from "classnames"
 import { interFont, urbanistFont } from "@/_app/fonts"
@@ -14,8 +14,8 @@ export function LayoutRoot({ children, params: { locale } }: ILayoutRootProps) {
       <body
         className={cn(urbanistFont.variable, interFont.variable, interFont.className, "bg-primary")}
       >
-        <ServerProvider locale={locale}>
-          <ClientProvider>
+        <ServerProviders locale={locale}>
+          <ClientProviders>
             <div className={"flex flex-col min-h-screen relative"}>
               <BackgroundVideo />
               <Header />
@@ -23,8 +23,8 @@ export function LayoutRoot({ children, params: { locale } }: ILayoutRootProps) {
               <Footer />
               <DialogCookie />
             </div>
-          </ClientProvider>
-        </ServerProvider>
+          </ClientProviders>
+        </ServerProviders>
       </body>
     </html>
   )

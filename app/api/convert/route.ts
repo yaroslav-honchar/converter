@@ -15,7 +15,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const isCookiesAccepted = cookies.get(COOKIE_NAMES.cookiesAccepted)?.value === "true"
     const isSendToTelegramConfirmed = cookies.get(COOKIE_NAMES.tgConfirmed)?.value === "true"
-    const telegramUserNameValue = cookies.get(COOKIE_NAMES.tgConfirmed)?.value
+    const telegramUserNameValue = cookies.get(COOKIE_NAMES.tgUsername)?.value
 
     const errorsForUser: string[] = []
     const extractedFiles = await extractFilesData(req)

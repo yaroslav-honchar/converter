@@ -12,7 +12,11 @@
     "empty_list": "No files selected",
     "convert_history": "Session history",
     "converted_time": "Converted at",
-    "total_size": "Total size"
+    "total_size": "Total size",
+    "send_to_telegram": "Send converted archives to Telegram automatically",
+    "cookies_warn_description": "If you want to use these options, you need to accept",
+    "cookies_warn_cookie": "the cookie policy",
+    "cookies_warn_dialog": "If you declined it before, check it to open the submission dialog window"
   },
   "Notify": {
     "error": "Error",
