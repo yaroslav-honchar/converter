@@ -83,7 +83,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       headers: createResponseHeaders(archiveName),
     })
   } catch (error: unknown) {
-    console.log(error)
     const errorMessage = error instanceof Error ? error.message : error
 
     return new NextResponse(JSON.stringify({ error: errorMessage }), {

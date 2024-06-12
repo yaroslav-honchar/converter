@@ -25,7 +25,6 @@ export async function POST(req: NextRequest): Promise<Response> {
       file,
     })
   } catch (error: unknown) {
-    console.log(error)
     await client.disconnect()
     const errorMessage = error instanceof Error ? error.message : error
 
