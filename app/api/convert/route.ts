@@ -10,6 +10,7 @@ import { createResponseHeaders } from "./helpers/create-response-headers"
 import { COOKIE_NAMES } from "@/shared/constants"
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  console.log(new Date())
   const { cookies } = req
 
   try {

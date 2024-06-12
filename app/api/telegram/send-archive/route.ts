@@ -36,6 +36,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     })
   } finally {
     await client.disconnect()
+    console.log(new Date())
   }
 
   return Response.json({ message: "Files sent successfully" })

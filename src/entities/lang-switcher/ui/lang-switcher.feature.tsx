@@ -26,7 +26,6 @@ export const LangSwitcher: React.FC = () => {
                 },
               )}
               href={pathname}
-              prefetch={true}
               locale={option}
             >
               {option}
