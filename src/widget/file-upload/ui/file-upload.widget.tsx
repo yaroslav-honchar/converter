@@ -6,22 +6,19 @@ import { DataTable } from "primereact/datatable"
 import { Column } from "primereact/column"
 import { Button } from "primereact/button"
 import { Toast } from "primereact/toast"
-import { InputText } from "primereact/inputtext"
-import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox"
 import { useDebounce } from "primereact/hooks"
 import { useTranslations, useLocale } from "next-intl"
 import * as uuid from "uuid"
 import { FormatEnum } from "sharp"
 import Cookies from "js-cookie"
-import { useModal, useToastNotify } from "@/shared/hooks"
+import { useToastNotify } from "@/shared/hooks"
 import { IConvertHistoryItem, ISelectedFile } from "@/shared/types"
-import { Icon, LinkRoot } from "@/shared/components"
+import { Icon } from "@/shared/components"
 import { createSelectedFiles } from "../helpers"
 import { useSendSelectedFiles } from "../api"
 import { ConvertSelect, EmptyTemplate, TableHeader } from "../components"
 import { MAX_FILE_SIZE, MAX_FILES_LENGTH } from "../constants"
 import { COOKIE_NAMES } from "@/shared/constants"
-import { ClientRoutes } from "@/_app/routes"
 
 export const FileUpload = () => {
   const locale = useLocale()
@@ -35,7 +32,7 @@ export const FileUpload = () => {
     "",
     500,
   )
-  const { openModal } = useModal()
+  // const { openModal } = useModal()
 
   const onFileSelectHandle = ({ target: { files } }: ChangeEvent<HTMLInputElement>): void => {
     if (!files?.length) {
@@ -153,28 +150,28 @@ export const FileUpload = () => {
     })
   }
 
-  const onChangeTelegramConfirmHandle = ({ checked }: CheckboxChangeEvent): void => {
-    const isCookiesAccepted = Cookies.get(COOKIE_NAMES.cookiesAccepted) === "true"
-    if (!isCookiesAccepted) {
-      openModal("cookie")
-      return
-    }
+  // const onChangeTelegramConfirmHandle = ({ checked }: CheckboxChangeEvent): void => {
+  //   const isCookiesAccepted = Cookies.get(COOKIE_NAMES.cookiesAccepted) === "true"
+  //   if (!isCookiesAccepted) {
+  //     openModal("cookie")
+  //     return
+  //   }
+  //
+  //   setIsTelegramConfirmed((prevState: boolean): boolean => {
+  //     const newValue = checked ? checked : !prevState
+  //
+  //     Cookies.set(COOKIE_NAMES.tgConfirmed, newValue.toString())
+  //
+  //     return newValue
+  //   })
+  // }
 
-    setIsTelegramConfirmed((prevState: boolean): boolean => {
-      const newValue = checked ? checked : !prevState
-
-      Cookies.set(COOKIE_NAMES.tgConfirmed, newValue.toString())
-
-      return newValue
-    })
-  }
-
-  const onChangeTelegramUsernameHandle = ({
-    target: { value },
-  }: ChangeEvent<HTMLInputElement>): void => {
-    const newValue = value.replace(/@/g, "")
-    setTelegramUsername(newValue)
-  }
+  // const onChangeTelegramUsernameHandle = ({
+  //   target: { value },
+  // }: ChangeEvent<HTMLInputElement>): void => {
+  //   const newValue = value.replace(/@/g, "")
+  //   setTelegramUsername(newValue)
+  // }
 
   useEffect((): void => {
     const isCookieAccepted = Cookies.get(COOKIE_NAMES.cookiesAccepted) === "true"
@@ -212,42 +209,40 @@ export const FileUpload = () => {
                 onFilesClear={onFilesClearHandle}
               />
             }
-            footer={() => {
-              return (
-                <div className={"flex flex-col gap-2"}>
-                  <div>
-                    <div className={"flex items-center gap-3"}>
-                      <Checkbox
-                        id={"telegram_confirm"}
-                        name={"telegram_confirm"}
-                        checked={isTelegramConfirmed}
-                        onChange={onChangeTelegramConfirmHandle}
-                      />
-                      <label htmlFor="telegram_confirm">{tFileUpload("send_to_telegram")}</label>
-                    </div>
-                    <p className={"ps-8 text-xs"}>
-                      * {tFileUpload("cookies_warn_description")}{" "}
-                      <LinkRoot
-                        className={"text-xs underline"}
-                        href={ClientRoutes.cookiePolicy}
-                        target={"_blank"}
-                        rel={"noreferrer nofollow"}
-                      >
-                        {tFileUpload("cookies_warn_cookie")}
-                      </LinkRoot>
-                      . <br />* {tFileUpload("cookies_warn_dialog")}.
-                    </p>
-                  </div>
-                  <InputText
-                    className={"w-60"}
-                    placeholder={"Telegram @username"}
-                    disabled={!isTelegramConfirmed}
-                    value={telegramUsername}
-                    onChange={onChangeTelegramUsernameHandle}
-                  />
-                </div>
-              )
-            }}
+            // footer={
+            //   <div className={"flex flex-col gap-2"}>
+            //     <div>
+            //       <div className={"flex items-center gap-3"}>
+            //         <Checkbox
+            //           id={"telegram_confirm"}
+            //           name={"telegram_confirm"}
+            //           checked={isTelegramConfirmed}
+            //           onChange={onChangeTelegramConfirmHandle}
+            //         />
+            //         <label htmlFor="telegram_confirm">{tFileUpload("send_to_telegram")}</label>
+            //       </div>
+            //       <p className={"ps-8 text-xs"}>
+            //         * {tFileUpload("cookies_warn_description")}{" "}
+            //         <LinkRoot
+            //           className={"text-xs underline"}
+            //           href={ClientRoutes.cookiePolicy}
+            //           target={"_blank"}
+            //           rel={"noreferrer nofollow"}
+            //         >
+            //           {tFileUpload("cookies_warn_cookie")}
+            //         </LinkRoot>
+            //         . <br />* {tFileUpload("cookies_warn_dialog")}.
+            //       </p>
+            //     </div>
+            //     <InputText
+            //       className={"w-60"}
+            //       placeholder={"Telegram @username"}
+            //       disabled={!isTelegramConfirmed}
+            //       value={telegramUsername}
+            //       onChange={onChangeTelegramUsernameHandle}
+            //     />
+            //   </div>
+            // }
           >
             <Column
               field={"file.name"}
