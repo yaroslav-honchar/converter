@@ -25,7 +25,7 @@ export const DialogCookie = () => {
 
   const onDeclineHandle = (): void => {
     Cookies.set(COOKIE_NAMES.cookiesAccepted, "false", { expires: 365 })
-    Cookies.remove(COOKIE_NAMES.tgUsername)
+    Cookies.remove(COOKIE_NAMES.tgChatID)
     Cookies.remove(COOKIE_NAMES.tgConfirmed)
     closeModal("cookie")
   }

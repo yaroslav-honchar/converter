@@ -7,12 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint **/*.{ts,tsx} --fix --config .eslintrc.json",
-    "format": "prettier --log-level warn --write \"{src,app}/**/*.{tsx,ts,css,scss}\""
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "format": "prettier --log-level warn --write \"{src,app}/**/*.{tsx,ts,css,scss}\"",
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{(t|j)s?(x),?(s)css}": [
@@ -61,7 +57,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-prettier": "^5.1.3",
-    "husky": "^4.3.8",
+    "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "postcss": "^8",
     "prettier": "^3.3.2",
