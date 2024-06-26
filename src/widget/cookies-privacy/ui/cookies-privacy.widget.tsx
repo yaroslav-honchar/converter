@@ -1,8 +1,8 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import React from "react"
 import { useLocale } from "use-intl"
-import { useTranslations } from "next-intl"
 
 export const CookiesPrivacyContent: React.FC = () => {
   const locale = useLocale()

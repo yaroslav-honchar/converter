@@ -1,7 +1,9 @@
-import React from "react"
-import { Link } from "@/_app/localization"
-import { ILinkRootProps } from "./link-root.props"
 import cn from "classnames"
+import React from "react"
+
+import { Link } from "@/_app/localization"
+
+import { ILinkRootProps } from "./link-root.props"
 
 export const LinkRoot: React.FC<ILinkRootProps> = ({
   href,

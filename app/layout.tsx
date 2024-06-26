@@ -1,9 +1,10 @@
 // import "primereact/resources/themes/lara-dark-cyan/theme.css"
-import "primeicons/primeicons.css"
+import type { Metadata } from "next"
+import React from "react"
+
 import "@/_app/styles/main.scss"
 
-import React from "react"
-import type { Metadata } from "next"
+import "primeicons/primeicons.css"
 
 export const metadata: Metadata = {
   icons: "/icon.png",

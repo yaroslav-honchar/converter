@@ -1,24 +1,32 @@
 "use client"
 
-import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
-import prettyBytes from "pretty-bytes"
-import { DataTable } from "primereact/datatable"
-import { Column } from "primereact/column"
-import { Button } from "primereact/button"
-import { Toast } from "primereact/toast"
-import { useDebounce } from "primereact/hooks"
-import { useTranslations, useLocale } from "next-intl"
 import * as uuid from "uuid"
-import { FormatEnum } from "sharp"
 import Cookies from "js-cookie"
-import { useToastNotify } from "@/shared/hooks"
+import { useLocale, useTranslations } from "next-intl"
+import prettyBytes from "pretty-bytes"
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
+import { FormatEnum } from "sharp"
+
+import { Button } from "primereact/button"
+import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox"
+import { Column } from "primereact/column"
+import { DataTable } from "primereact/datatable"
+import { useDebounce } from "primereact/hooks"
+import { InputIcon } from "primereact/inputicon"
+import { InputText } from "primereact/inputtext"
+import { Toast } from "primereact/toast"
+
+import { ClientRoutes } from "@/_app/routes"
+
+import { Icon, LinkRoot } from "@/shared/components"
+import { COOKIE_NAMES } from "@/shared/constants"
+import { useModal, useToastNotify } from "@/shared/hooks"
 import { IConvertHistoryItem, ISelectedFile } from "@/shared/types"
-import { Icon } from "@/shared/components"
-import { createSelectedFiles } from "../helpers"
+
 import { useSendSelectedFiles } from "../api"
 import { ConvertSelect, EmptyTemplate, TableHeader } from "../components"
-import { MAX_FILE_SIZE, MAX_FILES_LENGTH } from "../constants"
-import { COOKIE_NAMES } from "@/shared/constants"
+import { MAX_FILES_LENGTH, MAX_FILE_SIZE } from "../constants"
+import { createSelectedFiles } from "../helpers"
 
 export const FileUpload = () => {
   const locale = useLocale()
@@ -32,7 +40,7 @@ export const FileUpload = () => {
     "",
     500,
   )
-  // const { openModal } = useModal()
+  const { openModal } = useModal()
 
   const onFileSelectHandle = ({ target: { files } }: ChangeEvent<HTMLInputElement>): void => {
     if (!files?.length) {
@@ -78,7 +86,7 @@ export const FileUpload = () => {
     })
   }
 
-  const onSubmitHandle = (event: FormEvent): void => {
+  const onSubmitHandle = async (event: FormEvent): Promise<void> => {
     event.preventDefault()
     let readyToSend = true
 
@@ -108,7 +116,7 @@ export const FileUpload = () => {
       formData.append(`target_${id}`, convertTarget as keyof FormatEnum)
     })
 
-    sendFilesToConvert(formData, {
+    await sendFilesToConvert(formData, {
       onSuccess: (): void => {
         notifySuccess(["convert_success"])
       },
@@ -150,28 +158,28 @@ export const FileUpload = () => {
     })
   }
 
-  // const onChangeTelegramConfirmHandle = ({ checked }: CheckboxChangeEvent): void => {
-  //   const isCookiesAccepted = Cookies.get(COOKIE_NAMES.cookiesAccepted) === "true"
-  //   if (!isCookiesAccepted) {
-  //     openModal("cookie")
-  //     return
-  //   }
-  //
-  //   setIsTelegramConfirmed((prevState: boolean): boolean => {
-  //     const newValue = checked ? checked : !prevState
-  //
-  //     Cookies.set(COOKIE_NAMES.tgConfirmed, newValue.toString())
-  //
-  //     return newValue
-  //   })
-  // }
+  const onChangeTelegramConfirmHandle = ({ checked }: CheckboxChangeEvent): void => {
+    const isCookiesAccepted = Cookies.get(COOKIE_NAMES.cookiesAccepted) === "true"
+    if (!isCookiesAccepted) {
+      openModal("cookie")
+      return
+    }
 
-  // const onChangeTelegramUsernameHandle = ({
-  //   target: { value },
-  // }: ChangeEvent<HTMLInputElement>): void => {
-  //   const newValue = value.replace(/@/g, "")
-  //   setTelegramUsername(newValue)
-  // }
+    setIsTelegramConfirmed((prevState: boolean): boolean => {
+      const newValue = checked ? checked : !prevState
+
+      Cookies.set(COOKIE_NAMES.tgConfirmed, newValue.toString())
+
+      return newValue
+    })
+  }
+
+  const onChangeTelegramUsernameHandle = ({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>): void => {
+    const newValue = value.replace(/@/g, "")
+    setTelegramUsername(newValue)
+  }
 
   useEffect((): void => {
     const isCookieAccepted = Cookies.get(COOKIE_NAMES.cookiesAccepted) === "true"
@@ -179,12 +187,12 @@ export const FileUpload = () => {
     const tgConfirmed = Cookies.get(COOKIE_NAMES.tgConfirmed)
     tgConfirmed && setIsTelegramConfirmed(isCookieAccepted && tgConfirmed === "true")
 
-    const tgUsername = Cookies.get(COOKIE_NAMES.tgUsername)
-    tgUsername && setTelegramUsername(tgUsername)
+    const tgChatID = Cookies.get(COOKIE_NAMES.tgChatID)
+    tgChatID && setTelegramUsername(tgChatID)
   }, [setTelegramUsername, setIsTelegramConfirmed])
 
   useEffect((): void => {
-    Cookies.set(COOKIE_NAMES.tgUsername, debouncedTelegramUsername.replace(/@/g, ""))
+    Cookies.set(COOKIE_NAMES.tgChatID, debouncedTelegramUsername.replace(/@/g, ""))
   }, [debouncedTelegramUsername])
 
   return (
@@ -209,40 +217,43 @@ export const FileUpload = () => {
                 onFilesClear={onFilesClearHandle}
               />
             }
-            // footer={
-            //   <div className={"flex flex-col gap-2"}>
-            //     <div>
-            //       <div className={"flex items-center gap-3"}>
-            //         <Checkbox
-            //           id={"telegram_confirm"}
-            //           name={"telegram_confirm"}
-            //           checked={isTelegramConfirmed}
-            //           onChange={onChangeTelegramConfirmHandle}
-            //         />
-            //         <label htmlFor="telegram_confirm">{tFileUpload("send_to_telegram")}</label>
-            //       </div>
-            //       <p className={"ps-8 text-xs"}>
-            //         * {tFileUpload("cookies_warn_description")}{" "}
-            //         <LinkRoot
-            //           className={"text-xs underline"}
-            //           href={ClientRoutes.cookiePolicy}
-            //           target={"_blank"}
-            //           rel={"noreferrer nofollow"}
-            //         >
-            //           {tFileUpload("cookies_warn_cookie")}
-            //         </LinkRoot>
-            //         . <br />* {tFileUpload("cookies_warn_dialog")}.
-            //       </p>
-            //     </div>
-            //     <InputText
-            //       className={"w-60"}
-            //       placeholder={"Telegram @username"}
-            //       disabled={!isTelegramConfirmed}
-            //       value={telegramUsername}
-            //       onChange={onChangeTelegramUsernameHandle}
-            //     />
-            //   </div>
-            // }
+            footer={
+              <div className={"flex flex-col gap-2"}>
+                <div>
+                  <div className={"flex items-center gap-3"}>
+                    <Checkbox
+                      id={"telegram_confirm"}
+                      name={"telegram_confirm"}
+                      checked={isTelegramConfirmed}
+                      onChange={onChangeTelegramConfirmHandle}
+                    />
+                    <label htmlFor="telegram_confirm">{tFileUpload("send_to_telegram")}</label>
+                  </div>
+                  <p className={"ps-8 text-xs"}>
+                    * {tFileUpload("cookies_warn_description")}{" "}
+                    <LinkRoot
+                      className={"text-xs underline"}
+                      href={ClientRoutes.cookiePolicy}
+                      target={"_blank"}
+                      rel={"noreferrer nofollow"}
+                    >
+                      {tFileUpload("cookies_warn_cookie")}
+                    </LinkRoot>
+                    . <br />* {tFileUpload("cookies_warn_dialog")}.
+                  </p>
+                </div>
+                <div className="w-60 relative">
+                  <InputText
+                    className={"w-full pe-10"}
+                    placeholder={"Telegram chat id"}
+                    disabled={!isTelegramConfirmed}
+                    value={telegramUsername}
+                    onChange={onChangeTelegramUsernameHandle}
+                  />
+                  <InputIcon className="pi pi-question-circle text-xl absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer z-10 transition" />
+                </div>
+              </div>
+            }
           >
             <Column
               field={"file.name"}

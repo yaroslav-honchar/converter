@@ -1,4 +1,5 @@
 import React from "react"
+
 import { Icon, LinkRoot } from "@/shared/components"
 
 type AuthorType = {

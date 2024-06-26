@@ -1,7 +1,9 @@
-import React from "react"
-import { Img, LinkRoot } from "@/shared/components"
-import { ClientRoutes } from "@/_app/routes"
 import cn from "classnames"
+import React from "react"
+
+import { ClientRoutes } from "@/_app/routes"
+
+import { Img, LinkRoot } from "@/shared/components"
 
 export const LinkLogo: React.FC<{ className?: string }> = ({ className }) => {
   return (

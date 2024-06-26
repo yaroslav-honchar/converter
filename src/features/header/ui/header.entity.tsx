@@ -1,6 +1,7 @@
 import React from "react"
-import { LinkLogo } from "@/entities/link-logo"
+
 import { LangSwitcher } from "@/entities/lang-switcher/ui/lang-switcher.feature"
+import { LinkLogo } from "@/entities/link-logo"
 
 export const Header: React.FC = () => {
   return (

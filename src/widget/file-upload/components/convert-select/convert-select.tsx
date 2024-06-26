@@ -1,8 +1,10 @@
 import React, { useState } from "react"
-import { SelectItem } from "primereact/selectitem"
+
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown"
-import { IConvertSelectProps } from "./convert-select.props"
+import { SelectItem } from "primereact/selectitem"
+
 import { convertSelectOptions } from "./convert-select.options"
+import { IConvertSelectProps } from "./convert-select.props"
 
 export const ConvertSelect: React.FC<IConvertSelectProps> = ({
   selectedFile,

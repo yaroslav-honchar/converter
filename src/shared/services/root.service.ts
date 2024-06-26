@@ -1,7 +1,8 @@
 import axios, { Axios } from "axios"
-import { ServerRoot } from "@/_app/routes"
 import https from "https"
+
 import { getApiDomainConfig } from "@/_app/configs"
+import { ServerRoot } from "@/_app/routes"
 
 export class RootService {
   API_SELF_DOMAIN = getApiDomainConfig()

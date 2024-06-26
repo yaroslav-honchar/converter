@@ -1,6 +1,8 @@
-import { RootService } from "./root.service"
 import { AxiosResponse } from "axios"
+
 import { ServerRoutes } from "@/_app/routes"
+
+import { RootService } from "./root.service"
 
 class Convert extends RootService {
   async convert(data: FormData): Promise<AxiosResponse<Blob>> {

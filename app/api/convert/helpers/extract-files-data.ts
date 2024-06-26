@@ -1,5 +1,5 @@
-import { NextRequest } from "next/server"
 import { ExtractedFileType } from "../types"
+import { NextRequest } from "next/server"
 
 type ExtractedFileEntity = "file" | "target"
 

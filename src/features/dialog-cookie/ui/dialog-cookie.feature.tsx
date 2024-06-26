@@ -1,13 +1,16 @@
 "use client"
 
-import { Dialog } from "primereact/dialog"
-import { useEffect } from "react"
 import Cookies from "js-cookie"
-import { Button } from "primereact/button"
 import { useTranslations } from "next-intl"
-import { LinkRoot } from "@/shared/components"
-import { ClientRoutes } from "@/_app/routes"
+import { useEffect } from "react"
+
+import { Button } from "primereact/button"
+import { Dialog } from "primereact/dialog"
+
 import { usePathname } from "@/_app/localization"
+import { ClientRoutes } from "@/_app/routes"
+
+import { LinkRoot } from "@/shared/components"
 import { COOKIE_NAMES } from "@/shared/constants"
 import { useModal } from "@/shared/hooks"
 

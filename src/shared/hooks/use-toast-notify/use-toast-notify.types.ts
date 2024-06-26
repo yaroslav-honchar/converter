@@ -1,6 +1,7 @@
-import { ToastMessage } from "primereact/toast"
 import { Formats } from "intl-messageformat"
 import { TranslationValues } from "use-intl"
+
+import { ToastMessage } from "primereact/toast"
 
 export type NotifyHandlerMessage = [string, TranslationValues?, Partial<Formats>?] | string
 

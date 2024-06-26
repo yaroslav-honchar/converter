@@ -1,9 +1,11 @@
 "use client"
 
 import React, { PropsWithChildren, useState } from "react"
+
+import { Scrollbar } from "@/shared/utils"
+
 import { ModalNamesType } from "./modal-names.type"
 import { ModalContext } from "./modal.context"
-import { Scrollbar } from "@/shared/utils"
 
 type ModalProviderState = Record<ModalNamesType, boolean>
 

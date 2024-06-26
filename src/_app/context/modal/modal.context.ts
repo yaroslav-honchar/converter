@@ -1,6 +1,7 @@
 "use client"
 
 import { createContext } from "react"
+
 import { ModalNamesType } from "@/_app/context/modal/modal-names.type"
 
 type ModalContextValueType = {

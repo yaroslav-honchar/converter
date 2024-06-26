@@ -1,10 +1,12 @@
 "use client"
 
-import React from "react"
-import { localeConfig, usePathname } from "@/_app/localization"
-import { useLocale } from "use-intl"
-import { LinkRoot } from "@/shared/components"
 import cn from "classnames"
+import React from "react"
+import { useLocale } from "use-intl"
+
+import { localeConfig, usePathname } from "@/_app/localization"
+
+import { LinkRoot } from "@/shared/components"
 
 const options: string[] = localeConfig.locales
 

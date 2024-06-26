@@ -1,6 +1,9 @@
 import React from "react"
-import { unstable_setRequestLocale } from "next-intl/server"
+
 import { CookiesPrivacyContent } from "@/widget/cookies-privacy"
+
+import { unstable_setRequestLocale } from "next-intl/server"
+
 import { ICookiesPrivacyPageProps } from "./cookie-privacy.props"
 
 export function CookiesPrivacyPage({ params: { locale } }: ICookiesPrivacyPageProps) {

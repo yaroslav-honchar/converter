@@ -1,13 +1,16 @@
-import { NextRequest, NextResponse } from "next/server"
-import sharp, { FormatEnum } from "sharp"
 import archiver, { ArchiverError } from "archiver"
 import path from "node:path"
 import { PassThrough } from "node:stream"
+import sharp, { FormatEnum } from "sharp"
 import streamToBlob from "stream-to-blob"
-import { createTextStream, extractFilesData } from "./helpers"
-import { TelegramAccountService } from "@/shared/services"
-import { createResponseHeaders } from "./helpers/create-response-headers"
+
 import { COOKIE_NAMES } from "@/shared/constants"
+import { TelegramAccountService } from "@/shared/services"
+
+import { createResponseHeaders } from "./helpers/create-response-headers"
+import { NextRequest, NextResponse } from "next/server"
+
+import { createTextStream, extractFilesData } from "./helpers"
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const { cookies } = req
@@ -15,7 +18,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const isCookiesAccepted = cookies.get(COOKIE_NAMES.cookiesAccepted)?.value === "true"
     const isSendToTelegramConfirmed = cookies.get(COOKIE_NAMES.tgConfirmed)?.value === "true"
-    const telegramUserNameValue = cookies.get(COOKIE_NAMES.tgUsername)?.value
+    const telegramChatID = cookies.get(COOKIE_NAMES.tgChatID)?.value
 
     const errorsForUser: string[] = []
     const extractedFiles = await extractFilesData(req)
@@ -68,11 +71,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const blob = await streamToBlob(passThrough$)
     const archiveName = new Date().getTime() + ".zip"
 
-    if (isCookiesAccepted && isSendToTelegramConfirmed && telegramUserNameValue) {
+    if (isCookiesAccepted && isSendToTelegramConfirmed && telegramChatID) {
       const dataForTelegram = new FormData()
       const fileData = new Blob([await blob.arrayBuffer()], { type: "application/zip" })
-      dataForTelegram.append("archive", fileData, archiveName)
-      dataForTelegram.append("username", telegramUserNameValue)
+      dataForTelegram.append("archive", fileData)
+      dataForTelegram.append("chat_id", telegramChatID)
 
       await TelegramAccountService.sendArchive(dataForTelegram, {
         headers: createResponseHeaders(archiveName),

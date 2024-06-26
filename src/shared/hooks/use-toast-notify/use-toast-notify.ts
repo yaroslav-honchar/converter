@@ -1,12 +1,14 @@
+import { useTranslations } from "next-intl"
 import { RefObject } from "react"
+
 import { Toast } from "primereact/toast"
+
+import { NOTIFY_LIFE } from "./use-toast-notify.constants"
 import {
   IUseToastNotifyReturn,
   NotifyHandlerMessage,
   NotifyHandlerTypeOptions,
 } from "./use-toast-notify.types"
-import { NOTIFY_LIFE } from "./use-toast-notify.constants"
-import { useTranslations } from "next-intl"
 
 export const useToastNotify = (toastRef: RefObject<Toast>): IUseToastNotifyReturn => {
   const tNotify = useTranslations("Notify")

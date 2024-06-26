@@ -1,5 +1,5 @@
-import React from "react"
 import { useTranslations } from "next-intl"
+import React from "react"
 
 export const EmptyTemplate: React.FC = () => {
   const tFileUpload = useTranslations("FileUpload")

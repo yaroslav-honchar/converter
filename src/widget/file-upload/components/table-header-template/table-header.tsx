@@ -1,8 +1,10 @@
-import React from "react"
-import { TableHeaderProps } from "./table-header.props"
-import { Button } from "primereact/button"
-import { useTranslations } from "next-intl"
 import cn from "classnames"
+import { useTranslations } from "next-intl"
+import React from "react"
+
+import { Button } from "primereact/button"
+
+import { TableHeaderProps } from "./table-header.props"
 
 export const TableHeader: React.FC<TableHeaderProps> = ({
   isLoading,

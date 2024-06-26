@@ -1,5 +1,7 @@
 import React from "react"
+
 import Image from "next/image"
+
 import { IImgProps } from "./img.props"
 
 export const Img: React.FC<IImgProps> = ({ src, alt, width, height, className, ...props }) => {

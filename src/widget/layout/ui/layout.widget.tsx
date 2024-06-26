@@ -1,12 +1,16 @@
-import React from "react"
-import { ILayoutRootProps } from "./layout.props"
-import { Header } from "@/features/header"
-import { Footer } from "@/features/footer"
-import { ClientProviders, ServerProviders } from "@/_app/providers"
-import { BackgroundVideo } from "@/entities/background-video"
 import cn from "classnames"
+import React from "react"
+
 import { interFont, urbanistFont } from "@/_app/fonts"
-// import { DialogCookie } from "@/features/dialog-cookie"
+import { ClientProviders, ServerProviders } from "@/_app/providers"
+
+import { DialogCookie } from "@/features/dialog-cookie"
+import { Footer } from "@/features/footer"
+import { Header } from "@/features/header"
+
+import { BackgroundVideo } from "@/entities/background-video"
+
+import { ILayoutRootProps } from "./layout.props"
 
 export function LayoutRoot({ children, params: { locale } }: ILayoutRootProps) {
   return (
@@ -21,7 +25,7 @@ export function LayoutRoot({ children, params: { locale } }: ILayoutRootProps) {
               <Header />
               <main className={"flex-grow flex flex-col relative z-10"}>{children}</main>
               <Footer />
-              {/*<DialogCookie />*/}
+              <DialogCookie />
             </div>
           </ClientProviders>
         </ServerProviders>
