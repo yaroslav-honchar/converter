@@ -4,7 +4,6 @@ import React from "react"
 import { interFont, urbanistFont } from "@/_app/fonts"
 import { ClientProviders, ServerProviders } from "@/_app/providers"
 
-import { DialogCookie } from "@/features/dialog-cookie"
 import { Footer } from "@/features/footer"
 import { Header } from "@/features/header"
 
@@ -25,7 +24,6 @@ export function LayoutRoot({ children, params: { locale } }: ILayoutRootProps) {
               <Header />
               <main className={"flex-grow flex flex-col relative z-10"}>{children}</main>
               <Footer />
-              <DialogCookie />
             </div>
           </ClientProviders>
         </ServerProviders>
