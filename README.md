@@ -3,7 +3,7 @@
 This is a Next.js project that allows you to convert images to different formats. Also, this projects is deployed
 on [vercel](https://vercel.com/) here is [demo](https://convertage.vercel.app/). By vercel on demo you will have
 limitations on file size and files quantity peer time, but you can run this project locally and convert any size and quantity
-of images peer time. Also, locally you can save history of changes by telegram bot.
+of images peer time by changing [constants](./src/widget/file-upload/constants/file-upload.constants.ts). Also, locally you can save history of changes by telegram bot.
 
 ## Scripts
 
