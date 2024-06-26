@@ -7,7 +7,7 @@ import { useLocale } from "use-intl"
 export const CookiesPrivacyContent: React.FC = () => {
   const locale = useLocale()
   const tCookiesPrivacyContent = useTranslations("CookiesPrivacyContent")
-  const lastUpdate = new Date("2024.09.06")
+  const lastUpdate = new Date("2024.26.06")
   const formattedDate = lastUpdate.toLocaleDateString(locale, {
     day: "2-digit",
     month: "2-digit",

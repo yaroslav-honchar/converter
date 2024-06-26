@@ -12,7 +12,6 @@ import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox"
 import { Column } from "primereact/column"
 import { DataTable } from "primereact/datatable"
 import { useDebounce } from "primereact/hooks"
-import { InputIcon } from "primereact/inputicon"
 import { InputText } from "primereact/inputtext"
 import { Toast } from "primereact/toast"
 
@@ -250,7 +249,12 @@ export const FileUpload = () => {
                     value={telegramUsername}
                     onChange={onChangeTelegramUsernameHandle}
                   />
-                  <InputIcon className="pi pi-question-circle text-xl absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer z-10 transition" />
+                  <LinkRoot
+                    href={ClientRoutes.telegramIdInstructions}
+                    className="pi absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer z-10 p-0 w-fit h-fit hover:text-gray-800"
+                  >
+                    <i className="pi pi-question-circle text-xl" />
+                  </LinkRoot>
                 </div>
               </div>
             }

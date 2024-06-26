@@ -21,3 +21,8 @@ body {
   color: var(--c-white);
   background-color: #5754bb;
 }
+
+.prose :where(ol > li):not(:where([class~="not-prose"], [class~="not-prose"] *))::marker {
+  color: inherit;
+  font-weight: bold;
+}

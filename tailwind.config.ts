@@ -18,6 +18,9 @@ const config: Config = {
             a: {
               textDecoration: "underline",
             },
+            pre: {
+              width: "fit-content !important",
+            },
           },
         },
       },

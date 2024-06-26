@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint **/*.{ts,tsx} --fix --config .eslintrc.json",
+    "lint": "eslint ./**/*.{ts,tsx} --fix --config .eslintrc.json",
     "format": "prettier --log-level warn --write \"{src,app}/**/*.{tsx,ts,css,scss}\"",
     "prepare": "husky"
   },
