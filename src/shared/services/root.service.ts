@@ -11,4 +11,11 @@ export class RootService {
     baseURL: this.API_SELF_DOMAIN + ServerRoot,
     httpsAgent: new https.Agent(),
   })
+
+  constructor() {
+    this.http.interceptors.request.use((config) => {
+      console.log(config)
+      return config
+    })
+  }
 }
